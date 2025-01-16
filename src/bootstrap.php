@@ -16,3 +16,9 @@ add_action('wp_enqueue_scripts', 'acl_wc_shortcodes_scripts');
 function acl_wc_shortcodes_scripts() {
     wp_enqueue_style('acl-wc-shortcodes-style', plugins_url('assets/css/acl-wc-shortcodes.css', __FILE__));
 }
+
+function acl_sc_remove() {
+    remove_shortcode ( 'product' );
+    add_shortcode ( 'product', 'acl_products_shortcode' );
+}
+add_action('wp_loaded', 'acl_sc_remove');

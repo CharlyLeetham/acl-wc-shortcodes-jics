@@ -4,7 +4,7 @@ class ACL_WC_Shortcodes {
         add_shortcode('products', array($this, 'acl_products_shortcode'));
     }
 
-    public function acl_products_shortcode($atts) {
+    public static function acl_products_shortcode($atts) {
         $atts = shortcode_atts(
             array(
                 'on_sale' => 'false',
