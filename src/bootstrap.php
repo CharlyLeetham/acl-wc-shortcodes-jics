@@ -4,14 +4,36 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
-require_once ACL_WC_SHORTCODES_DIR . 'src/frontend/ACL-class-wc-widget-products.php';
-require_once ACL_WC_SHORTCODES_DIR . 'src/frontend/ACL_WC_Shortcodes.php';
+if ( class_exists( 'WooCommerce' ) ) {
+    require_once WC()->plugin_path() . '/includes/abstracts/abstract-wc-widget.php';
+    
+    // Debug check
+    if ( class_exists( 'WC_Widget' ) ) {
+        error_log('WC_Widget class exists');
+    } else {
+        error_log('WC_Widget class does NOT exist');
+    }
+    
+    require_once ACL_WC_SHORTCODES_DIR . 'src/frontend/ACL_WC_Shortcodes.php';
+    require_once ACL_WC_SHORTCODES_DIR . 'src/frontend/ACL-class-wc-widget-products.php';
 
-function acl_wc_shortcodes_init() {
-    new ACL_WC_Widget_Products();
+    function acl_wc_shortcodes_init() {
+        new ACL_WC_Shortcodes();
+    }
+
+    add_action('woocommerce_init', 'acl_wc_shortcodes_init');
+} else {
+    add_action( 'admin_notices', 'acl_wc_shortcodes_admin_notice' );
+    error_log('WooCommerce is not active');
 }
 
-add_action('woocommerce_loaded', 'acl_wc_shortcodes_init');
+function acl_wc_shortcodes_admin_notice() {
+    ?>
+    <div class="notice notice-error">
+        <p><?php _e( 'ACL WooCommerce Shortcodes requires WooCommerce to be installed and activated.', 'acl-wc-shortcodes' ); ?></p>
+    </div>
+    <?php
+}
 
 add_filter( 'woocommerce_locate_template', 'acl_locate_template', 10, 3 );
 
