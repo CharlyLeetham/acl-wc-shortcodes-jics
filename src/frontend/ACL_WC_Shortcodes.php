@@ -1,7 +1,7 @@
 <?php
 class ACL_WC_Shortcodes {
     public function __construct() {
-        add_shortcode('products', array($this, 'acl_products_shortcode'));
+        add_shortcode('products', array(__CLASS__, 'acl_products_shortcode'));
     }
 
     public static function acl_products_shortcode($atts) {

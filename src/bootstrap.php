@@ -19,6 +19,5 @@ function acl_wc_shortcodes_scripts() {
 
 function acl_sc_remove() {
     remove_shortcode ( 'products' );
-    add_shortcode ( 'products', 'acl_products_shortcode' );
 }
 add_action('wp_loaded', 'acl_sc_remove');
