@@ -11,7 +11,7 @@ function acl_wc_shortcodes_init() {
     new ACL_WC_Widget_Products();
 }
 
-add_action('plugins_loaded', 'acl_wc_shortcodes_init');
+add_action('woocommerce_loaded', 'acl_wc_shortcodes_init');
 
 add_filter( 'woocommerce_locate_template', 'acl_locate_template', 10, 3 );
 
