@@ -1,0 +1,29 @@
+.acl-products-shortcode {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.acl-product-item {
+    width: calc(25% - 10px); /* Adjust based on columns */
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+.acl-product-item img {
+    max-width: 100%;
+    height: auto;
+}
+
+.acl-product-buy-now {
+    margin: 10px 0;
+}
+
+.acl-product-title {
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+.acl-product-sale-price, .acl-product-price {
+    display: block;
+}
