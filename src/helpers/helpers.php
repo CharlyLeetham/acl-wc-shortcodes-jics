@@ -44,24 +44,30 @@ class ACL_WC_Helpers {
      * @param WC_Product $product The product object.
      * @return string HTML for the add to cart buttons.
      */
-    public static function generate_add_to_cart_buttons($product) {
-        $button_classes = self::get_modified_button_classes($product);
+    public static function generate_add_to_cart_buttons( $product ) {
+        $button_classes = self::get_modified_button_classes( $product );
         $output = '';
         
-        foreach ($button_classes as $class) {
-            $button_class = esc_attr($product->is_purchasable() && $product->is_in_stock() ? 'add_to_cart_button ' . $class : $class);
+        foreach ( $button_classes as $class ) {
+            $button_class = esc_attr( $product->is_purchasable() && $product->is_in_stock() ? 'add_to_cart_button ' . $class : $class );
             
-            // Decide what text to use based on the class
-            $button_text = $class === 'quote-button' ? 'Get Quote' : $product->add_to_cart_text();
+            if ( $class === 'purchase-button' ) {
+                // Use a shopping cart icon for the purchase button
+                $button_content = '<i class="fa fa-shopping-cart"></i>'; // Assuming Font Awesome for the icon, adjust as needed
+            } else {
+                // Use text for other buttons
+                $button_text = $class === 'quote-button' ? 'Get Quote' : $product->add_to_cart_text();
+                $button_content = esc_html( $button_text );
+            }
             
-            $output .= '<a href="' . esc_url($product->add_to_cart_url()) . '" rel="nofollow" data-product_id="' . esc_attr($product->get_id()) . '" data-product_sku="' . esc_attr($product->get_sku()) . '" class="button ' . $button_class . ' ajax_add_to_cart" data-quantity="1">';
-            $output .= esc_html($button_text);
+            $output .= '<a href="' . esc_url( $product->add_to_cart_url()) . '" rel="nofollow" data-product_id="' . esc_attr($product->get_id() ) . '" data-product_sku="' . esc_attr( $product->get_sku() ) . '" class="button ' . $button_class . ' ajax_add_to_cart" data-quantity="1">';
+            $output .= $button_content;
             $output .= '</a>';
         }
 
-        if (empty($button_classes)) {
+        if (empty( $button_classes )) {
             // If no buttons were created, ensure a default 'quote' button is added
-            $output .= '<a href="' . esc_url($product->add_to_cart_url()) . '" rel="nofollow" data-product_id="' . esc_attr($product->get_id()) . '" data-product_sku="' . esc_attr($product->get_sku()) . '" class="button quote-button ajax_add_to_cart" data-quantity="1">Get Quote</a>';
+            $output .= '<a href="' . esc_url( $product->add_to_cart_url() ) . '" rel="nofollow" data-product_id="' . esc_attr( $product->get_id() ) . '" data-product_sku="' . esc_attr( $product->get_sku() ) . '" class="button quote-button ajax_add_to_cart" data-quantity="1">Get Quote</a>';
         }
 
         return $output;
