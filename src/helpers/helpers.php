@@ -42,14 +42,23 @@ class ACL_WC_Helpers {
     public static function generate_add_to_cart_buttons( $product ) {
         $button_classes =  self::get_modified_button_classes( $product );
         $output = '';
+
+        // Split the string into an array for each class
+        $classes_array = array_filter(explode(' ', $button_classes[0])); // Assuming button_classes returns one string
         
-        foreach ( $button_classes as $class ) {
-            var_dump ( $class );
-            $output .= '<a href="' . esc_url( $product->add_to_cart_url() ) . '" rel="nofollow" data-product_id="' . esc_attr( $product->get_id() ) . '" data-product_sku="' . esc_attr( $product->get_sku() ) . '" class="button ' . $class . ' ajax_add_to_cart" data-quantity="1">';
-            $output .= esc_html( $product->add_to_cart_text() );
+        if (empty($classes_array)) {
+            // If no specific classes are returned, use the default 'quote-button'
+            $classes_array[] = 'quote-button';
+        }        
+        
+        foreach ($classes_array as $class) {
+            // Decide what text to use based on the class
+            $button_text = $class === 'quote-button' ? 'Get Quote' : $product->add_to_cart_text();
+            
+            $output .= '<a href="' . esc_url($product->add_to_cart_url()) . '" rel="nofollow" data-product_id="' . esc_attr($product->get_id()) . '" data-product_sku="' . esc_attr($product->get_sku()) . '" class="button ' . esc_attr($class) . ' ajax_add_to_cart" data-quantity="1">';
+            $output .= esc_html($button_text);
             $output .= '</a>';
         }
-        var_dump ( $output );
 
         return $output;
     }
