@@ -46,7 +46,7 @@ class ACL_WC_Helpers {
      */
     public static function generate_add_to_cart_buttons( $product ) {
         $button_classes = self::get_modified_button_classes( $product );
-        $output = '';
+        $output = '<div class="buynow">';
         
         foreach ( $button_classes as $class ) {
             $button_class = esc_attr( $product->is_purchasable() && $product->is_in_stock() ? 'add_to_cart_button ' . $class : $class );
@@ -60,16 +60,21 @@ class ACL_WC_Helpers {
                 $button_content = esc_html( $button_text );
             }
             
+            $output .= '<div class="'.$button_class.'">';
             $output .= '<a href="' . esc_url( $product->add_to_cart_url()) . '" rel="nofollow" data-product_id="' . esc_attr($product->get_id() ) . '" data-product_sku="' . esc_attr( $product->get_sku() ) . '" class="button ' . $button_class . ' ajax_add_to_cart" data-quantity="1">';
             $output .= $button_content;
             $output .= '</a>';
+            $output .= '</div>';
         }
 
         if (empty( $button_classes )) {
             // If no buttons were created, ensure a default 'quote' button is added
+            $output .= '<div class="quote-button">';
             $output .= '<a href="' . esc_url( $product->add_to_cart_url() ) . '" rel="nofollow" data-product_id="' . esc_attr( $product->get_id() ) . '" data-product_sku="' . esc_attr( $product->get_sku() ) . '" class="button quote-button ajax_add_to_cart" data-quantity="1">Get Quote</a>';
+            $output .= '</div>';
         }
 
+        $output .= "</div>";
         return $output;
     }
 }
