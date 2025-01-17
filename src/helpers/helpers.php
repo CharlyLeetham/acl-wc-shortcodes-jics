@@ -45,6 +45,7 @@ class ACL_WC_Helpers {
 
         // Split the string into an array for each class
         $classes_array = array_filter(explode(' ', $button_classes[0])); // Assuming button_classes returns one string
+        var_dump ($classes_array);
         
         if (empty($classes_array)) {
             // If no specific classes are returned, use the default 'quote-button'
