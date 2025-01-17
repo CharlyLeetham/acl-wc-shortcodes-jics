@@ -16,7 +16,7 @@
 }
 
 .acl-product-buy-now {
-    margin: 10px 0;
+    margin: 0px 0;
 }
 
 .acl-product-title {
@@ -26,4 +26,69 @@
 
 .acl-product-sale-price, .acl-product-price {
     display: block;
+}
+
+.acl-product-image {
+	background-color: rgba(245, 245, 245, 1);
+	margin-bottom: 0px;
+  clip-path: polygon(7% 0%, 93% 0%, 100% 7%, 100% 93%, 100% 100%, 0% 100%, 0 93%, 0 7%);
+	padding:30px;
+	text-align: center;
+	
+}
+
+.acl-product-details {
+	position: relative;
+  background: #f5f5f5;
+  clip-path: polygon(0 0, 100% 0, 100% 93%, 93% 100%, 7% 100%, 0 93%);	
+	padding: 3px;
+}
+
+
+.quote-button {
+    background: #ff9029;
+    color: #ffffff;
+    /* font-weight: bold; */
+    text-transform: uppercase;
+    font-size: 16px;
+    padding: 10px 0; /* This padding affects the total height */
+}
+
+.acl-product-buy-now {
+    display: flex; /* Use flexbox for layout */
+    width: 100%;
+	  justify-content: flex-end;
+}
+
+.acl-product-buy-now .quote-button {
+    flex-basis: 70%; /* 70% of the space when both are present */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.acl-product-buy-now .purchase-button {
+    flex-basis: 30%; /* Always 30% width */
+    background: #000000;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    color: #ffffff;
+    /* Mimic the height of the quote button including padding */
+    padding: 10px 0; /* Match the padding of quote-button */
+    box-sizing: border-box; /* Ensure padding is included in the height */
+}
+
+/* Adjust the SVG icon size */
+.acl-product-buy-now .fa-svg {
+    width: 1.5em; /* Increase size for better visibility */
+    height: 1.5em;
+}
+
+/* Ensure buttons are displayed inline within their containers */
+.acl-product-buy-now a {
+    display: inline-block;
+    width: 100%; /* Full width of their parent container */
+    text-align: center; /* Center the content if needed */
+    height: 100%; /* Fill the height of the parent */
 }
