@@ -28,6 +28,7 @@ class ACL_WC_Helpers {
                 $additional_classes .= ' purchase-button';
             }
         }
+        var_dump ( $additional_classes );
 
         return esc_attr( $product->is_purchasable() && $product->is_in_stock() ? 'add_to_cart_button' : '' ) . $additional_classes;
     }
@@ -47,6 +48,7 @@ class ACL_WC_Helpers {
             $output .= esc_html( $product->add_to_cart_text() );
             $output .= '</a>';
         }
+        var_dump ( $output );
 
         return $output;
     }
