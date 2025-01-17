@@ -15,12 +15,12 @@ class ACL_WC_Helpers {
      * @param WC_Product $product The product object.
      * @return string The modified class attribute for the button.
      */
-    function get_modified_button_classes( $product ) {
+    public static function get_modified_button_classes( $product ) {
         $purchase_attribute = $product->get_attribute( 'pa_purchase' );
         $values = array_map( 'trim', explode( ',', $purchase_attribute ) );
         $additional_classes = '';
 
-        foreach ($values as $value) {
+        foreach ( $values as $value ) {
             if ( $value === 'quote' ) {
                 $additional_classes .= ' quote-button';
             }
@@ -38,13 +38,13 @@ class ACL_WC_Helpers {
      * @param WC_Product $product The product object.
      * @return string HTML for the add to cart buttons.
      */
-    function generate_add_to_cart_buttons($product) {
-        $button_classes = get_modified_button_classes($product);
+    public static function generate_add_to_cart_buttons( $product ) {
+        $button_classes = get_modified_button_classes( $product );
         $output = '';
         
-        foreach ($button_classes as $class) {
-            $output .= '<a href="' . esc_url($product->add_to_cart_url()) . '" rel="nofollow" data-product_id="' . esc_attr($product->get_id()) . '" data-product_sku="' . esc_attr($product->get_sku()) . '" class="button ' . $class . ' ajax_add_to_cart" data-quantity="1">';
-            $output .= esc_html($product->add_to_cart_text());
+        foreach ( $button_classes as $class ) {
+            $output .= '<a href="' . esc_url( $product->add_to_cart_url() ) . '" rel="nofollow" data-product_id="' . esc_attr( $product->get_id() ) . '" data-product_sku="' . esc_attr( $product->get_sku() ) . '" class="button ' . $class . ' ajax_add_to_cart" data-quantity="1">';
+            $output .= esc_html( $product->add_to_cart_text() );
             $output .= '</a>';
         }
 
