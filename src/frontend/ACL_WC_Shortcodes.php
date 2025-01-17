@@ -37,9 +37,11 @@ class ACL_WC_Shortcodes {
                 global $product;
                 ?>
                 <div class="acl-product-item">
-                    <a href="<?php echo esc_url(get_permalink($product->get_id())); ?>">
-                        <?php echo $product->get_image(); ?>
-                    </a>
+                    <div class="acl-product-image">
+                        <a href="<?php echo esc_url(get_permalink($product->get_id())); ?>">
+                            <?php echo $product->get_image(); ?>
+                         </a>
+                    </div>
                     <div class="acl-product-buy-now">
                         <a href="<?php echo esc_url($product->add_to_cart_url()); ?>" class="button product_type_<?php echo esc_attr($product->get_type()); ?>"><?php echo esc_html($product->add_to_cart_text()); ?></a>
                     </div>
