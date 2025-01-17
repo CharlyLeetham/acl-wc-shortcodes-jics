@@ -92,3 +92,8 @@
     text-align: center; /* Center the content if needed */
     height: 100%; /* Fill the height of the parent */
 }
+
+/* Apply border only when .quote-button is not present */
+.acl-product-buy-now:not(:has(.quote-button)) {
+    border-left: 3px #f5f5f5 solid;
+}
