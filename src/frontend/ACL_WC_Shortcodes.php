@@ -43,6 +43,10 @@ class ACL_WC_Shortcodes {
                          </a>
                     </div>
                     <div class="acl-product-buy-now">
+                        <?php 
+                        $purchase_attribute = $product->get_attribute('pa_purchase');
+                        echo $purchase_attribute;
+                        ?>
                         <a href="<?php echo esc_url($product->add_to_cart_url()); ?>" class="button product_type_<?php echo esc_attr($product->get_type()); ?>"><?php echo esc_html($product->add_to_cart_text()); ?></a>
                     </div>
                     <h3 class="acl-product-title">
