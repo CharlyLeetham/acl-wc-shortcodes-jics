@@ -46,6 +46,14 @@ class ACL_WC_Shortcodes {
                         <?php 
                         $purchase_attribute = $product->get_attribute('pa_purchase');
                         echo $purchase_attribute;
+                        if ($purchase_attribute) {                        
+                            // Split the comma-separated values into an array
+                            $values = explode(',', $purchase_attribute);
+                            
+                            // Remove any whitespace from values
+                            $values = array_map('trim', $values);
+                            var_dump( $values );                        
+                        }
                         ?>
                         <a href="<?php echo esc_url($product->add_to_cart_url()); ?>" class="button product_type_<?php echo esc_attr($product->get_type()); ?>"><?php echo esc_html($product->add_to_cart_text()); ?></a>
                     </div>
