@@ -5,6 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 require_once ACL_WC_SHORTCODES_DIR . 'src/frontend/ACL_WC_Shortcodes.php';
+require_once ACL_WC_SHORTCODES_DIR . 'src/helpers/helpers.php';
 
 function acl_wc_shortcodes_init() {
     new ACL_WC_Shortcodes();

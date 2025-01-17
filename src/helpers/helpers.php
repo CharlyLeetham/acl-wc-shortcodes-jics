@@ -1,0 +1,53 @@
+<?php
+
+/**
+ * Helper class for ACL WooCommerce Shortcodes.
+*/
+
+class ACL_WC_Helpers {
+    /**
+     * Helper functions for ACL WooCommerce Shortcodes.
+     */
+
+    /**
+     * Modifies the add to cart button class based on product attributes.
+     *
+     * @param WC_Product $product The product object.
+     * @return string The modified class attribute for the button.
+     */
+    function get_modified_button_classes( $product ) {
+        $purchase_attribute = $product->get_attribute( 'pa_purchase' );
+        $values = array_map( 'trim', explode( ',', $purchase_attribute ) );
+        $additional_classes = '';
+
+        foreach ($values as $value) {
+            if ( $value === 'quote' ) {
+                $additional_classes .= ' quote-button';
+            }
+            if ( $value === 'purchase' ) {
+                $additional_classes .= ' purchase-button';
+            }
+        }
+
+        return esc_attr( $product->is_purchasable() && $product->is_in_stock() ? 'add_to_cart_button' : '' ) . $additional_classes;
+    }
+
+    /**
+     * Generates add to cart buttons based on product attributes.
+     *
+     * @param WC_Product $product The product object.
+     * @return string HTML for the add to cart buttons.
+     */
+    function generate_add_to_cart_buttons($product) {
+        $button_classes = get_modified_button_classes($product);
+        $output = '';
+        
+        foreach ($button_classes as $class) {
+            $output .= '<a href="' . esc_url($product->add_to_cart_url()) . '" rel="nofollow" data-product_id="' . esc_attr($product->get_id()) . '" data-product_sku="' . esc_attr($product->get_sku()) . '" class="button ' . $class . ' ajax_add_to_cart" data-quantity="1">';
+            $output .= esc_html($product->add_to_cart_text());
+            $output .= '</a>';
+        }
+
+        return $output;
+    }
+}
