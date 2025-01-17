@@ -44,6 +44,7 @@ class ACL_WC_Helpers {
         $output = '';
         
         foreach ( $button_classes as $class ) {
+            var_dump ( $class );
             $output .= '<a href="' . esc_url( $product->add_to_cart_url() ) . '" rel="nofollow" data-product_id="' . esc_attr( $product->get_id() ) . '" data-product_sku="' . esc_attr( $product->get_sku() ) . '" class="button ' . $class . ' ajax_add_to_cart" data-quantity="1">';
             $output .= esc_html( $product->add_to_cart_text() );
             $output .= '</a>';
