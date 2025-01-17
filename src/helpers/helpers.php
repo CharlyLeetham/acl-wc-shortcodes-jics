@@ -46,7 +46,7 @@ class ACL_WC_Helpers {
      */
     public static function generate_add_to_cart_buttons( $product ) {
         $button_classes = self::get_modified_button_classes( $product );
-        $output = '<div class="buynow">';
+        $output = '';
         
         foreach ( $button_classes as $class ) {
             $button_class = esc_attr( $product->is_purchasable() && $product->is_in_stock() ? 'add_to_cart_button ' . $class : $class );
@@ -74,7 +74,6 @@ class ACL_WC_Helpers {
             $output .= '</div>';
         }
 
-        $output .= "</div>";
         return $output;
     }
 }
