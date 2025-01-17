@@ -39,7 +39,7 @@ class ACL_WC_Helpers {
      * @return string HTML for the add to cart buttons.
      */
     public static function generate_add_to_cart_buttons( $product ) {
-        $button_classes = get_modified_button_classes( $product );
+        $button_classes =  self::get_modified_button_classes( $product );
         $output = '';
         
         foreach ( $button_classes as $class ) {
