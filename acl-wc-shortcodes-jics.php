@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: ACL New WooCommerce Shortcodes
+Plugin Name: ACL New WooCommerce Shortcodes and Templates
 Plugin URI: http://askcharlyleetham.com
-Description: New Shortcodes for WooCommerce
+Description: New Shortcodes and Templates for WooCommerce
 Version: 1
 Author: Charly Dwyer
 Author URI: http://askcharlyleetham.com
