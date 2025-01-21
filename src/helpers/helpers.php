@@ -78,7 +78,7 @@ class ACL_WC_Helpers {
     }
 
 
-	function acl_woocommerce_template_loop_category_link_open( $category ) {
+	public static function acl_woocommerce_template_loop_category_link_open( $category ) {
 		$category_term = get_term( $category, 'product_cat' );
 		$category_name = ( ! $category_term || is_wp_error( $category_term ) ) ? '' : $category_term->name;
 		/* translators: %s: Category name */
