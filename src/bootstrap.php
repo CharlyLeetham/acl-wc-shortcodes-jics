@@ -28,5 +28,5 @@ function acl_sc_remove() {
 add_action( 'wp_loaded', 'acl_sc_remove' );
 
 // Remove the default function
-remove_action( 'woocommerce_before_subcategory', 'woocommerce_subcategory_thumbnail', 10 );
-add_action( 'woocommerce_before_subcategory', array( 'ACL_WC_Helpers', 'acl_woocommerce_subcategory_thumbnail' ), 10);
+remove_action( 'woocommerce_before_subcategory_title', 'woocommerce_subcategory_thumbnail', 10 );
+add_action( 'woocommerce_before_subcategory_title', array( 'ACL_WC_Helpers', 'acl_woocommerce_subcategory_thumbnail' ), 10);
