@@ -11,13 +11,13 @@ function acl_wc_shortcodes_init() {
     new ACL_WC_Shortcodes();
 }
 
-add_action('init', 'acl_wc_shortcodes_init');
+add_action( 'init', 'acl_wc_shortcodes_init' );
 
-add_action('wp_enqueue_scripts', 'acl_wc_shortcodes_scripts');
+add_action( 'wp_enqueue_scripts', 'acl_wc_shortcodes_scripts' );
 function acl_wc_shortcodes_scripts() {
     $stylesheet_path = plugin_dir_path(__FILE__) . 'assets/css/acl-wc-shortcodes.css';
     $version = filemtime( $stylesheet_path );
-    wp_enqueue_style('acl-wc-shortcodes-style', plugins_url('assets/css/acl-wc-shortcodes.css', __FILE__), array(), $version, 'all');    
+    wp_enqueue_style( 'acl-wc-shortcodes-style', plugins_url( 'assets/css/acl-wc-shortcodes.css', __FILE__), array(), $version, 'all' );    
 }
 
 function acl_sc_remove() {
@@ -25,9 +25,9 @@ function acl_sc_remove() {
     add_shortcode('products', array('ACL_WC_Shortcodes', 'acl_products_shortcode'));
 }    
 
-add_action('wp_loaded', 'acl_sc_remove');
+add_action( 'wp_loaded', 'acl_sc_remove' );
 
 // Remove the default function
 //remove_action( 'woocommerce_before_subcategory', 'woocommerce_subcategory_thumbnail', 10 );
-add_action( 'woocommerce_before_subcategory', array('ACL_WC_Helpers', 'acl_woocommerce_template_category_link_open'), 11 );
-add_action( 'woocommerce_after_subcategory', array('ACL_WC_Helpers', 'acl_woocommerce_template_category_link_close', 11 );
+add_action( 'woocommerce_before_subcategory', array( 'ACL_WC_Helpers', 'acl_woocommerce_template_category_link_open' ), 11 );
+add_action( 'woocommerce_after_subcategory', array( 'ACL_WC_Helpers', 'acl_woocommerce_template_category_link_close' ), 11 );
