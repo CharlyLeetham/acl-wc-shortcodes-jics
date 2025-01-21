@@ -77,42 +77,11 @@ class ACL_WC_Helpers {
         return $output;
     }
 
-        /**
-     * Custom function to display subcategory thumbnail.
-     *
-     * @param WP_Term $category Category object.
-     */
-    public static function acl_woocommerce_subcategory_thumbnail( $category ) {
-        $small_thumbnail_size = apply_filters( 'subcategory_archive_thumbnail_size', 'woocommerce_thumbnail' );
-        $dimensions           = wc_get_image_size( $small_thumbnail_size );
-        $thumbnail_id         = get_term_meta( $category->term_id, 'thumbnail_id', true );
-
-        if ( $thumbnail_id ) {
-            $image        = wp_get_attachment_image( $thumbnail_id, $small_thumbnail_size );
-            $image_src    = wp_get_attachment_image_src( $thumbnail_id, $small_thumbnail_size );
-            $image_width  = $dimensions['width'];
-            $image_height = $dimensions['height'];
-        } else {
-            $image        = wc_placeholder_img( $small_thumbnail_size );
-            $image_src    = wc_placeholder_img_src( $small_thumbnail_size );
-            $image_width  = $image_height = 1; // Prevent division by zero.
-        }
-
-        if ( $image ) {
-            // Prevent esc_url from breaking spaces in urls for image embeds.
-            // Ref: https://core.trac.wordpress.org/ticket/23605.
-            $image = str_replace( ' ', '%20', $image );
-
-            ?>
-            <div class="acl-category-thumbnail">
-                <a href="<?php echo esc_url( get_term_link( $category, 'product_cat' ) ); ?>">
-                    <?php
-                    echo wp_kses_post( apply_filters( 'woocommerce_subcategory_thumbnail', $image, $category ) );
-                    ?>
-                </a>
-            </div>
-            <?php
-        }
+    public static function acl_woocommerce_template_category_link_open( $category ) {
+        echo '<div class="acl-category-thumbnail">';
     }
 
+    public static function acl_woocommerce_template_category_link_close( $category ) {
+        echo '</div>';
+    }    
 }
