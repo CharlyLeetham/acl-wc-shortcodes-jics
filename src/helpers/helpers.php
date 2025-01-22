@@ -145,7 +145,7 @@ class ACL_WC_Helpers {
         <div class="acl-category-readmore">
             <?php
             echo '<a aria-label="' . sprintf( esc_attr__( 'Visit product category %1$s', 'woocommerce' ), esc_attr( $category_name ) ) . '" href="' . esc_url( get_term_link( $category, 'product_cat' ) ) . '">';
-            echo "View ". esc_html( $category->name ). "Catalog";
+            echo "View ". esc_html( $category->name ). " Catalog";
             echo '</a>';
             ?>
         </div>
