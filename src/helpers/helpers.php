@@ -126,7 +126,7 @@ class ACL_WC_Helpers {
 	 *
 	 * @param object $category Category object.
 	 */
-	function acl_woocommerce_template_loop_category_title( $category ) {
+	public static function acl_woocommerce_template_loop_category_title( $category ) {
 		?>
         <div class="acl-category-title">
             <h2 class="woocommerce-loop-category__title">
