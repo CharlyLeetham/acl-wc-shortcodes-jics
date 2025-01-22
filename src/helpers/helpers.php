@@ -138,13 +138,17 @@ class ACL_WC_Helpers {
                     // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                     echo apply_filters( 'woocommerce_subcategory_count_html', ' <mark class="count">(' . esc_html( $category->count ) . ')</mark>', $category );
                 }
+                echo '</a>';
                 ?>
             </h2>
         </div>
         <div class="acl-category-readmore">
-                View Catalog ->
+            <?php
+            echo '<a aria-label="' . sprintf( esc_attr__( 'Visit product category %1$s', 'woocommerce' ), esc_attr( $category_name ) ) . '" href="' . esc_url( get_term_link( $category, 'product_cat' ) ) . '">';
+            echo "View ". esc_html( $category->name ). "Catalog";
+            echo '</a>';
+            ?>
         </div>
-        </a>
 		<?php
 	}
 
