@@ -118,8 +118,35 @@ class ACL_WC_Helpers {
 				echo '<img src="' . esc_url( $image ) . '" alt="' . esc_attr( $category->name ) . '" width="' . esc_attr( $dimensions['width'] ) . '" height="' . esc_attr( $dimensions['height'] ) . '" /></div>';
 			}
 		}
+        echo '</a>';
 	}
 
+    	/**
+	 * Show the subcategory title in the product loop.
+	 *
+	 * @param object $category Category object.
+	 */
+	function acl_woocommerce_template_loop_category_title( $category ) {
+		?>
+        <div class="acl-category-title">
+            <h2 class="woocommerce-loop-category__title">
+                <?php
+                echo '<a aria-label="' . sprintf( esc_attr__( 'Visit product category %1$s', 'woocommerce' ), esc_attr( $category_name ) ) . '" href="' . esc_url( get_term_link( $category, 'product_cat' ) ) . '">';                
+                echo esc_html( $category->name );
+
+                if ( $category->count > 0 ) {
+                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                    echo apply_filters( 'woocommerce_subcategory_count_html', ' <mark class="count">(' . esc_html( $category->count ) . ')</mark>', $category );
+                }
+                ?>
+            </h2>
+        </div>
+        <div class="acl-category-readmore">
+                "View Catalog ->"
+        </div>
+        </a>
+		<?php
+	}
 
 
 }
