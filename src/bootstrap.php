@@ -11,6 +11,7 @@ function acl_wc_shortcodes_init() {
     new ACL_WC_Shortcodes();
     add_action( 'woocommerce_before_subcategory_title', array( 'ACL_WC_Helpers', 'acl_woocommerce_subcategory_thumbnail' ), 10);
     add_action ( 'woocommerce_before_subcategory', array( 'ACL_WC_Helpers', 'acl_woocommerce_template_loop_category_link_open' ), 10 );
+    add_action( 'woocommerce_shop_loop_subcategory_title', 'acl_woocommerce_template_loop_category_title', 10 );    
 }
 
 add_action( 'init', 'acl_wc_shortcodes_init' );
@@ -27,6 +28,7 @@ function acl_sc_remove() {
     remove_shortcode ( 'products' );
     remove_action ( 'woocommerce_before_subcategory', 'woocommerce_template_loop_category_link_open', 10 );
     remove_action( 'woocommerce_before_subcategory_title', 'woocommerce_subcategory_thumbnail', 10 );
+    remove_action( 'woocommerce_shop_loop_subcategory_title', 'woocommerce_template_loop_category_title', 10 );    
     add_shortcode('products', array('ACL_WC_Shortcodes', 'acl_products_shortcode'));
 }    
 add_action( 'wp_loaded', 'acl_sc_remove' );
