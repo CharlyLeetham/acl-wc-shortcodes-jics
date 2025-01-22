@@ -142,7 +142,7 @@ class ACL_WC_Helpers {
             </h2>
         </div>
         <div class="acl-category-readmore">
-                "View Catalog ->"
+                View Catalog ->
         </div>
         </a>
 		<?php
