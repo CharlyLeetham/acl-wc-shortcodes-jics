@@ -34,3 +34,9 @@ function acl_sc_remove() {
 add_action( 'wp_loaded', 'acl_sc_remove' );
 
 
+add_filter('woocommerce_variation_is_visible', function($visible, $variation) {
+    // Always return true to make the variation visible, regardless of whether it has a price set
+    return true;
+}, 10, 2);
+
+
