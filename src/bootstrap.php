@@ -34,9 +34,20 @@ function acl_sc_remove() {
 add_action( 'wp_loaded', 'acl_sc_remove' );
 
 
-add_filter('woocommerce_variation_is_visible', function($visible, $variation) {
+add_filter( 'woocommerce_variation_is_visible', function($visible, $variation ) {
     // Always return true to make the variation visible, regardless of whether it has a price set
     return true;
 }, 10, 2);
+
+add_filter( 'woocommerce_product_query_meta_query', 'acl_custom_woocommerce_product_query_meta_query', 10, 2 );
+function acl_custom_woocommerce_product_query_meta_query( $meta_query, $query ) {
+    if ( !is_admin() && $query->is_main_query() && $query->get( 'wc_query' ) === 'product_query' ) {
+        $meta_query[] = array(
+            'key' => '_stock_status',
+            'compare' => 'EXISTS', // This will include products where _stock_status exists or not
+        );
+    }
+    return $meta_query;
+}
 
 
