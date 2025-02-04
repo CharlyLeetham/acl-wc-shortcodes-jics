@@ -40,20 +40,13 @@ add_filter( 'woocommerce_variation_is_visible', function($visible, $variation ) 
 }, 10, 2);
 
 add_filter( 'woocommerce_product_query_meta_query', 'acl_custom_woocommerce_product_query_meta_query', 10, 2 );
-function acl_custom_woocommerce_product_query_meta_query( $meta_query, $query ) {
-    if (!is_admin() && $query->is_main_query() && isset($query->query_vars['wc_query']) && $query->query_vars['wc_query'] === 'product_query') {
-        // Append to the meta query to include products with or without _stock_status
+function acl_custom_woocommerce_product_query_meta_query($meta_query, $query) {
+    if (!is_admin() && $query->is_main_query() && isset($query->query_vars['wc_query']) && 'product_query' === $query->query_vars['wc_query']) {
         $meta_query['relation'] = 'OR';
-        $meta_query[] = array(
-            'key'     => '_stock_status',
-            'compare' => 'EXISTS'
-        );
-        $meta_query[] = array(
-            'key'     => '_stock_status',
-            'compare' => 'NOT EXISTS'
-        );
+        $meta_query[] = array('key' => '_stock_status', 'compare' => 'EXISTS');
+        $meta_query[] = array('key' => '_stock_status', 'compare' => 'NOT EXISTS');
     }
-    return $meta_query
+    return $meta_query;
 }
 
 
