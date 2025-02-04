@@ -39,24 +39,28 @@ add_filter( 'woocommerce_variation_is_visible', function($visible, $variation ) 
     return true;
 }, 10, 2);
 
-function acl_custom_woocommerce_product_query_meta_query($meta_query, $query) {
-    if (!is_admin() && isset($query->query_vars['wc_query']) && 'product_query' === $query->query_vars['wc_query']) {
-        $meta_query['relation'] = 'OR';
-        $meta_query[] = array('key' => '_stock_status', 'compare' => 'EXISTS');
-        $meta_query[] = array('key' => '_stock_status', 'compare' => 'NOT EXISTS');
+function override_woocommerce_product_query($query) {
+    if (!is_admin() && $query->is_main_query() && isset($query->query_vars['wc_query']) && 'product_query' === $query->query_vars['wc_query']) {
+        // Remove any stock status conditions from the query
+        $query->set('meta_query', array());
+        
+        // Ensure no product is excluded based on stock status
+        $query->set('post_status', 'publish');
+        
+        // Make sure all product types are included
+        $query->set('post_type', 'product');
     }
-    return $meta_query;
 }
-add_filter('woocommerce_product_query_meta_query', 'acl_custom_woocommerce_product_query_meta_query', 10, 2);
+add_action('pre_get_posts', 'override_woocommerce_product_query');
 
-// Override the visibility setting for out of stock products
-function force_show_out_of_stock_products($visibility, $product_id) {
-    return true; // Force visibility to be true for all products
-}
-add_filter('woocommerce_product_is_visible', 'force_show_out_of_stock_products', 10, 2);
-
-// Ensure variations without stock are visible
+// Ensure variations are visible
 add_filter('woocommerce_hide_invisible_variations', '__return_false');
 
 // Show products without prices
 add_filter('woocommerce_variation_is_visible', '__return_true');
+
+// Override visibility check for products
+function force_show_all_products($visible, $product_id) {
+    return true;
+}
+add_filter('woocommerce_product_is_visible', 'force_show_all_products', 10, 2);
