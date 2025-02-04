@@ -48,6 +48,5 @@ function acl_custom_woocommerce_product_query_meta_query($meta_query, $query) {
     }
     return $meta_query;
 }
-}
 
 
