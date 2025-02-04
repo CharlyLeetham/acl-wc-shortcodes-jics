@@ -39,7 +39,6 @@ add_filter( 'woocommerce_variation_is_visible', function($visible, $variation ) 
     return true;
 }, 10, 2);
 
-add_filter( 'woocommerce_product_query_meta_query', 'acl_custom_woocommerce_product_query_meta_query', 10, 2 );
 function acl_custom_woocommerce_product_query_meta_query($meta_query, $query) {
     if (!is_admin() && isset($query->query_vars['wc_query']) && 'product_query' === $query->query_vars['wc_query']) {
         $meta_query['relation'] = 'OR';
@@ -48,5 +47,16 @@ function acl_custom_woocommerce_product_query_meta_query($meta_query, $query) {
     }
     return $meta_query;
 }
+add_filter('woocommerce_product_query_meta_query', 'acl_custom_woocommerce_product_query_meta_query', 10, 2);
 
+// Override the visibility setting for out of stock products
+function force_show_out_of_stock_products($visibility, $product_id) {
+    return true; // Force visibility to be true for all products
+}
+add_filter('woocommerce_product_is_visible', 'force_show_out_of_stock_products', 10, 2);
 
+// Ensure variations without stock are visible
+add_filter('woocommerce_hide_invisible_variations', '__return_false');
+
+// Show products without prices
+add_filter('woocommerce_variation_is_visible', '__return_true');
