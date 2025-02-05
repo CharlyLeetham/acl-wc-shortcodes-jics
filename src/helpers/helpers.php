@@ -161,14 +161,15 @@ class ACL_WC_Helpers {
         echo '<div class="custom-buttons">';
         echo $purchase_attribute;
         // Show "Buy Now" button if purchase attribute is 'purchase'
-        if ( $purchase_attribute === 'purchase' ) {
+        if ( strpos( $purchase_attribute, 'purchase' ) !== false ) {
             woocommerce_template_loop_add_to_cart();
         }
-
-        // Show "Get Quote" button if purchase attribute is 'quote'
-        if ( $purchase_attribute === 'quote' ) {
+    
+        // Show "Get Quote" button if purchase attribute contains 'quote'
+        if ( strpos( $purchase_attribute, 'quote' ) !== false ) {
             echo '<a href="' . esc_url( get_permalink( $product->get_id() ) . '?action=quote' ) . '" class="button quote-button">Get Quote</a>';
         }
+    
 
         echo '</div>';
         }
