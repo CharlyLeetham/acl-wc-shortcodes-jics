@@ -159,7 +159,7 @@ class ACL_WC_Helpers {
         $purchase_attribute = $product->get_attribute( 'pa_purchase' ); // Assuming your attribute taxonomy is 'pa_purchase'
 
         echo '<div class="custom-buttons">';
-
+        echo $purchase_attribute;
         // Show "Buy Now" button if purchase attribute is 'purchase'
         if ( $purchase_attribute === 'purchase' ) {
             woocommerce_template_loop_add_to_cart();
@@ -172,5 +172,4 @@ class ACL_WC_Helpers {
 
         echo '</div>';
         }
-
 }
