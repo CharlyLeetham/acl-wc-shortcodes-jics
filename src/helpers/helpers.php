@@ -152,7 +152,7 @@ class ACL_WC_Helpers {
 		<?php
 	}
 
-    function acl_custom_product_buttons() {
+    public static function acl_custom_product_buttons() {
         global $product;
     
         // Get the attribute 'Purchase'
