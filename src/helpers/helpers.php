@@ -154,22 +154,25 @@ class ACL_WC_Helpers {
 
     public static function acl_custom_product_buttons() {
         global $product;
-    
+
         // Get the attribute 'Purchase'
         $purchase_attribute = $product->get_attribute( 'pa_purchase' ); // Assuming your attribute taxonomy is 'pa_purchase'
-    
+
         echo '<div class="custom-buttons">';
-    
-        if ( $purchase_attribute === 'purchase' ) {
-            // Show "Add to Cart" button for purchase option
+
+        if ( $purchase_attribute === 'purchase' && $product->get_price() !== '' ) {
+            // Show "Add to Cart" button only if purchase attribute is 'purchase' and there's a price
             woocommerce_template_loop_add_to_cart();
         }
-    
-        // Always show the "Get Quote" button
-        echo '<a href="' . esc_url( get_permalink( $product->get_id() ) . '?action=quote' ) . '" class="button quote-button">Get Quote</a>';
-    
+
+        // Show the "Get Quote" button if the attribute is 'quote' or 'purchase'
+        if ( $purchase_attribute === 'quote' || $purchase_attribute === 'purchase' ) {
+            echo '<a href="' . esc_url( get_permalink( $product->get_id() ) . '?action=quote' ) . '" class="button quote-button">Get Quote</a>';
+        }
+
         echo '</div>';
     }
+
     
 
 }
