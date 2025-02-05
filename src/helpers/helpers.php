@@ -158,18 +158,23 @@ class ACL_WC_Helpers {
         // Get the attribute 'Purchase'
         $purchase_attribute = $product->get_attribute( 'pa_purchase' ); // Assuming your attribute taxonomy is 'pa_purchase'
 
-        echo '<div class="custom-buttons">';
-        // Show "Buy Now" button if purchase attribute is 'purchase'
+        echo '<div class="acl-single-product-custom-buttons" style="display: flex; flex-wrap: nowrap; justify-content: flex-start; align-items: center;">';
+
+        // Show "Buy Now" button if purchase attribute contains 'purchase'
         if ( strpos( $purchase_attribute, 'purchase' ) !== false ) {
-            woocommerce_template_single_add_to_cart();;
+            echo '<div class="acl-single-product-button-wrapper">';
+            woocommerce_template_single_add_to_cart();
+            echo '</div>';
         }
-    
+        
         // Show "Get Quote" button if purchase attribute contains 'quote'
         if ( strpos( $purchase_attribute, 'quote' ) !== false ) {
+            echo '<div class="acl-single-product-button-wrapper">';
             echo '<a href="' . esc_url( get_permalink( $product->get_id() ) . '?action=quote' ) . '" class="button quote-button">Get Quote</a>';
+            echo '</div>';
         }
-    
-
+        
         echo '</div>';
+
         }
 }

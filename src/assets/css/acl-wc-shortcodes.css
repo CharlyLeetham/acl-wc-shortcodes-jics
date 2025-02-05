@@ -97,3 +97,13 @@
 .acl-product-buy-now:not(:has(.quote-button)) {
     border-left: 3px #f5f5f5 solid;
 }
+
+.acl-single-product-custom-buttons {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+}
+.acl-single-product-button-wrapper {
+    margin-right: 10px; /* Optional: Add some space between buttons */
+}
