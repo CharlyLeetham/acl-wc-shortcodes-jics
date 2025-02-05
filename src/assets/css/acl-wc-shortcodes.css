@@ -109,7 +109,7 @@
     margin-right: 10px; /* Optional: Add some space between buttons */
 }
 
-.acl-single-product-custom-buttons button { 
+.acl-single-product-custom-buttons .button { 
     float: none;
     padding: 0 30px;
     line-height: 55px;
