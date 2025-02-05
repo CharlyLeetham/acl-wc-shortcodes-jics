@@ -152,28 +152,24 @@ class ACL_WC_Helpers {
 		<?php
 	}
 
-    public static function acl_custom_product_buttons() {
+    function acl_custom_product_buttons() {
         global $product;
     
         // Get the attribute 'Purchase'
         $purchase_attribute = $product->get_attribute( 'pa_purchase' ); // Assuming your attribute taxonomy is 'pa_purchase'
     
-        if ( $purchase_attribute === 'quote' ) {
-            // Show only "Get Quote" button
-            echo '
-    ';
-            echo 'Get Quote';
-            echo '
-    ';
-        } elseif ( $purchase_attribute === 'purchase' ) {
-            // Show "Add to Cart" and "Get Quote" buttons
-            echo '
-    ';
+        echo '<div class="custom-buttons">';
+    
+        if ( $purchase_attribute === 'purchase' ) {
+            // Show "Add to Cart" button for purchase option
             woocommerce_template_loop_add_to_cart();
-            echo 'Get Quote';
-            echo '
-    ';
         }
+    
+        // Always show the "Get Quote" button
+        echo '<a href="' . esc_url( get_permalink( $product->get_id() ) . '?action=quote' ) . '" class="button quote-button">Get Quote</a>';
+    
+        echo '</div>';
     }
+    
 
 }
