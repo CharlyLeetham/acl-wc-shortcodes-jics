@@ -117,13 +117,13 @@
 }
 
 .woocommerce:where(body:not(.woocommerce-block-theme-has-button-styles)) .acl-single-product-custom-buttons a.quote-button.button {
-    background: #ff9029;
+    background: #000000;
     color: #ffffff;
     text-transform: unset;
 }
 
 .woocommerce:where(body:not(.woocommerce-block-theme-has-button-styles)) .acl-single-product-custom-buttons a.quote-button.button:hover {
-    background: linear-gradient(rgba(225, 225, 225, 0.2), rgba(225, 225, 225, 0.2)), linear-gradient(var(--tcb-skin-color-0), var(--tcb-skin-color-0));
+    background: #ff9029;
 }
 
 .woocommerce div.product .acl-single-product-button-wrapper form.cart {
