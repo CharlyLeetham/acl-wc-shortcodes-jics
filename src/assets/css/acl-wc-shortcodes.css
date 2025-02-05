@@ -115,3 +115,7 @@
     line-height: 55px;
     vertical-align: middle;
 }
+
+.woocommerce div.product .acl-single-product-button-wrapper form.cart {
+    margin-bottom:0;
+}
