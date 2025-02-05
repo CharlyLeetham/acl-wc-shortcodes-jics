@@ -74,4 +74,4 @@ add_action( 'woocommerce_after_shop_loop_item', array( 'ACL_WC_Helpers', 'acl_cu
 
 // For single product page, remove default add to cart and add custom buttons
 remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30 );
-add_action( 'woocommerce_single_product_summary', array( 'ACL_WC_Helpers', 'acl_custom_product_buttons' ), 30 );
+//add_action( 'woocommerce_single_product_summary', array( 'ACL_WC_Helpers', 'acl_custom_product_buttons' ), 30 );
