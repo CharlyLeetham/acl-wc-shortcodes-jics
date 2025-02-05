@@ -162,7 +162,7 @@ class ACL_WC_Helpers {
         echo $purchase_attribute;
         // Show "Buy Now" button if purchase attribute is 'purchase'
         if ( strpos( $purchase_attribute, 'purchase' ) !== false ) {
-            woocommerce_template_loop_add_to_cart();
+            woocommerce_template_single_add_to_cart();;
         }
     
         // Show "Get Quote" button if purchase attribute contains 'quote'
