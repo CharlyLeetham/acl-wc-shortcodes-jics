@@ -152,5 +152,28 @@ class ACL_WC_Helpers {
 		<?php
 	}
 
+    public static function acl_custom_product_buttons() {
+        global $product;
+    
+        // Get the attribute 'Purchase'
+        $purchase_attribute = $product->get_attribute( 'pa_purchase' ); // Assuming your attribute taxonomy is 'pa_purchase'
+    
+        if ( $purchase_attribute === 'quote' ) {
+            // Show only "Get Quote" button
+            echo '
+    ';
+            echo 'Get Quote';
+            echo '
+    ';
+        } elseif ( $purchase_attribute === 'purchase' ) {
+            // Show "Add to Cart" and "Get Quote" buttons
+            echo '
+    ';
+            woocommerce_template_loop_add_to_cart();
+            echo 'Get Quote';
+            echo '
+    ';
+        }
+    }
 
 }
