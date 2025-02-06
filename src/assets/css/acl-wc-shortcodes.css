@@ -109,7 +109,11 @@
     margin-right: 10px; /* Optional: Add some space between buttons */
 }
 
- .woocommerce:where(body:not(.woocommerce-block-theme-has-button-styles)) .acl-single-product-custom-buttons a.button { 
+.woocommerce ul.products li.product .woocommerce-placeholder {
+    border: 0;
+}
+
+.woocommerce:where(body:not(.woocommerce-block-theme-has-button-styles)) .acl-single-product-custom-buttons a.button { 
     float: none;
     padding: 0 30px;
     line-height: 55px;
