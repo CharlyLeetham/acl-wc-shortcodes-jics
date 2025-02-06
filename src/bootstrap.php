@@ -29,6 +29,7 @@ function acl_wc_shortcodes_scripts() {
 function acl_sc_remove() {
     remove_shortcode ( 'products' );
     remove_action ( 'woocommerce_before_subcategory', 'woocommerce_template_loop_category_link_open', 10 );
+    remove_action( 'woocommerce_before_shop_loop_item', 'woocommerce_template_loop_product_link_open', 10 );
     remove_action( 'woocommerce_before_subcategory_title', 'woocommerce_subcategory_thumbnail', 10 );
     remove_action( 'woocommerce_shop_loop_subcategory_title', 'woocommerce_template_loop_category_title', 10 );
     //remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );        
