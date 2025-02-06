@@ -11,7 +11,7 @@ function acl_wc_shortcodes_init() {
     new ACL_WC_Shortcodes();
     add_action( 'woocommerce_before_subcategory_title', array( 'ACL_WC_Helpers', 'acl_woocommerce_subcategory_thumbnail' ), 10);
     add_action( 'woocommerce_before_subcategory', array( 'ACL_WC_Helpers', 'acl_woocommerce_template_loop_category_link_open' ), 10 );
-    add_action( 'woocommerce_before_shop_loop_item', array( 'ACL_WC_Helpers', 'acl_woocommerce_template_loop_category_link_open' ), 10 );
+    add_action( 'woocommerce_before_shop_loop_item', array( 'ACL_WC_Helpers', 'acl_woocommerce_template_loop_product_link_open' ), 10 );
     add_action( 'woocommerce_shop_loop_subcategory_title', array( 'ACL_WC_Helpers', 'acl_woocommerce_template_loop_category_title' ), 10 );
     //add_action ( 'woocommerce_after_shop_loop_item_title', array( 'ACL_WC_Helpers', 'acl_woocommerce_template_loop_category_title' ), 10 );    
 }

@@ -83,7 +83,15 @@ class ACL_WC_Helpers {
 		$category_name = ( ! $category_term || is_wp_error( $category_term ) ) ? '' : $category_term->name;
 		/* translators: %s: Category name */
 		echo '<div class="acl-category-thumbnail"><a aria-label="' . sprintf( esc_attr__( 'Visit product category %1$s', 'woocommerce' ), esc_attr( $category_name ) ) . '" href="' . esc_url( get_term_link( $category, 'product_cat' ) ) . '">';
-	}    
+	} 
+    
+    public static function acl_woocommerce_template_loop_product_link_open() {
+        global $product;
+
+        $link = apply_filters( 'woocommerce_loop_product_link', get_the_permalink(), $product );
+
+        echo '<a href="' . esc_url( $link ) . '" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">';
+    }
 
         /**
      * Custom function to display subcategory.
