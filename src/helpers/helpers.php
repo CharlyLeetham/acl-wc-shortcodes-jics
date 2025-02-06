@@ -90,7 +90,7 @@ class ACL_WC_Helpers {
 
         $link = apply_filters( 'woocommerce_loop_product_link', get_the_permalink(), $product );
 
-        echo '<a href="' . esc_url( $link ) . '" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">';
+        echo '<div class="acl-category-thumbnail"><a href="' . esc_url( $link ) . '" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">';
     }
 
         /**
