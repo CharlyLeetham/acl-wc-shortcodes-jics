@@ -109,7 +109,7 @@
     margin-right: 10px; /* Optional: Add some space between buttons */
 }
 
-.woocommerce ul.products li.product .woocommerce-placeholder {
+.woocommerce ul.products li.product .acl-category-thumbnail .woocommerce-placeholder {
     border: 0;
 }
 
