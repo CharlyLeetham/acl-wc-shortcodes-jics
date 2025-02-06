@@ -160,6 +160,10 @@ class ACL_WC_Helpers {
 		<?php
 	}
 
+    public static function acl_woocommerce_template_loop_product_title() {
+		echo '</a></div><h2 class="' . esc_attr( apply_filters( 'woocommerce_product_loop_title_classes', 'woocommerce-loop-product__title' ) ) . '">' . get_the_title() . '</h2>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+
     public static function acl_custom_product_buttons() {
         global $product;
 
