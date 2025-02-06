@@ -11,7 +11,9 @@ function acl_wc_shortcodes_init() {
     new ACL_WC_Shortcodes();
     add_action( 'woocommerce_before_subcategory_title', array( 'ACL_WC_Helpers', 'acl_woocommerce_subcategory_thumbnail' ), 10);
     add_action ( 'woocommerce_before_subcategory', array( 'ACL_WC_Helpers', 'acl_woocommerce_template_loop_category_link_open' ), 10 );
-    add_action( 'woocommerce_shop_loop_subcategory_title', array( 'ACL_WC_Helpers', 'acl_woocommerce_template_loop_category_title' ), 10 );    
+    add_action ( 'woocommerce_before_shop_loop_item', array( 'ACL_WC_Helpers', 'acl_woocommerce_template_loop_category_link_open' ), 10 );
+    add_action( 'woocommerce_shop_loop_subcategory_title', array( 'ACL_WC_Helpers', 'acl_woocommerce_template_loop_category_title' ), 10 );
+    add_action ( 'woocommerce_after_shop_loop_item_title', array( 'ACL_WC_Helpers', 'acl_woocommerce_template_loop_category_title' ), 10 );    
 }
 
 add_action( 'init', 'acl_wc_shortcodes_init' );
@@ -37,31 +39,6 @@ function acl_sc_remove() {
 }    
 add_action( 'wp_loaded', 'acl_sc_remove' );
 
-
-add_filter( 'woocommerce_variation_is_visible', function($visible, $variation ) {
-    // Always return true to make the variation visible, regardless of whether it has a price set
-    return true;
-}, 10, 2);
-
-function override_woocommerce_product_query($query) {
-    if (!is_admin() && $query->is_main_query() && isset($query->query_vars['wc_query']) && 'product_query' === $query->query_vars['wc_query']) {
-        // Remove any stock status conditions from the query
-        $query->set('meta_query', array());
-        
-        // Ensure no product is excluded based on stock status
-        $query->set('post_status', 'publish');
-        
-        // Make sure all product types are included
-        $query->set('post_type', 'product');
-    }
-}
-add_action('pre_get_posts', 'override_woocommerce_product_query');
-
-// Ensure variations are visible
-add_filter('woocommerce_hide_invisible_variations', '__return_false');
-
-// Show products without prices
-add_filter('woocommerce_variation_is_visible', '__return_true');
 
 // Override visibility check for products
 function force_show_all_products($visible, $product_id) {
