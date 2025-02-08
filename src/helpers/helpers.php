@@ -182,11 +182,21 @@ class ACL_WC_Helpers {
         // Show "Get Quote" button if purchase attribute contains 'quote'
         if ( strpos( $purchase_attribute, 'quote' ) !== false ) {
             echo '<div class="acl-single-product-button-wrapper">';
-            echo '<a href="' . esc_url( get_permalink( $product->get_id() ) . '?action=quote' ) . '" class="button quote-button">Get Quote</a>';
+            echo '<a href="#" data-product-id="' . esc_attr( $product->get_id() ) . '" class="button quote-button">Get Quote</a>';
             echo '</div>';
-        }
+        }        
         
         echo '</div>';
 
         }
+
+        public static function acl_add_to_quote_cart_ajax() {
+            if ( isset( $_POST['product_id'] ) ) {
+                $rfq_cart = new ACL_WC_RFQ_cart();
+                $rfq_cart->acl_add_to_quote_cart( intval( $_POST['product_id'] ) );
+                wp_send_json_success( 'Product added to quote cart.' );
+            } else {
+                wp_send_json_error( 'Product ID not provided.' );
+            }
+        }        
 }
