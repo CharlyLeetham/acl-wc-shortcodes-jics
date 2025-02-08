@@ -12,17 +12,21 @@ class ACL_WC_RFQ_cart {
         if ( ! isset( WC()->session ) || ! WC()->session instanceof WC_Session ) {
             WC()->initialize_session();
         }
+        error_log( 'Session initialized: ' . var_export( isset( WC()->session ), true ) );
+
         if ( ! isset( WC()->session->quote_cart ) ) {
             WC()->session->quote_cart = array();
         }
     }
 
+    
     /**
      * Add a product to the quote cart.
      *
      * @param int $product_id The ID of the product to add to the quote cart.
      */
     public function acl_add_to_quote_cart( $product_id ) {
+        error_log( 'Before Adding - Quote Cart Content: ' . var_export( WC()->session->quote_cart, true ) );
         $product = wc_get_product( $product_id );
         if ( $product ) {
             WC()->session->quote_cart[] = array(
@@ -32,6 +36,7 @@ class ACL_WC_RFQ_cart {
                 'price'      => $product->get_price()
             );
         }
+        error_log( 'After Adding - Quote Cart Content: ' . var_export( WC()->session->quote_cart, true ) );
     }
 
     /**
@@ -80,6 +85,7 @@ class ACL_WC_RFQ_cart {
 
     // Modify in ACL_WC_RFQ_cart class
     public static function acl_mini_rfq_cart_widget() {
+        error_log( 'Mini Cart - Quote Cart Content: ' . var_export( WC()->session->quote_cart, true ) );
         if ( ! isset( WC()->session->quote_cart ) || ! is_array( WC()->session->quote_cart ) ) {
             return '<div class="acl-mini-rfq-cart"><a href="#rfq-cart">RFQ Cart: 0 items</a></div>';
         }

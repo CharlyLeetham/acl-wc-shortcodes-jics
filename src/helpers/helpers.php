@@ -191,6 +191,7 @@ class ACL_WC_Helpers {
         }
 
         public static function acl_add_to_quote_cart_ajax() {
+            error_log( 'AJAX Handler Before - Quote Cart Content: ' . var_export( WC()->session->quote_cart, true ) );
             if ( isset( $_POST['product_id'] ) ) {
                 $rfq_cart = new ACL_WC_RFQ_cart();
                 $rfq_cart->acl_add_to_quote_cart( intval( $_POST['product_id'] ) );
