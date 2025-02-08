@@ -97,9 +97,22 @@ class ACL_WC_RFQ_cart {
      * @return string HTML for the mini RFQ cart widget.
      */
     public static function acl_mini_rfq_cart_widget() {
+        if (!isset(WC()->session) || !WC()->session instanceof WC_Session) {
+            WC()->initialize_session();
+        }
+        error_log('Session Initialized: ' . var_export(WC()->session instanceof WC_Session, true));
         error_log('Mini Cart - Attempting to Get Quote Cart: ' . var_export(WC()->session, true));
         //$quote_cart = WC()->session->get('quote_cart', array());
-        $quote_cart = WC()->session->quote_cart;
+        //$quote_cart = WC()->session->quote_cart;
+
+        $session_data = WC()->session->_data;
+        error_log('Session Data: ' . var_export($session_data, true));
+        if (isset($session_data['quote_cart'])) {
+            $quote_cart = $session_data['quote_cart'];
+        } else {
+            $quote_cart = array();
+        }
+        error_log('Quote Cart from Session Data: ' . var_export($quote_cart, true));        
         error_log('Mini Cart - Quote Cart Content: ' . var_export($quote_cart, true));
         if ( empty($quote_cart) ) {
             return '<div class="acl-mini-rfq-cart"><a href="#rfq-cart">RFQ Cart: 0 items</a></div>';
