@@ -241,11 +241,14 @@ class ACL_WC_Helpers {
     }
 
     public static function acl_add_rfq_cart_endpoint( ) {
+        error_log( 'Adding RFQ Cart Endpoint' );
         add_rewrite_endpoint( 'rfq-cart', EP_ROOT | EP_PAGES );
     }
 
     public static function acl_rfq_cart_content( ) {
+        error_log( 'RFQ Cart Content Function Called' );
         wc_get_template( 'cart/cart.php', null, '', ACL_WC_SHORTCODES_PATH . 'src/frontend/templates/woocommerce/' );
+        error_log( 'Template located at: ' . $located_template );
     }
-    
+
 }
