@@ -20,6 +20,7 @@ class ACL_WC_RFQ_cart {
         if ( ! isset( WC()->session->quote_cart ) ) {
             WC()->session->quote_cart = array();
         }
+        error_log( 'After Quote Cart Initialization - Quote Cart Content: ' . var_export( WC()->session->quote_cart, true ) );
     }
 
     /**
@@ -103,4 +104,16 @@ class ACL_WC_RFQ_cart {
         $count = count( WC()->session->quote_cart );
         return '<div class="acl-mini-rfq-cart"><a href="#rfq-cart">RFQ Cart: ' . esc_html( $count ) . ' item(s)</a></div>';
     }
+
+    public static function log_quote_cart_on_init() {
+        error_log('Quote Cart on init: ' . var_export(WC()->session->quote_cart, true));
+    }
+    
+    public static function log_quote_cart_on_wp_loaded() {
+        error_log('Quote Cart on wp_loaded: ' . var_export(WC()->session->quote_cart, true));
+    }
+    
+    public static function log_quote_cart_on_wp() {
+        error_log('Quote Cart on wp: ' . var_export(WC()->session->quote_cart, true));
+    }    
 }
