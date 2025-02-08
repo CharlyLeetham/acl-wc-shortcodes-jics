@@ -6,6 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 require_once ACL_WC_SHORTCODES_DIR . 'src/frontend/ACL_WC_Shortcodes.php';
 require_once ACL_WC_SHORTCODES_DIR . 'src/helpers/helpers.php';
+require_once ACL_WC_SHORTCODES_DIR . 'src/frontend/ACL_WC_rfq_cart.php';
 
 function acl_wc_shortcodes_init() {
     new ACL_WC_Shortcodes();
@@ -46,3 +47,7 @@ function force_show_all_products($visible, $product_id) {
 }
 add_filter('woocommerce_product_is_visible', 'force_show_all_products', 10, 2);
 
+
+$rfq_cart = new ACL_WC_RFQ_cart();
+// Optionally, hook into an action where this should initialize, like:
+add_action( 'init', array( $rfq_cart, 'acl_start_quote_cart' ) ); 
