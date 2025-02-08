@@ -252,6 +252,7 @@ class ACL_WC_Helpers {
     }
 
     public static function acl_woocommerce_rfq_cart_hook( $hook_name ) {
+        error_log( 'Hook name: '.$hook_name );
         if ( 'woocommerce_rfq-cart' === $hook_name ) {
             error_log( 'woocommerce_rfq-cart action hook was called' );
         }

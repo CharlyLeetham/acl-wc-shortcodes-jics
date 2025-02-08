@@ -21,7 +21,7 @@ class ACLWcShortcodes {
         add_filter( 'woocommerce_locate_template', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_woocommerce_locate_template' ), 10, 3 );
         add_action( 'init', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_add_rfq_cart_endpoint' ) );
         add_action( 'woocommerce_rfq-cart', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_rfq_cart_content' ), 1, 0 );    
-        add_action( 'all', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_woocommerce_rfq_cart_hook' ) );
+        add_action( 'all', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_woocommerce_rfq_cart_hook', 9999 ) );
 
         add_action( 'wp_ajax_acl_add_to_quote_cart', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_add_to_quote_cart_ajax' ) );
         add_action( 'wp_ajax_nopriv_acl_add_to_quote_cart', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_add_to_quote_cart_ajax' ) );
