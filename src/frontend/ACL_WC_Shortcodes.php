@@ -71,5 +71,10 @@ class ACL_WC_Shortcodes {
         }
 
         return ob_get_clean();
-    }      
+    } 
+    
+    public function acl_mini_rfq_cart_shortcode() {
+        $rfq_cart = new ACL_WC_RFQ_cart();
+        return $rfq_cart->acl_mini_rfq_cart_widget();
+    }    
 }

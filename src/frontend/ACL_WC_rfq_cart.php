@@ -76,4 +76,15 @@ class ACL_WC_RFQ_cart {
 
         return $order;
     }
+
+
+    public function acl_mini_rfq_cart_widget() {
+        if ( ! isset( WC()->session->quote_cart ) || ! is_array( WC()->session->quote_cart ) ) {
+            return '<div class="acl-mini-rfq-cart">RFQ Cart: 0 items</div>';
+        }
+
+        $count = count( WC()->session->quote_cart );
+        return '<div class="acl-mini-rfq-cart">RFQ Cart: ' . esc_html( $count ) . ' item(s)</div>';
+    }
+        
 }
