@@ -32,7 +32,7 @@ class ACL_WC_Shortcodes {
             $args['post__in'] = $product_ids_on_sale;
         }
 
-        $products = new WP_Query($args);
+        $products = new \WP_Query($args);
         
         ob_start();
 
