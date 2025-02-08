@@ -99,7 +99,7 @@ class ACL_WC_RFQ_cart {
     public static function acl_mini_rfq_cart_widget() {
         error_log('Mini Cart - Attempting to Get Quote Cart: ' . var_export(WC()->session, true));
         //$quote_cart = WC()->session->get('quote_cart', array());
-        $quote_cart = var_export(WC()->session->quote_cart, true);
+        $quote_cart = WC()->session->quote_cart;
         error_log('Mini Cart - Quote Cart Content: ' . var_export($quote_cart, true));
         if ( empty($quote_cart) ) {
             return '<div class="acl-mini-rfq-cart"><a href="#rfq-cart">RFQ Cart: 0 items</a></div>';
