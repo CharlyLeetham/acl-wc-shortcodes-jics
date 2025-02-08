@@ -1,4 +1,7 @@
 <?php
+namespace ACLWcShortcodes\ACLWCRFQCart;
+use ACLWcShortcodes\Helpers\ACL_WC_Helpers;
+
 /**
  * Class ACL_WC_RFQ_cart
  * Handles the functionality for managing RFQ carts in WooCommerce.
@@ -19,13 +22,12 @@ class ACL_WC_RFQ_cart {
         }
     }
 
-    
     /**
      * Add a product to the quote cart.
      *
      * @param int $product_id The ID of the product to add to the quote cart.
      */
-    public function acl_add_to_quote_cart( $product_id ) {
+    public static function acl_add_to_quote_cart( $product_id ) {
         error_log( 'Before Adding - Quote Cart Content: ' . var_export( WC()->session->quote_cart, true ) );
         $product = wc_get_product( $product_id );
         if ( $product ) {
@@ -48,7 +50,7 @@ class ACL_WC_RFQ_cart {
      * @param array $customer_data Customer details.
      * @param array $quote_cart    Array of products in the quote cart.
      */
-    public function acl_send_quote_email( $customer_data, $quote_cart ) {
+    public static function acl_send_quote_email( $customer_data, $quote_cart ) {
         $to = get_option( 'admin_email' ); // This retrieves the admin email from WordPress settings, which should be the shop owner's email if set correctly in WooCommerce.
         $subject = 'New Quote Request';
         $message = "Customer: " . $customer_data['name'] . "\nEmail: " . $customer_data['email'] . "\n\nProducts:\n";
@@ -65,7 +67,7 @@ class ACL_WC_RFQ_cart {
      * @param array $customer_data Customer details.
      * @return WC_Order The created WooCommerce order object.
      */
-    public function acl_convert_quote_to_order( $quote_cart, $customer_data ) {
+    public static function acl_convert_quote_to_order( $quote_cart, $customer_data ) {
         // Create an order object
         $order = wc_create_order();
 
@@ -85,8 +87,11 @@ class ACL_WC_RFQ_cart {
         return $order;
     }
 
-
-    // Modify in ACL_WC_RFQ_cart class
+    /**
+     * Generate the mini RFQ cart widget.
+     *
+     * @return string HTML for the mini RFQ cart widget.
+     */
     public static function acl_mini_rfq_cart_widget() {
         error_log( 'Mini Cart - Quote Cart Content: ' . var_export( WC()->session->quote_cart, true ) );
         if ( ! isset( WC()->session->quote_cart ) || ! is_array( WC()->session->quote_cart ) ) {

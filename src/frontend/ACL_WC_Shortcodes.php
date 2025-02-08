@@ -1,7 +1,12 @@
 <?php
+
+namespace ACLWcShortcodes\ACLWCShortcodes;
+use ACLWcShortcodes\ACLWCRFQCart\ACL_WC_RFQ_cart;
+use ACLWcShortcodes\Helpers\ACL_WC_Helpers;
+
 class ACL_WC_Shortcodes {
     public function __construct() {
-        
+        // Constructor can be used for setting up hooks or other initialization tasks
     }
 
     public static function acl_products_shortcode( $atts ) {
@@ -74,7 +79,7 @@ class ACL_WC_Shortcodes {
     } 
     
     public static function acl_mini_rfq_cart_shortcode() {
-        $rfq_cart = new ACL_WC_RFQ_cart();
-        return $rfq_cart->acl_mini_rfq_cart_widget();
+        // Since acl_mini_rfq_cart_widget is static in ACL_WC_RFQ_cart, we can call it without instantiation
+        return ACL_WC_RFQ_cart::acl_mini_rfq_cart_widget();
     }    
 }
