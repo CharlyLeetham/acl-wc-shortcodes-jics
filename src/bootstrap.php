@@ -47,7 +47,7 @@ class ACLWcShortcodes {
         remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30 );
         remove_action( 'woocommerce_shop_loop_item_title', 'woocommerce_template_loop_product_title', 10 );
         add_shortcode( 'products', array( 'ACLWcShortcodes\ACLWCShortcodes\ACL_WC_Shortcodes', 'acl_products_shortcode' ) );
-        add_action( 'woocommerce_single_product_summary', array( 'ACL_WC_Helpers', 'acl_custom_product_buttons' ), 30 );
+        add_action( 'woocommerce_single_product_summary', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_custom_product_buttons' ), 30 );
         add_shortcode( 'acl_mini_rfq_cart', array( 'ACLWcShortcodes\ACLWCShortcodes\ACL_WC_Shortcodes', 'acl_mini_rfq_cart_shortcode' ) );
     }
 
