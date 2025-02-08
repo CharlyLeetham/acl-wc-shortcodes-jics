@@ -97,14 +97,13 @@ class ACL_WC_RFQ_cart {
      * @return string HTML for the mini RFQ cart widget.
      */
     public static function acl_mini_rfq_cart_widget() {
-        if (!isset(WC()->session) || !WC()->session instanceof WC_Session) {
+        if (!WC()->session instanceof WC_Session) {
             WC()->initialize_session();
         }
-        error_log('Session in Widget: ' . var_export(WC()->session, true));
-        error_log('Session Initialized: ' . var_export(WC()->session instanceof WC_Session, true));
-        error_log('Mini Cart - Attempting to Get Quote Cart: ' . var_export(WC()->session, true));
-        //$quote_cart = WC()->session->get('quote_cart', array());
-        //$quote_cart = WC()->session->quote_cart;
+        WC()->session->_dirty = true; // Force session to be considered changed
+        WC()->session->save_data();  // Save the session data
+        $quote_cart = WC()->session->get('quote_cart', array());
+        error_log('Quote Cart in Widget After Save: ' . var_export($quote_cart, true));
 
         $session_data = WC()->session->_data;
         error_log('Session Data: ' . var_export($session_data, true));
