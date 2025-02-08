@@ -21,9 +21,9 @@ class ACLWcShortcodes {
 
         add_action( 'wp_ajax_acl_add_to_quote_cart', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_add_to_quote_cart_ajax' ) );
         add_action( 'wp_ajax_nopriv_acl_add_to_quote_cart', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_add_to_quote_cart_ajax' ) );
-        add_action('init', array('ACL_WC_RFQ_cart', 'log_quote_cart_on_init'));
-        add_action('wp_loaded', array('ACL_WC_RFQ_cart', 'log_quote_cart_on_wp_loaded'));
-        add_action('wp', array('ACL_WC_RFQ_cart', 'log_quote_cart_on_wp'));
+        add_action('init', array('ACLWcShortcodes\ACLWCRFQCart\ACL_WC_RFQ_cart', 'log_quote_cart_on_init'));
+        add_action('wp_loaded', array('ACLWcShortcodes\ACLWCRFQCart\ACL_WC_RFQ_cart', 'log_quote_cart_on_wp_loaded'));
+        add_action('wp', array('ACLWcShortcodes\ACLWCRFQCart\ACL_WC_RFQ_cart', 'log_quote_cart_on_wp'));
     }
 
     public static function acl_wc_shortcodes_init() {
