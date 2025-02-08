@@ -144,7 +144,7 @@ class ACL_WC_RFQ_cart {
                 error_log('Session Cookie: ' . WC()->session->_cookie);
                 error_log('Session Key: ' . WC()->session->_cookie);
             } else {
-                error_log('Session not initialized');
+                error_log('Footer Session not initialized');
             }
     }
 }
