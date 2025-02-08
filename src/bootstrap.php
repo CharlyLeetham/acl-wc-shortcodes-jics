@@ -9,9 +9,9 @@ namespace ACLWcShortcodes;
 
 class ACLWcShortcodes {
     public static function init() {
-        error_log('Class exists: ' . (class_exists('ACLWcShortcodes\ACLWCRFQCart\ACL_WC_RFQ_cart') ? 'Yes' : 'No'));
-        error_log('Class exists: ' . (class_exists('ACLWcShortcodes\Helpers\ACL_WC_Helpers') ? 'Yes' : 'No'));
-        error_log('Method exists: ' . (method_exists('ACL_WC_RFQ_cart', 'acl_start_quote_cart') ? 'Yes' : 'No'));
+        //error_log('Class exists: ' . (class_exists('ACLWcShortcodes\ACLWCRFQCart\ACL_WC_RFQ_cart') ? 'Yes' : 'No'));
+        //error_log('Class exists: ' . (class_exists('ACLWcShortcodes\Helpers\ACL_WC_Helpers') ? 'Yes' : 'No'));
+        //error_log('Method exists: ' . (method_exists('ACL_WC_RFQ_cart', 'acl_start_quote_cart') ? 'Yes' : 'No'));
         add_action( 'init', array( __CLASS__, 'acl_wc_shortcodes_init' ) );
         add_action( 'wp_enqueue_scripts', array( __CLASS__, 'acl_wc_shortcodes_scripts' ) );
         add_action( 'wp_loaded', array( __CLASS__, 'acl_sc_remove' ) );

@@ -42,7 +42,7 @@ try {
 
 } catch ( Exception $e ) {
     // Log exception or show an admin notice
-    error_log( 'ACL WC Shortcodes JICS - Exception: ' . $e->getMessage() );
+    //error_log( 'ACL WC Shortcodes JICS - Exception: ' . $e->getMessage() );
     if ( is_admin() ) {
         add_action( 'admin_notices', function() use ( $e ) {
             echo '<div class="notice notice-error"><p>' . esc_html__( 'ACL WC Shortcodes JICS Error:', 'acl-wc-shortcodes-jics' ) . ' ' . esc_html( $e->getMessage() ) . '</p></div>';

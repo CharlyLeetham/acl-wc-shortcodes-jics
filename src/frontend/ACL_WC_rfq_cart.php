@@ -103,17 +103,17 @@ class ACL_WC_RFQ_cart {
         WC()->session->_dirty = true; 
         WC()->session->save_data( );  
         $quote_cart = WC()->session->get( 'quote_cart', array( ) );
-        error_log( 'Quote Cart in Widget After Save: ' . var_export( $quote_cart, true ) );
+        //error_log( 'Quote Cart in Widget After Save: ' . var_export( $quote_cart, true ) );
     
         $session_data = WC()->session->_data;
-        error_log( 'Session Data: ' . var_export( $session_data, true ) );
+        //error_log( 'Session Data: ' . var_export( $session_data, true ) );
         if ( isset( $session_data['quote_cart'] ) ) {
             $quote_cart = $session_data['quote_cart'];
         } else {
             $quote_cart = array( );
         }
-        error_log( 'Quote Cart from Session Data: ' . var_export( $quote_cart, true ) );        
-        error_log( 'Mini Cart - Quote Cart Content: ' . var_export( $quote_cart, true ) );
+        //error_log( 'Quote Cart from Session Data: ' . var_export( $quote_cart, true ) );        
+        //error_log( 'Mini Cart - Quote Cart Content: ' . var_export( $quote_cart, true ) );
         
         $cart_url = add_query_arg( 'rfq-cart', '', home_url( ) ); 
     
@@ -126,11 +126,11 @@ class ACL_WC_RFQ_cart {
     }
 
     public static function log_quote_cart_on_init() {
-        error_log('Quote Cart on init: ' . var_export(WC()->session->quote_cart, true));
+        //error_log('Quote Cart on init: ' . var_export(WC()->session->quote_cart, true));
     }
     
     public static function log_quote_cart_on_wp_loaded() {
-        error_log('Quote Cart on wp_loaded: ' . var_export(WC()->session->quote_cart, true));
+        //error_log('Quote Cart on wp_loaded: ' . var_export(WC()->session->quote_cart, true));
     }
     
     public static function log_quote_cart_on_wp() {
@@ -138,8 +138,8 @@ class ACL_WC_RFQ_cart {
             WC()->initialize_session();
         }
 
-        error_log('Quote Cart on wp: ' . var_export(WC()->session->quote_cart, true));
-        error_log('Quote Cart on wp2: ' . var_export(WC()->session->get('quote_cart'), true));
+        //error_log('Quote Cart on wp: ' . var_export(WC()->session->quote_cart, true));
+        //error_log('Quote Cart on wp2: ' . var_export(WC()->session->get('quote_cart'), true));
     } 
 
 }
