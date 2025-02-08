@@ -246,7 +246,7 @@ class ACL_WC_Helpers {
 
         global $wp_rewrite;
         $endpoint = add_query_arg( 'rfq-cart', '', home_url( '/' ) );
-        error_log( 'RFQ Cart Endpoint URL: ' . $endpoint )
+        error_log( 'RFQ Cart Endpoint URL: ' . $endpoint );
     }
 
     public static function acl_rfq_cart_content( ) {
