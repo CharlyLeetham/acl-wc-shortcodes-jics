@@ -132,6 +132,6 @@ class ACL_WC_RFQ_cart {
     
     public static function log_quote_cart_on_wp() {
         error_log('Quote Cart on wp: ' . var_export(WC()->session->quote_cart, true));
-        error_log('Quote Cart on wp: ' . var_export(WC()->session->get('quote_cart'), true));
+        error_log('Quote Cart on wp2: ' . var_export(WC()->session->get('quote_cart'), true));
     }    
 }
