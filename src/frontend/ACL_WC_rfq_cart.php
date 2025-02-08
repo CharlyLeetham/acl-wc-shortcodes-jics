@@ -15,10 +15,10 @@ class ACL_WC_RFQ_cart {
         if ( ! isset( WC()->session ) || ! WC()->session instanceof WC_Session ) {
             WC()->initialize_session();
         }
-        error_log( 'Session initialized: ' . var_export( isset( WC()->session ), true ) );
+        //error_log( 'Session initialized: ' . var_export( isset( WC()->session ), true ) );
 
         WC()->session->set('quote_cart', array()); // Initialize quote_cart in session
-        error_log( 'After Quote Cart Initialization - Quote Cart Content: ' . var_export( WC()->session->get('quote_cart'), true ) );
+       //error_log( 'After Quote Cart Initialization - Quote Cart Content: ' . var_export( WC()->session->get('quote_cart'), true ) );
     }
 
 
@@ -28,10 +28,10 @@ class ACL_WC_RFQ_cart {
      * @param int $product_id The ID of the product to add to the quote cart.
      */
     public static function acl_add_to_quote_cart( $product_id ) {
-        error_log( 'Before Adding - Quote Cart Content: ' . var_export( WC()->session->get('quote_cart'), true ) );
+        //error_log( 'Before Adding - Quote Cart Content: ' . var_export( WC()->session->get('quote_cart'), true ) );
         $product = wc_get_product( $product_id );
         if ( $product ) {
-            error_log('Product Found: ' . $product->get_name());
+            //error_log('Product Found: ' . $product->get_name());
             $current_quote_cart = WC()->session->get('quote_cart', array());
             $current_quote_cart[] = array(
                 'product_id' => $product_id,
@@ -41,11 +41,11 @@ class ACL_WC_RFQ_cart {
             );
             WC()->session->set('quote_cart', $current_quote_cart); // Set the updated cart
             WC()->session->save_data(); // Ensure session data is saved
-            error_log('Immediate After Adding - Quote Cart Content: ' . var_export(WC()->session->get('quote_cart'), true));
+            //error_log('Immediate After Adding - Quote Cart Content: ' . var_export(WC()->session->get('quote_cart'), true));
         } else {
-            error_log('Product Not Found for ID: ' . $product_id);
+            //error_log('Product Not Found for ID: ' . $product_id);
         }
-        error_log( 'After Adding - Quote Cart Content: ' . var_export( WC()->session->get('quote_cart'), true ) );
+        //error_log( 'After Adding - Quote Cart Content: ' . var_export( WC()->session->get('quote_cart'), true ) );
     }
 
     /**
