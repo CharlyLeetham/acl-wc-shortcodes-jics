@@ -190,14 +190,17 @@ class ACL_WC_Helpers {
 
         }
 
-        public static function acl_add_to_quote_cart_ajax() {
-            error_log( 'AJAX Handler Before - Quote Cart Content: ' . var_export( WC()->session->quote_cart, true ) );
+        public static function acl_add_to_quote_cart_ajax( ) {
+            error_log( 'POST Data: ' . var_export( $_POST, true ) );
             if ( isset( $_POST['product_id'] ) ) {
-                $rfq_cart = new ACL_WC_RFQ_cart();
-                $rfq_cart->acl_add_to_quote_cart( intval( $_POST['product_id'] ) );
+                $product_id = intval( $_POST['product_id'] );
+                error_log( 'Product ID to Add: ' . $product_id );
+                ACL_WC_RFQ_cart::acl_add_to_quote_cart( $product_id );
+                error_log( 'After AJAX Addition - Quote Cart: ' . var_export( WC()->session->quote_cart, true ) );
                 wp_send_json_success( 'Product added to quote cart.' );
             } else {
+                error_log( 'Product ID not provided in AJAX call' );
                 wp_send_json_error( 'Product ID not provided.' );
             }
-        }        
+        }      
 }

@@ -29,12 +29,15 @@ class ACL_WC_RFQ_cart {
         error_log( 'Before Adding - Quote Cart Content: ' . var_export( WC()->session->quote_cart, true ) );
         $product = wc_get_product( $product_id );
         if ( $product ) {
+            error_log('Product Found: ' . $product->get_name());
             WC()->session->quote_cart[] = array(
                 'product_id' => $product_id,
                 'quantity'   => 1, // Default to 1, adjust if needed based on user input
                 'name'       => $product->get_name(),
                 'price'      => $product->get_price()
             );
+        } else {
+            error_log('Product Not Found for ID: ' . $product_id);
         }
         error_log( 'After Adding - Quote Cart Content: ' . var_export( WC()->session->quote_cart, true ) );
     }
