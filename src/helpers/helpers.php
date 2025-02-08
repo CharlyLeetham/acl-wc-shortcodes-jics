@@ -252,13 +252,15 @@ class ACL_WC_Helpers {
     public static function acl_rfq_cart_content( ) {
         error_log( 'RFQ Cart Content Function Called' );
         wc_get_template( 'cart/cart.php', null, '', ACL_WC_SHORTCODES_PATH . 'src/frontend/templates/woocommerce/' );
-        error_log( 'Template located at: ' . $located_template );
     }
 
-    public static function acl_woocommerce_rfq_cart_hook( $hook_name ) {
-        //error_log( 'Hook name: '.$hook_name );
-        if ( 'rfq-cart' === $hook_name ) {
-            error_log( 'woocommerce_rfq-cart action hook was called' );
+    public static function acl_detect_rfq_cart_endpoint( ) {
+        global $wp_query;
+        if ( isset( $wp_query->query_vars['rfq-cart'] ) ) {
+            error_log( 'rfq-cart endpoint detected' );
+            // Trigger our custom cart content display
+            self::acl_rfq_cart_content( );
+            exit(); // Stop WordPress from loading any further templates
         }
     }
 
