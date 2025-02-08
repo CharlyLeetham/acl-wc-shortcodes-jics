@@ -1,7 +1,7 @@
 jQuery(document).ready(function($) {
     $('.quote-button').on('click', function(e) {
         e.preventDefault();
-        var productId = $(this).data('product-id'); // Get the product ID from the data attribute
+        var productId = $(this).data('product-id');
 
         $.ajax({
             type: 'POST',
@@ -12,9 +12,17 @@ jQuery(document).ready(function($) {
                 'security': acl_wc_shortcodes.nonce
             },
             success: function(response) {
-                console.log('Product added to quote cart:', response);
-                // Here you might want to update the UI or show a message to the user
-                alert('Product added to your quote list!');
+                if (response.success) {
+                    console.log('Product added to quote cart:', response);
+                    // Update the mini cart display
+                    var cartElement = $('.acl-mini-rfq-cart a');
+                    if (cartElement.length) {
+                        var currentCount = parseInt(cartElement.text().match(/\d+/)[0]) || 0;
+                        cartElement.text('RFQ Cart: ' + (currentCount + 1) + ' item(s)');
+                    }
+                } else {
+                    console.error('Error:', response.data);
+                }
             },
             error: function(error) {
                 console.error('Error adding product to quote cart:', error);

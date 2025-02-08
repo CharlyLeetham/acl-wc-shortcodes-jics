@@ -97,12 +97,13 @@ class ACL_WC_RFQ_cart {
      * @return string HTML for the mini RFQ cart widget.
      */
     public static function acl_mini_rfq_cart_widget() {
-        error_log( 'Mini Cart - Quote Cart Content: ' . var_export( WC()->session->get('quote_cart'), true ) );
+        error_log('Mini Cart - Attempting to Get Quote Cart: ' . var_export(WC()->session, true));
         $quote_cart = WC()->session->get('quote_cart', array());
+        error_log('Mini Cart - Quote Cart Content: ' . var_export($quote_cart, true));
         if ( empty($quote_cart) ) {
             return '<div class="acl-mini-rfq-cart"><a href="#rfq-cart">RFQ Cart: 0 items</a></div>';
         }
-
+    
         $count = count( $quote_cart );
         return '<div class="acl-mini-rfq-cart"><a href="#rfq-cart">RFQ Cart: ' . esc_html( $count ) . ' item(s)</a></div>';
     }
