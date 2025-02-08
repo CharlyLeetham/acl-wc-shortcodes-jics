@@ -149,5 +149,5 @@ class ACL_WC_RFQ_cart {
         } else {
             error_log( 'Session still not initialized' );
         }
-    });
+    }
 }
