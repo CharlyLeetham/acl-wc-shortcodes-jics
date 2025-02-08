@@ -140,11 +140,14 @@ class ACL_WC_RFQ_cart {
     } 
     
     public static function log_cookies() {
-            if (WC()->session instanceof WC_Session) {
-                error_log('Session Cookie: ' . WC()->session->_cookie);
-                error_log('Session Key: ' . WC()->session->_cookie);
-            } else {
-                error_log('Footer Session not initialized');
-            }
-    }
+        if ( !WC()->session instanceof WC_Session ) {
+            WC()->initialize_session();
+            error_log( 'Footer Session was not initialized, now initialized.' );
+        }
+        if ( WC()->session instanceof WC_Session ) {
+            error_log( 'Session Key in PHP: ' . WC()->session->_cookie );
+        } else {
+            error_log( 'Session still not initialized' );
+        }
+    });
 }
