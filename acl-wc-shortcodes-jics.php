@@ -32,7 +32,7 @@ try {
     require_once ACL_WC_SHORTCODES_PATH . 'src/frontend/ACL_WC_Shortcodes.php';
     require_once ACL_WC_SHORTCODES_PATH . 'src/helpers/helpers.php';
     require_once ACL_WC_SHORTCODES_PATH . 'src/frontend/ACL_WC_rfq_cart.php';
-    require_once ACL_WC_SHORTCODES_PATH . 'src/bootstrap.php';
+    require_once ACL_WC_SHORTCODES_PATH . 'src/bootstrap.php'; 
 
     // Initialize the plugin using the static init method
     \ACLWcShortcodes\ACLWcShortcodes::init();
