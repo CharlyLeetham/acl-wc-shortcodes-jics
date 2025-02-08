@@ -96,30 +96,33 @@ class ACL_WC_RFQ_cart {
      *
      * @return string HTML for the mini RFQ cart widget.
      */
-    public static function acl_mini_rfq_cart_widget() {
-        if (!WC()->session instanceof WC_Session) {
-            WC()->initialize_session();
+    public static function acl_mini_rfq_cart_widget( ) {
+        if ( ! WC()->session instanceof WC_Session ) {
+            WC()->initialize_session( );
         }
-        WC()->session->_dirty = true; // Force session to be considered changed
-        WC()->session->save_data();  // Save the session data
-        $quote_cart = WC()->session->get('quote_cart', array());
-        error_log('Quote Cart in Widget After Save: ' . var_export($quote_cart, true));
-
+        WC()->session->_dirty = true; 
+        WC()->session->save_data( );  
+        $quote_cart = WC()->session->get( 'quote_cart', array( ) );
+        error_log( 'Quote Cart in Widget After Save: ' . var_export( $quote_cart, true ) );
+    
         $session_data = WC()->session->_data;
-        error_log('Session Data: ' . var_export($session_data, true));
-        if (isset($session_data['quote_cart'])) {
+        error_log( 'Session Data: ' . var_export( $session_data, true ) );
+        if ( isset( $session_data['quote_cart'] ) ) {
             $quote_cart = $session_data['quote_cart'];
         } else {
-            $quote_cart = array();
+            $quote_cart = array( );
         }
-        error_log('Quote Cart from Session Data: ' . var_export($quote_cart, true));        
-        error_log('Mini Cart - Quote Cart Content: ' . var_export($quote_cart, true));
-        if ( empty($quote_cart) ) {
-            return '<div class="acl-mini-rfq-cart"><a href="#rfq-cart">RFQ Cart: 0 items</a></div>';
+        error_log( 'Quote Cart from Session Data: ' . var_export( $quote_cart, true ) );        
+        error_log( 'Mini Cart - Quote Cart Content: ' . var_export( $quote_cart, true ) );
+        
+        $cart_url = add_query_arg( 'rfq-cart', '', home_url( ) ); 
+    
+        if ( empty( $quote_cart ) ) {
+            return '<div class="acl-mini-rfq-cart"><a href="' . esc_url( $cart_url ) . '">RFQ Cart: 0 items</a></div>';
         }
     
         $count = count( $quote_cart );
-        return '<div class="acl-mini-rfq-cart"><a href="#rfq-cart">RFQ Cart: ' . esc_html( $count ) . ' item(s)</a></div>';
+        return '<div class="acl-mini-rfq-cart"><a href="' . esc_url( $cart_url ) . '">RFQ Cart: ' . esc_html( $count ) . ' item(s)</a></div>';
     }
 
     public static function log_quote_cart_on_init() {

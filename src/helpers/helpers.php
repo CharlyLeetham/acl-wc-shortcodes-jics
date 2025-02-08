@@ -212,4 +212,40 @@ class ACL_WC_Helpers {
             wp_send_json_error( 'Product ID not provided.' );
         }
     }
+
+    public static function acl_woocommerce_locate_template( $template, $template_name, $template_path ) {
+        global $woocommerce;
+        $_template = $template;
+        if ( ! $template_path ) 
+            $template_path = $woocommerce->template_path();
+    
+        $plugin_path  = untrailingslashit( plugin_dir_path( __FILE__ ) ) . '/src/frontend/templates/woocommerce/';
+    
+        // Look within passed path within the theme - this is priority
+        $template = locate_template(
+            array(
+                trailingslashit( $template_path ) . $template_name,
+                $template_name
+            )
+        );
+    
+        // Get the template from this plugin, if it exists
+        if ( ! $template && file_exists( $plugin_path . $template_name ) )
+            $template = $plugin_path . $template_name;
+    
+        // Use default template
+        if ( ! $template )
+            $template = $_template;
+    
+        return $template;
+    }
+
+    public static function acl_add_rfq_cart_endpoint( ) {
+        add_rewrite_endpoint( 'rfq-cart', EP_ROOT | EP_PAGES );
+    }
+
+    public static function acl_rfq_cart_content( ) {
+        wc_get_template( 'cart/cart.php', null, '', ACL_WC_SHORTCODES_PATH . 'src/frontend/templates/woocommerce/' );
+    }
+    
 }
