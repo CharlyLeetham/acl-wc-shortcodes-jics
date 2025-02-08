@@ -8,7 +8,7 @@ class ACL_WC_RFQ_cart {
     /**
      * Initialize the quote cart in the session.
      */
-    public function acl_start_quote_cart() {
+    public static function acl_start_quote_cart() {
         if ( ! isset( WC()->session ) || ! WC()->session instanceof WC_Session ) {
             WC()->initialize_session();
         }
@@ -78,13 +78,13 @@ class ACL_WC_RFQ_cart {
     }
 
 
-    public function acl_mini_rfq_cart_widget() {
+    // Modify in ACL_WC_RFQ_cart class
+    public static function acl_mini_rfq_cart_widget() {
         if ( ! isset( WC()->session->quote_cart ) || ! is_array( WC()->session->quote_cart ) ) {
-            return '<div class="acl-mini-rfq-cart">RFQ Cart: 0 items</div>';
+            return '<div class="acl-mini-rfq-cart"><a href="#rfq-cart">RFQ Cart: 0 items</a></div>';
         }
 
         $count = count( WC()->session->quote_cart );
-        return '<div class="acl-mini-rfq-cart">RFQ Cart: ' . esc_html( $count ) . ' item(s)</div>';
+        return '<div class="acl-mini-rfq-cart"><a href="#rfq-cart">RFQ Cart: ' . esc_html( $count ) . ' item(s)</a></div>';
     }
-        
 }
