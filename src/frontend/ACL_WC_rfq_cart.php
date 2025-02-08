@@ -17,11 +17,10 @@ class ACL_WC_RFQ_cart {
         }
         error_log( 'Session initialized: ' . var_export( isset( WC()->session ), true ) );
 
-        if ( ! isset( WC()->session->quote_cart ) ) {
-            WC()->session->quote_cart = array();
-        }
-        error_log( 'After Quote Cart Initialization - Quote Cart Content: ' . var_export( WC()->session->quote_cart, true ) );
+        WC()->session->set('quote_cart', array()); // Initialize quote_cart in session
+        error_log( 'After Quote Cart Initialization - Quote Cart Content: ' . var_export( WC()->session->get('quote_cart'), true ) );
     }
+
 
     /**
      * Add a product to the quote cart.
@@ -29,22 +28,24 @@ class ACL_WC_RFQ_cart {
      * @param int $product_id The ID of the product to add to the quote cart.
      */
     public static function acl_add_to_quote_cart( $product_id ) {
-        error_log( 'Before Adding - Quote Cart Content: ' . var_export( WC()->session->quote_cart, true ) );
+        error_log( 'Before Adding - Quote Cart Content: ' . var_export( WC()->session->get('quote_cart'), true ) );
         $product = wc_get_product( $product_id );
         if ( $product ) {
             error_log('Product Found: ' . $product->get_name());
-            WC()->session->quote_cart[] = array(
+            $current_quote_cart = WC()->session->get('quote_cart', array());
+            $current_quote_cart[] = array(
                 'product_id' => $product_id,
                 'quantity'   => 1,
                 'name'       => $product->get_name(),
                 'price'      => $product->get_price()
             );
-            // Add this new log entry
-            error_log('Immediate After Adding - Quote Cart Content: ' . var_export(WC()->session->quote_cart, true));
+            WC()->session->set('quote_cart', $current_quote_cart); // Set the updated cart
+            WC()->session->save_data(); // Ensure session data is saved
+            error_log('Immediate After Adding - Quote Cart Content: ' . var_export(WC()->session->get('quote_cart'), true));
         } else {
             error_log('Product Not Found for ID: ' . $product_id);
         }
-        error_log( 'After Adding - Quote Cart Content: ' . var_export( WC()->session->quote_cart, true ) );
+        error_log( 'After Adding - Quote Cart Content: ' . var_export( WC()->session->get('quote_cart'), true ) );
     }
 
     /**
@@ -96,12 +97,13 @@ class ACL_WC_RFQ_cart {
      * @return string HTML for the mini RFQ cart widget.
      */
     public static function acl_mini_rfq_cart_widget() {
-        error_log( 'Mini Cart - Quote Cart Content: ' . var_export( WC()->session->quote_cart, true ) );
-        if ( ! isset( WC()->session->quote_cart ) || ! is_array( WC()->session->quote_cart ) ) {
+        error_log( 'Mini Cart - Quote Cart Content: ' . var_export( WC()->session->get('quote_cart'), true ) );
+        $quote_cart = WC()->session->get('quote_cart', array());
+        if ( empty($quote_cart) ) {
             return '<div class="acl-mini-rfq-cart"><a href="#rfq-cart">RFQ Cart: 0 items</a></div>';
         }
 
-        $count = count( WC()->session->quote_cart );
+        $count = count( $quote_cart );
         return '<div class="acl-mini-rfq-cart"><a href="#rfq-cart">RFQ Cart: ' . esc_html( $count ) . ' item(s)</a></div>';
     }
 
