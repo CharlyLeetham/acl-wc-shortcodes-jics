@@ -100,6 +100,7 @@ class ACL_WC_RFQ_cart {
         if (!isset(WC()->session) || !WC()->session instanceof WC_Session) {
             WC()->initialize_session();
         }
+        error_log('Session in Widget: ' . var_export(WC()->session, true));
         error_log('Session Initialized: ' . var_export(WC()->session instanceof WC_Session, true));
         error_log('Mini Cart - Attempting to Get Quote Cart: ' . var_export(WC()->session, true));
         //$quote_cart = WC()->session->get('quote_cart', array());
@@ -134,7 +135,7 @@ class ACL_WC_RFQ_cart {
         if (!WC()->session instanceof WC_Session) {
             WC()->initialize_session();
         }
-        error_log('Session Expiration Time: ' . WC()->session->get_session_expiration());
+
         error_log('Quote Cart on wp: ' . var_export(WC()->session->quote_cart, true));
         error_log('Quote Cart on wp2: ' . var_export(WC()->session->get('quote_cart'), true));
     }    
