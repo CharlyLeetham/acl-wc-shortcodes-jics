@@ -5,8 +5,7 @@
  */
 
 namespace ACLWcShortcodes;
-use ACLWcShortcodes\Helpers\ACL_WC_Helpers;
-use ACLWcShortcodes\ACLWCRFQCart\ACL_WC_RFQ_cart;
+
 
 class ACLWcShortcodes {
     public static function init() {
@@ -18,10 +17,10 @@ class ACLWcShortcodes {
         add_action( 'wp_loaded', array( __CLASS__, 'acl_sc_remove' ) );
 
         // Hook methods from ACL_WC_RFQ_cart assuming they are static
-        add_action( 'init', array( 'ACL_WC_RFQ_cart', 'acl_start_quote_cart' ) );
+        add_action( 'init', array( 'ACLWcShortcodes\ACLWCRFQCart\ACL_WC_RFQ_cart', 'acl_start_quote_cart' ) );
 
-        add_action( 'wp_ajax_acl_add_to_quote_cart', array( 'ACL_WC_Helpers', 'acl_add_to_quote_cart_ajax' ) );
-        add_action( 'wp_ajax_nopriv_acl_add_to_quote_cart', array( 'ACL_WC_Helpers', 'acl_add_to_quote_cart_ajax' ) );
+        add_action( 'wp_ajax_acl_add_to_quote_cart', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_add_to_quote_cart_ajax' ) );
+        add_action( 'wp_ajax_nopriv_acl_add_to_quote_cart', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_add_to_quote_cart_ajax' ) );
     }
 
     public static function acl_wc_shortcodes_init() {
@@ -47,9 +46,9 @@ class ACLWcShortcodes {
         remove_action( 'woocommerce_shop_loop_subcategory_title', 'woocommerce_template_loop_category_title', 10 );
         remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30 );
         remove_action( 'woocommerce_shop_loop_item_title', 'woocommerce_template_loop_product_title', 10 );
-        add_shortcode( 'products', array( 'ACL_WC_Shortcodes', 'acl_products_shortcode' ) );
+        add_shortcode( 'products', array( 'ACLWcShortcodes\ACLWCShortcodes\ACL_WC_Shortcodes', 'acl_products_shortcode' ) );
         add_action( 'woocommerce_single_product_summary', array( 'ACL_WC_Helpers', 'acl_custom_product_buttons' ), 30 );
-        add_shortcode( 'acl_mini_rfq_cart', array( 'ACL_WC_Shortcodes', 'acl_mini_rfq_cart_shortcode' ) );
+        add_shortcode( 'acl_mini_rfq_cart', array( 'ACLWcShortcodes\ACLWCShortcodes\ACL_WC_Shortcodes', 'acl_mini_rfq_cart_shortcode' ) );
     }
 
     public static function force_show_all_products( $visible, $product_id ) {
