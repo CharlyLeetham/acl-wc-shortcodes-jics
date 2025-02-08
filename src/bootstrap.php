@@ -8,7 +8,6 @@ namespace ACLWcShortcodes;
 
 class ACLWcShortcodes {
     public static function init() {
-        new ACL_WC_Shortcodes(); // Instantiate ACL_WC_Shortcodes here if needed
         add_action( 'init', array( __CLASS__, 'acl_wc_shortcodes_init' ) );
         add_action( 'wp_enqueue_scripts', array( __CLASS__, 'acl_wc_shortcodes_scripts' ) );
         add_action( 'wp_loaded', array( __CLASS__, 'acl_sc_remove' ) );
