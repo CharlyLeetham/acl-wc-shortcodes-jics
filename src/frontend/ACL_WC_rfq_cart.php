@@ -138,16 +138,5 @@ class ACL_WC_RFQ_cart {
         error_log('Quote Cart on wp: ' . var_export(WC()->session->quote_cart, true));
         error_log('Quote Cart on wp2: ' . var_export(WC()->session->get('quote_cart'), true));
     } 
-    
-    public static function log_cookies() {
-        if ( !WC()->session instanceof WC_Session ) {
-            WC()->initialize_session();
-            error_log( 'Footer Session was not initialized, now initialized.' );
-        }
-        if ( WC()->session instanceof WC_Session ) {
-            error_log( 'Session Key in PHP: ' . WC()->session->_cookie );
-        } else {
-            error_log( 'Session still not initialized' );
-        }
-    }
+
 }

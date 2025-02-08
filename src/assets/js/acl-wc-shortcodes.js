@@ -7,7 +7,8 @@ public static function acl_add_to_quote_cart_ajax() {
         
         // Save session data explicitly after adding to cart
         WC()->session->save_data();
-        
+        error_log( 'Session Cookie Key: ' . $_COOKIE[WC()->session_cookie] );
+        error_log( 'PHP Session Key: ' . WC()->session->_cookie );        
         error_log('After AJAX Addition - Quote Cart: ' . var_export(WC()->session->get('quote_cart'), true));
         wp_send_json_success('Product added to quote cart.');
     } else {

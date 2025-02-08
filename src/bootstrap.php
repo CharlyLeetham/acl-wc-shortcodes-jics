@@ -24,7 +24,6 @@ class ACLWcShortcodes {
         //add_action('init', array('ACLWcShortcodes\ACLWCRFQCart\ACL_WC_RFQ_cart', 'log_quote_cart_on_init'));
         //add_action('wp_loaded', array('ACLWcShortcodes\ACLWCRFQCart\ACL_WC_RFQ_cart', 'log_quote_cart_on_wp_loaded'));
         add_action( 'wp', array('ACLWcShortcodes\ACLWCRFQCart\ACL_WC_RFQ_cart', 'log_quote_cart_on_wp') );
-        add_action( 'wp_footer', array('ACLWcShortcodes\ACLWCRFQCart\ACL_WC_RFQ_cart', 'log_cookies') );
     }
 
     public static function acl_wc_shortcodes_init() {
