@@ -30,8 +30,8 @@ class ACLWcShortcodes {
     public static function acl_wc_shortcodes_scripts() {
         $stylesheet_path = ACL_WC_SHORTCODES_PATH . 'assets/css/acl-wc-shortcodes.css';
         $version = filemtime( $stylesheet_path );
-        wp_enqueue_style( 'acl-wc-shortcodes-style', ACL_WC_SHORTCODES_URL . 'assets/css/acl-wc-shortcodes.css', array(), $version, 'all' );
-        wp_enqueue_script( 'acl-wc-shortcodes-js', ACL_WC_SHORTCODES_URL . 'assets/js/acl-wc-shortcodes.js', array( 'jquery' ), '1.0', true );
+        wp_enqueue_style( 'acl-wc-shortcodes-style', ACL_WC_SHORTCODES_URL . 'src/assets/css/acl-wc-shortcodes.css', array(), $version, 'all' );
+        wp_enqueue_script( 'acl-wc-shortcodes-js', ACL_WC_SHORTCODES_URL . 'src/assets/js/acl-wc-shortcodes.js', array( 'jquery' ), '1.0', true );
         wp_localize_script( 'acl-wc-shortcodes-js', 'acl_wc_shortcodes', array(
             'ajax_url' => admin_url( 'admin-ajax.php' ),
             'nonce'    => wp_create_nonce( 'acl_add_to_quote_cart' )
