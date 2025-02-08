@@ -191,17 +191,25 @@ class ACL_WC_Helpers {
         echo '</div>';
     }
 
-    public static function acl_add_to_quote_cart_ajax() {
-        error_log('POST Data: ' . var_export($_POST, true));
-        if (isset($_POST['product_id'])) {
-            $product_id = intval($_POST['product_id']);
-            error_log('Product ID to Add: ' . $product_id);
-            ACL_WC_RFQ_cart::acl_add_to_quote_cart($product_id);
-            error_log('After AJAX Addition - Quote Cart: ' . var_export(WC()->session->quote_cart, true));
-            wp_send_json_success('Product added to quote cart.');
+    public static function acl_add_to_quote_cart_ajax( ) {
+        error_log( 'POST Data: ' . var_export( $_POST, true ) );
+        if ( isset( $_POST['product_id'] ) ) {
+            $product_id = intval( $_POST['product_id'] );
+            error_log( 'Product ID to Add: ' . $product_id );
+            ACL_WC_RFQ_cart::acl_add_to_quote_cart( $product_id );
+            WC()->session->save_data( ); // Ensure session is saved
+            error_log( 'Session Cookie Key: ' . $_COOKIE[WC()->session_cookie] );
+            error_log( 'PHP Session Key: ' . WC()->session->_cookie );
+            // Force the session key to match the cookie if they differ
+            if ( isset( $_COOKIE[WC()->session_cookie] ) && WC()->session->_cookie !== $_COOKIE[WC()->session_cookie] ) {
+                WC()->session->_cookie = $_COOKIE[WC()->session_cookie];
+                WC()->session->save_data( ); // Save again with the correct key
+            }
+            error_log( 'After AJAX Addition - Quote Cart: ' . var_export( WC()->session->get( 'quote_cart' ), true ) );
+            wp_send_json_success( 'Product added to quote cart.' );
         } else {
-            error_log('Product ID not provided in AJAX call');
-            wp_send_json_error('Product ID not provided.');
+            error_log( 'Product ID not provided in AJAX call' );
+            wp_send_json_error( 'Product ID not provided.' );
         }
     }
 }

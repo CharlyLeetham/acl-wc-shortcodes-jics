@@ -1,18 +1,25 @@
-public static function acl_add_to_quote_cart_ajax() {
-    error_log('POST Data: ' . var_export($_POST, true));
-    if (isset($_POST['product_id'])) {
-        $product_id = intval($_POST['product_id']);
-        error_log('Product ID to Add: ' . $product_id);
-        \ACLWcShortcodes\ACLWCRFQCart\ACL_WC_RFQ_cart::acl_add_to_quote_cart($product_id);
-        
-        // Save session data explicitly after adding to cart
-        WC()->session->save_data();
-        error_log( 'Session Cookie Key: ' . $_COOKIE[WC()->session_cookie] );
-        error_log( 'PHP Session Key: ' . WC()->session->_cookie );        
-        error_log('After AJAX Addition - Quote Cart: ' . var_export(WC()->session->get('quote_cart'), true));
-        wp_send_json_success('Product added to quote cart.');
-    } else {
-        error_log('Product ID not provided in AJAX call');
-        wp_send_json_error('Product ID not provided.');
-    }
-} 
+jQuery(document).ready(function($) {
+    $('.quote-button').on('click', function(e) {
+        e.preventDefault();
+        var productId = $(this).data('product-id');
+        $.ajax({
+            type: 'POST',
+            url: acl_wc_shortcodes.ajax_url,
+            data: {
+                'action': 'acl_add_to_quote_cart',
+                'product_id': productId,
+                'security': acl_wc_shortcodes.nonce
+            },
+            success: function(response) {
+                if (response.success) {
+                    // Update the mini cart display here
+                    var cartElement = $('.acl-mini-rfq-cart a');
+                    if (cartElement.length) {
+                        var currentCount = parseInt(cartElement.text().match(/\d+/)[0]) || 0;
+                        cartElement.text('RFQ Cart: ' + (currentCount + 1) + ' item(s)');
+                    }
+                }
+            }
+        });
+    });
+});
