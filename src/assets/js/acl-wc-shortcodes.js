@@ -14,4 +14,4 @@ public static function acl_add_to_quote_cart_ajax() {
         error_log('Product ID not provided in AJAX call');
         wp_send_json_error('Product ID not provided.');
     }
-}
+} 
