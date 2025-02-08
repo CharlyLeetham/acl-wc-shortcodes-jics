@@ -5,6 +5,8 @@
  */
 
 namespace ACLWcShortcodes;
+use ACLWcShortcodes\Helpers\ACL_WC_Helpers;
+use ACLWcShortcodes\ACLWCRFQCart\ACL_WC_RFQ_cart;
 
 class ACLWcShortcodes {
     public static function init() {
