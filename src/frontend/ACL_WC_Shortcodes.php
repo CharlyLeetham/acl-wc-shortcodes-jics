@@ -74,7 +74,6 @@ class ACL_WC_Shortcodes {
     } 
     
     public static function acl_mini_rfq_cart_shortcode() {
-        return 'Me mem emememememememeem';
         $rfq_cart = new ACL_WC_RFQ_cart();
         return $rfq_cart->acl_mini_rfq_cart_widget();
     }    
