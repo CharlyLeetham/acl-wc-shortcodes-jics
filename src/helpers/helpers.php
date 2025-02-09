@@ -259,7 +259,8 @@ class ACL_WC_Helpers {
         if ( isset( $wp_query->query_vars['rfq-cart'] ) ) {
             error_log( 'rfq-cart endpoint detected' );
             // Trigger our custom cart content display
-            self::acl_rfq_cart_content( );
+            wc_get_template( 'cart/cart.php', null, '', ACL_WC_SHORTCODES_PATH . 'src/frontend/templates/woocommerce/' );
+            //self::acl_rfq_cart_content( );
             exit(); // Stop WordPress from loading any further templates
         }
     }
