@@ -78,8 +78,10 @@ class ACL_WC_Shortcodes {
         return ob_get_clean();
     } 
     
-    public static function acl_mini_rfq_cart_shortcode() {
-        // Since acl_mini_rfq_cart_widget is static in ACL_WC_RFQ_cart, we can call it without instantiation
-        return ACL_WC_RFQ_cart::acl_mini_rfq_cart_widget();
-    }    
+    public static function acl_rfq_cart_shortcode( $atts ) {
+        ob_start();
+        Helpers::acl_rfq_cart_content(); // This should be the function that builds your RFQ cart
+        return ob_get_clean();
+    }
+       
 }

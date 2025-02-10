@@ -213,56 +213,10 @@ class ACL_WC_Helpers {
         }
     }
 
-    public static function acl_woocommerce_locate_template( $template, $template_name, $template_path ) {
-        global $woocommerce;
-        $_template = $template;
-        if ( ! $template_path ) 
-            $template_path = $woocommerce->template_path();
-    
-        $plugin_path  = untrailingslashit( plugin_dir_path( __FILE__ ) ) . '/src/frontend/templates/woocommerce/';
-    
-        // Look within passed path within the theme - this is priority
-        $template = locate_template(
-            array(
-                trailingslashit( $template_path ) . $template_name,
-                $template_name
-            )
-        );
-    
-        // Get the template from this plugin, if it exists
-        if ( ! $template && file_exists( $plugin_path . $template_name ) )
-            $template = $plugin_path . $template_name;
-    
-        // Use default template
-        if ( ! $template )
-            $template = $_template;
-    
-        return $template;
-    }
-
-    public static function acl_add_rfq_cart_endpoint( ) {
-        error_log( 'Adding RFQ Cart Endpoint' );
-        add_rewrite_endpoint( 'rfq-cart', EP_ROOT | EP_PAGES );
-
-        global $wp_rewrite;
-        $endpoint = add_query_arg( 'rfq-cart', '', home_url( '/' ) );
-        error_log( 'RFQ Cart Endpoint URL: ' . $endpoint );
-    }
-
     public static function acl_rfq_cart_content( ) {
         error_log( 'RFQ Cart Content Function Called' );
         wc_get_template( 'cart/cart.php', null, '', ACL_WC_SHORTCODES_PATH . 'src/frontend/templates/woocommerce/' );
     }
 
-    public static function acl_detect_rfq_cart_endpoint( ) {
-        global $wp_query;
-        if ( isset( $wp_query->query_vars['rfq-cart'] ) ) {
-            error_log( 'rfq-cart endpoint detected' );
-            // Trigger our custom cart content display
-            wc_get_template( 'cart/cart.php', null, '', ACL_WC_SHORTCODES_PATH . 'src/frontend/templates/woocommerce/' );
-            //self::acl_rfq_cart_content( );
-            exit(); // Stop WordPress from loading any further templates
-        }
-    }
 
 }
