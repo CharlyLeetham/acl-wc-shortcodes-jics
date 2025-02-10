@@ -85,7 +85,7 @@ class ACL_WC_Shortcodes {
 
     public static function acl_rfq_cart_shortcode( $atts ) {
         ob_start();
-        ACL_WC_Helpers::acl_rfq_cart_content(); // This should be the function that builds your RFQ cart
+        seACL_WC_RFQ_cart::acl_rfq_cart_content(); // This should be the function that builds your RFQ cart
         return ob_get_clean();
     }
 }
