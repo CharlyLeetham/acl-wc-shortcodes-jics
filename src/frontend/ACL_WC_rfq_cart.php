@@ -115,7 +115,7 @@ class ACL_WC_RFQ_cart {
         //error_log( 'Quote Cart from Session Data: ' . var_export( $quote_cart, true ) );        
         //error_log( 'Mini Cart - Quote Cart Content: ' . var_export( $quote_cart, true ) );
         
-        $cart_url = add_query_arg( 'rfq-cart', '', home_url( ) ); 
+        $cart_url = home_url( '/rfq-cart' );
     
         if ( empty( $quote_cart ) ) {
             return '<div class="acl-mini-rfq-cart"><a href="' . esc_url( $cart_url ) . '">RFQ Cart: 0 items</a></div>';
