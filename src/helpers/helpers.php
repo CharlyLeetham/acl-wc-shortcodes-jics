@@ -213,10 +213,6 @@ class ACL_WC_Helpers {
         }
     }
 
-    public static function acl_rfq_cart_content( ) {
-        error_log( 'RFQ Cart Content Function Called' );
-        wc_get_template( 'cart/cart.php', null, '', ACL_WC_SHORTCODES_PATH . 'src/frontend/templates/woocommerce/' );
-    }
 
 
 }

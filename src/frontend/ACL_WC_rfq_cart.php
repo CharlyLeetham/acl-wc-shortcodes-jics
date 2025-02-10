@@ -125,21 +125,10 @@ class ACL_WC_RFQ_cart {
         return '<div class="acl-mini-rfq-cart"><a href="' . esc_url( $cart_url ) . '">RFQ Cart: ' . esc_html( $count ) . ' item(s)</a></div>';
     }
 
-    public static function log_quote_cart_on_init() {
-        //error_log('Quote Cart on init: ' . var_export(WC()->session->quote_cart, true));
+    public static function acl_rfq_cart_content( ) {
+        error_log( 'RFQ Cart Content Function Called' );
+        wc_get_template( 'cart/cart.php', null, '', ACL_WC_SHORTCODES_PATH . 'src/frontend/templates/woocommerce/' );
     }
-    
-    public static function log_quote_cart_on_wp_loaded() {
-        //error_log('Quote Cart on wp_loaded: ' . var_export(WC()->session->quote_cart, true));
-    }
-    
-    public static function log_quote_cart_on_wp() {
-        if (!WC()->session instanceof WC_Session) {
-            WC()->initialize_session();
-        }
 
-        //error_log('Quote Cart on wp: ' . var_export(WC()->session->quote_cart, true));
-        //error_log('Quote Cart on wp2: ' . var_export(WC()->session->get('quote_cart'), true));
-    } 
 
 }
