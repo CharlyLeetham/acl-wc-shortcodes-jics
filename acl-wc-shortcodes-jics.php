@@ -10,6 +10,10 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
+register_activation_hook( __FILE__, function( ) {
+    flush_rewrite_rules( );
+} );
+
 // Check if WooCommerce is active
 function acl_wc_shortcodes_check_woocommerce() {
     if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {

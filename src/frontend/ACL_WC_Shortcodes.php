@@ -59,11 +59,11 @@ class ACL_WC_Shortcodes {
                                     <?php echo wp_kses_post($product->get_name()); ?>
                                 </a>
                             </h3>
-                            <?php if ($product->is_on_sale()) : ?>
+                            <?php if ($product->is_on_sale()) { ?>
                                 <span class="acl-product-sale-price"><?php echo wp_kses_post($product->get_price_html()); ?></span>
-                            <?php else : ?>
+                            <?php } else { ?>
                                 <span class="acl-product-price"><?php echo wp_kses_post($product->get_price_html()); ?></span>
-                            <?php endif; ?>
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
