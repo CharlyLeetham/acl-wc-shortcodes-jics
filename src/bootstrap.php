@@ -9,9 +9,7 @@ namespace ACLWcShortcodes;
 
 class ACLWcShortcodes {
     public static function init() {
-        //error_log('Class exists: ' . (class_exists('ACLWcShortcodes\ACLWCRFQCart\ACL_WC_RFQ_cart') ? 'Yes' : 'No'));
-        //error_log('Class exists: ' . (class_exists('ACLWcShortcodes\Helpers\ACL_WC_Helpers') ? 'Yes' : 'No'));
-        //error_log('Method exists: ' . (method_exists('ACL_WC_RFQ_cart', 'acl_start_quote_cart') ? 'Yes' : 'No'));
+
         add_action( 'init', array( __CLASS__, 'acl_wc_shortcodes_init' ) );
         add_action( 'wp_enqueue_scripts', array( __CLASS__, 'acl_wc_shortcodes_scripts' ) );
         add_action( 'wp_loaded', array( __CLASS__, 'acl_sc_remove' ) );
@@ -25,9 +23,6 @@ class ACLWcShortcodes {
 
         add_action( 'wp_ajax_acl_add_to_quote_cart', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_add_to_quote_cart_ajax' ) );
         add_action( 'wp_ajax_nopriv_acl_add_to_quote_cart', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_add_to_quote_cart_ajax' ) );
-        //add_action('init', array('ACLWcShortcodes\ACLWCRFQCart\ACL_WC_RFQ_cart', 'log_quote_cart_on_init'));
-        //add_action('wp_loaded', array('ACLWcShortcodes\ACLWCRFQCart\ACL_WC_RFQ_cart', 'log_quote_cart_on_wp_loaded'));
-        add_action( 'wp', array('ACLWcShortcodes\ACLWCRFQCart\ACL_WC_RFQ_cart', 'log_quote_cart_on_wp') );
     }
 
     public static function acl_wc_shortcodes_init() {
