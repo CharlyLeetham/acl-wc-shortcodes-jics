@@ -38,7 +38,8 @@ class ACLWcShortcodes {
         wp_enqueue_script( 'acl-wc-shortcodes-js', ACL_WC_SHORTCODES_URL . 'src/assets/js/acl-wc-shortcodes.js', array( 'jquery' ), $version_script, true );
         wp_localize_script( 'acl-wc-shortcodes-js', 'acl_wc_shortcodes', array(
             'ajax_url' => admin_url( 'admin-ajax.php' ),
-            'nonce'    => wp_create_nonce( 'acl_add_to_quote_cart' )
+            'nonce'    => wp_create_nonce( 'acl_add_to_quote_cart' ),
+            'nonce'    => wp_create_nonce('acl_wc_shortcodes_nonce')
         ) );
     }
 
