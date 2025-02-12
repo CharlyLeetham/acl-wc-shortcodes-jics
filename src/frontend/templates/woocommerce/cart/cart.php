@@ -58,7 +58,7 @@ if ( empty( $quote_cart ) ) {
 							$max_quantity = $item->get_max_purchase_quantity();
 						} */
 
-						$product_quantity = woocommerce_quantity_input(
+						/*$product_quantity = woocommerce_quantity_input(
 							array(
 								'input_name'   => "cart[{$cart_item_key}][qty]",
 								'input_value'  => $cart_item['quantity'],
@@ -70,7 +70,7 @@ if ( empty( $quote_cart ) ) {
 							false
 						);
 
-						echo apply_filters( 'woocommerce_cart_item_quantity', $product_quantity, $cart_item_key, $cart_item ); // PHPCS: XSS ok.
+						echo apply_filters( 'woocommerce_cart_item_quantity', $product_quantity, $cart_item_key, $cart_item ); // PHPCS: XSS ok.*/
 						?>
 						</td>                        
                     </tr>
