@@ -228,6 +228,33 @@ class ACL_WC_Helpers {
         } else {
             wp_send_json_error( 'Invalid product ID' );
         }
-    } 
+    }
+    
+    public static function acl_update_mini_cart() {
+        check_ajax_referer('acl_wc_shortcodes_nonce', 'security');
+    
+        $product_id = isset($_POST['product_id']) ? intval($_POST['product_id']) : 0;
+        $quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : 0;
+    
+        if ($product_id && $quantity > 0) {
+            $quote_cart = WC()->session->get('quote_cart', array());
+            foreach ($quote_cart as &$item) {
+                if ($item['product_id'] === $product_id) {
+                    $item['quantity'] = $quantity;
+                    break;
+                }
+            }
+            WC()->session->set('quote_cart', $quote_cart);
+            WC()->session->save_data();
+            
+            $count = array_reduce($quote_cart, function($carry, $item) {
+                return $carry + $item['quantity'];
+            }, 0);
+    
+            wp_send_json_success(array('cart_count' => $count));
+        } else {
+            wp_send_json_error('Invalid product ID or quantity');
+        }
+    }    
 
 }
