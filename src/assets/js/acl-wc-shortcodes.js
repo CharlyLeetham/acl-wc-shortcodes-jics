@@ -81,13 +81,13 @@ jQuery(document).ready(function($) {
         console.log('Remove clicked');
         e.preventDefault();
         var productId = $(this).data('product-id');
-        var quantity = $(this).closest('tr').find('.acl_qty_input').val();
-
+        var quantity = $(this).closest('tr').find('.acl_qty_input').val(); // Get the quantity of the item being removed
+        
         $.ajax({
             type: 'POST',
             url: acl_wc_shortcodes.ajax_url,
             data: {
-                'action': 'acl_remove_from_quote_cart',
+                'action': 'acl_remove_from_quote_cart', // Ensure this matches the action in your PHP hook
                 'product_id': productId,
                 'quantity': quantity,
                 'security': acl_wc_shortcodes.nonce
@@ -95,7 +95,9 @@ jQuery(document).ready(function($) {
             success: function(response) {
                 if (response.success) {
                     console.log('Product removed from quote cart:', productId);
+                    // Remove the row from the DOM
                     $(e.target).closest('tr').remove();
+                    // Update mini cart if needed
                     var cartElement = $('.acl-mini-rfq-cart a');
                     if (cartElement.length) {
                         var newCount = response.data.cart_count || (parseInt(cartElement.text().match(/\d+/)[0]) || 0) - 1;
