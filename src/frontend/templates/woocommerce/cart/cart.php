@@ -34,7 +34,7 @@ if ( empty( $quote_cart ) ) {
 										/* translators: %s is the product name */
 										esc_attr( sprintf( __( 'Remove %s from cart', 'woocommerce' ), wp_strip_all_tags( $product_name ) ) ),
 										esc_attr( $product_id ),
-										esc_attr( $_product->get_sku() )
+										esc_attr( $item->get_sku() )
 									),
 									$cart_item_key
 								);
@@ -55,7 +55,7 @@ if ( empty( $quote_cart ) ) {
 							$max_quantity = 1;
 						} else {
 							$min_quantity = 0;
-							$max_quantity = $_product->get_max_purchase_quantity();
+							$max_quantity = $item->get_max_purchase_quantity();
 						}
 
 						$product_quantity = woocommerce_quantity_input(
@@ -66,7 +66,7 @@ if ( empty( $quote_cart ) ) {
 								'min_value'    => $min_quantity,
 								'product_name' => $product_name,
 							),
-							$_product,
+							$item,
 							false
 						);
 
