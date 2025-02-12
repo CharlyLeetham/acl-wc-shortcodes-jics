@@ -37,18 +37,56 @@ jQuery(document).ready(function($) {
         var input = $(this).prev('.acl_qty_input');
         var currentVal = parseInt(input.val());
         if (!isNaN(currentVal)) {
-            input.val(currentVal + 1).change();
+            var newVal = currentVal + 1;
+            input.val(newVal).change();
+            updateMiniCart(input.attr('name').match(/\d+/)[0], newVal);
         }
-    });
+    });    
 
     // Decrement Quantity
     $('.acl_minus_qty').on('click', function() {
         var input = $(this).next('.acl_qty_input');
         var currentVal = parseInt(input.val());
         if (!isNaN(currentVal) && currentVal > 1) {
-            input.val(currentVal - 1).change();
+            var newVal = currentVal - 1;
+            input.val(newVal).change();
+            updateMiniCart(input.attr('name').match(/\d+/)[0], newVal);
         }
     });
+
+    // Function to update mini cart
+    function updateMiniCart(productId, newQuantity) {
+        $.ajax({
+            type: 'POST',
+            url: acl_wc_shortcodes.ajax_url,
+            data: {
+                'action': 'acl_update_mini_cart',
+                'product_id': productId,
+                'quantity': newQuantity,
+                'security': acl_wc_shortcodes.nonce
+            },
+            success: function(response) {
+                if (response.success) {
+                    console.log('Mini cart updated for product ID:', productId, 'to:', newQuantity);
+                    updateMiniCartDisplay(response.data.cart_count);
+                } else {
+                    console.error('Error updating mini cart:', response.data);
+                }
+            },
+            error: function(error) {
+                console.error('Error updating mini cart:', error);
+            }
+        });
+    }
+
+    // Function to update mini cart display
+    function updateMiniCartDisplay(count) {
+        var cartElement = $('.acl-mini-rfq-cart a');
+        if (cartElement.length) {
+            cartElement.text('RFQ Cart: ' + count + ' item(s)');
+        }
+    }    
+
 
     // Update Quantity
     $('.acl_qty_input').on('change', function() {
