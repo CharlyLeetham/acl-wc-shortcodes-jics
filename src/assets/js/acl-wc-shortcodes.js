@@ -76,5 +76,40 @@ jQuery(document).ready(function($) {
         });
         // AJAX call to update cart quantities goes here
         console.log('Update quantities:', quantities);
+    });  
+    
+    $('.acl_remove_from_quote_cart').on('click', function(e) {
+        e.preventDefault();
+        var productId = $(this).data('product-id');
+        var quantity = $(this).closest('tr').find('.acl_qty_input').val(); // Get the quantity of the item being removed
+        
+        $.ajax({
+            type: 'POST',
+            url: acl_wc_shortcodes.ajax_url,
+            data: {
+                'action': 'acl_remove_from_quote_cart',
+                'product_id': productId,
+                'quantity': quantity, // Include quantity for update or logging
+                'security': acl_wc_shortcodes.nonce
+            },
+            success: function(response) {
+                if (response.success) {
+                    console.log('Product removed from quote cart:', productId);
+                    // Remove the row from the DOM
+                    $(e.target).closest('tr').remove();
+                    // Update mini cart if needed
+                    var cartElement = $('.acl-mini-rfq-cart a');
+                    if (cartElement.length) {
+                        var newCount = response.data.cart_count || (parseInt(cartElement.text().match(/\d+/)[0]) || 0) - 1;
+                        cartElement.text('RFQ Cart: ' + newCount + ' item(s)');
+                    }
+                } else {
+                    console.error('Error removing product:', response.data);
+                }
+            },
+            error: function(error) {
+                console.error('Error removing product:', error);
+            }
+        });
     });    
 });
