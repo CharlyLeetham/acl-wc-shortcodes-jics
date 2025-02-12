@@ -50,13 +50,13 @@ if ( empty( $quote_cart ) ) {
 
 						<td class="product-quantity" data-title="<?php esc_attr_e( 'Quantity', 'woocommerce' ); ?>">
 						<?php
-						if ( $item->is_sold_individually() ) {
+						/*if ( $item->is_sold_individually() ) {
 							$min_quantity = 1;
 							$max_quantity = 1;
 						} else {
 							$min_quantity = 0;
 							$max_quantity = $item->get_max_purchase_quantity();
-						}
+						} */
 
 						$product_quantity = woocommerce_quantity_input(
 							array(
