@@ -12,15 +12,22 @@ class ACL_WC_RFQ_cart {
      * Initialize the quote cart in the session.
      */
     public static function acl_start_quote_cart() {
-        error_log('acl_start_quote_cart called');
+        error_log( 'acl_start_quote_cart called' );
         if ( ! isset( WC()->session ) || ! WC()->session instanceof WC_Session ) {
             WC()->initialize_session();
         }
         $session_id = WC()->session->get_customer_id();
         error_log('Session Initialized - Session ID: ' . $session_id);
     
-        WC()->session->set('quote_cart', array()); // Initialize quote_cart in session
-        error_log('After Quote Cart Initialization - Session ID: ' . $session_id . ' - Quote Cart Content: ' . var_export(WC()->session->get('quote_cart'), true));
+        // Check if quote_cart already exists, only initialize if it doesn't
+        if (!WC()->session->get( 'quote_cart' )) {
+            WC()->session->set( 'quote_cart', array() );
+            error_log(' Quote Cart Initialized because it was missing' );
+        } else {
+            error_log( 'Quote Cart already exists, not reinitializing' );
+        }
+
+        error_log( 'After Quote Cart Initialization - Session ID: ' . $session_id . ' - Quote Cart Content: ' . var_export( WC()->session->get( 'quote_cart' ), true ) );
     }
 
 
