@@ -1,7 +1,7 @@
 jQuery(document).ready(function($) {
     console.log('ajax_url:', acl_wc_shortcodes.ajax_url);
     console.log('nonce:', acl_wc_shortcodes.nonce);
- 
+
     $('.quote-button').on('click', function(e) {
         e.preventDefault();
         var productId = $(this).data('product-id');
@@ -17,7 +17,6 @@ jQuery(document).ready(function($) {
             success: function(response) {
                 if (response.success) {
                     console.log('Product added to quote cart:', response);
-                    // Update the mini cart display
                     var cartElement = $('.acl-mini-rfq-cart a');
                     if (cartElement.length) {
                         var newCount = response.data.cart_count || (parseInt(cartElement.text().match(/\d+/)[0]) || 0) + 1;
@@ -51,42 +50,39 @@ jQuery(document).ready(function($) {
         }
     });
 
-    // Update Quantity (you'll need AJAX here to update the session)
+    // Update Quantity
     $('.acl_qty_input').on('change', function() {
         var productId = $(this).attr('name').match(/\d+/)[0];
         var qty = $(this).val();
-        // AJAX call to update quantity in session goes here
-        console.log('Update quantity for product ID:', productId, 'to:', qty);
+        $.ajax({
+            type: 'POST',
+            url: acl_wc_shortcodes.ajax_url,
+            data: {
+                'action': 'acl_update_quantity_in_quote_cart',
+                'product_id': productId,
+                'quantity': qty,
+                'security': acl_wc_shortcodes.nonce
+            },
+            success: function(response) {
+                if (response.success) {
+                    console.log('Quantity updated for product ID:', productId, 'to:', qty);
+                } else {
+                    console.error('Error updating quantity:', response.data);
+                }
+            },
+            error: function(error) {
+                console.error('Error updating quantity:', error);
+            }
+        });
     });
 
     // Remove from Quote Cart
-    $('.acl_remove_from_quote_cart').on('click', function(e) {
-        e.preventDefault();
-        var productId = $(this).data('product-id');
-        // AJAX call to remove item from cart goes here
-        console.log('Remove product ID:', productId);
-    });
-
-    // Update Cart Button
-    $('form.woocommerce-cart-form').on('submit', function(e) {
-        e.preventDefault();
-        console.log('Form submit event triggered');
-        // Collect all quantities and send via AJAX to update the cart
-        var quantities = {};
-        $('.acl_qty_input').each(function() {
-            var productId = $(this).attr('name').match(/\d+/)[0];
-            quantities[productId] = $(this).val();
-        });
-        // AJAX call to update cart quantities goes here
-        console.log('Update quantities:', quantities);
-    });  
-     
     $(document).on('click', '.acl_remove_from_quote_cart', function(e) {
         console.log('Remove clicked');
         e.preventDefault();
         var productId = $(this).data('product-id');
-        var quantity = $(this).closest('tr').find('.acl_qty_input').val(); // Get the quantity of the item being removed
-        
+        var quantity = $(this).closest('tr').find('.acl_qty_input').val();
+
         $.ajax({
             type: 'POST',
             url: acl_wc_shortcodes.ajax_url,
@@ -99,9 +95,7 @@ jQuery(document).ready(function($) {
             success: function(response) {
                 if (response.success) {
                     console.log('Product removed from quote cart:', productId);
-                    // Remove the row from the DOM
                     $(e.target).closest('tr').remove();
-                    // Update mini cart if needed
                     var cartElement = $('.acl-mini-rfq-cart a');
                     if (cartElement.length) {
                         var newCount = response.data.cart_count || (parseInt(cartElement.text().match(/\d+/)[0]) || 0) - 1;
@@ -115,5 +109,17 @@ jQuery(document).ready(function($) {
                 console.error('Error removing product:', error);
             }
         });
+    });
+
+    // Update Cart Button
+    $('form.woocommerce-cart-form').on('submit', function(e) {
+        e.preventDefault();
+        console.log('Form submit event triggered');
+        var quantities = {};
+        $('.acl_qty_input').each(function() {
+            var productId = $(this).attr('name').match(/\d+/)[0];
+            quantities[productId] = $(this).val();
+        });
+        console.log('Update quantities:', quantities);
     });
 });
