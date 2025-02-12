@@ -12,22 +12,16 @@ class ACL_WC_RFQ_cart {
      * Initialize the quote cart in the session.
      */
     public static function acl_start_quote_cart() {
-        error_log( 'acl_start_quote_cart called' );
         if ( ! isset( WC()->session ) || ! WC()->session instanceof WC_Session ) {
             WC()->initialize_session();
         }
         $session_id = WC()->session->get_customer_id();
-        error_log('Session Initialized - Session ID: ' . $session_id);
-    
+   
         // Check if quote_cart already exists, only initialize if it doesn't
         if (!WC()->session->get( 'quote_cart' )) {
             WC()->session->set( 'quote_cart', array() );
-            error_log(' Quote Cart Initialized because it was missing' );
-        } else {
-            error_log( 'Quote Cart already exists, not reinitializing' );
-        }
+        } 
 
-        error_log( 'After Quote Cart Initialization - Session ID: ' . $session_id . ' - Quote Cart Content: ' . var_export( WC()->session->get( 'quote_cart' ), true ) );
     }
 
 
@@ -38,7 +32,6 @@ class ACL_WC_RFQ_cart {
      */
     public static function acl_add_to_quote_cart( $product_id ) {
         $session_id = WC()->session->get_customer_id();
-        error_log('Before Adding Product - Session ID: ' . $session_id . ' - Quote Cart Content: ' . var_export(WC()->session->get('quote_cart'), true));
         $product = wc_get_product( $product_id );
         if ( $product ) {
             //error_log('Product Found: ' . $product->get_name());
@@ -51,7 +44,6 @@ class ACL_WC_RFQ_cart {
             );
             WC()->session->set('quote_cart', $current_quote_cart); // Set the updated cart
             WC()->session->save_data(); // Ensure session data is saved
-            error_log('After Adding Product - Session ID: ' . $session_id . ' - Quote Cart Content: ' . var_export(WC()->session->get('quote_cart'), true));
         } else {
             //error_log('Product Not Found for ID: ' . $product_id);
         }
@@ -110,17 +102,11 @@ class ACL_WC_RFQ_cart {
         if ( !WC()->session instanceof WC_Session ) {
             WC()->initialize_session();
         }
-        $session_id = WC()->session->get_customer_id();
-        error_log( 'Mini Cart Widget - Session ID: ' . $session_id );
-        
-        // No need to mark session as dirty and save data unless you've modified something in this method
-        // WC()->session->_dirty = true; 
-        // WC()->session->save_data();  
+        $session_id = WC()->session->get_customer_id();      
         
         // Get quote cart directly from session since that's where it's stored
         $quote_cart = WC()->session->get('quote_cart', array());
-        error_log( 'Quote Cart in Widget - Session ID: ' . $session_id . ' - Content: ' . var_export( $quote_cart, true ) );
-    
+
         $cart_url = home_url( '/rfq-cart' );
     
         if ( empty( $quote_cart ) ) {
@@ -132,7 +118,6 @@ class ACL_WC_RFQ_cart {
     }
 
     public static function acl_rfq_cart_content( ) {
-        error_log( 'RFQ Cart Content Function Called' );
         wc_get_template( 'cart/cart.php', null, '', ACL_WC_SHORTCODES_PATH . 'src/frontend/templates/woocommerce/' );
     }
 
