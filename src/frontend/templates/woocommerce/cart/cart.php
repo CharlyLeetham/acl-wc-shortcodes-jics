@@ -46,33 +46,7 @@ if ( empty( $quote_cart ) ) {
                         <?php do_action( 'woocommerce_after_cart_item_name', $cart_item, $cart_item_key ); ?>
                         <td class="product-quantity" data-title="<?php esc_attr_e( 'Quantity', 'woocommerce' ); ?>">
                             <?php echo esc_html( $item['quantity'] ); ?>
-                        </td>
-
-						<td class="product-quantity" data-title="<?php esc_attr_e( 'Quantity', 'woocommerce' ); ?>">
-						<?php
-						/*if ( $item->is_sold_individually() ) {
-							$min_quantity = 1;
-							$max_quantity = 1;
-						} else {
-							$min_quantity = 0;
-							$max_quantity = $item->get_max_purchase_quantity();
-						} */
-
-						/*$product_quantity = woocommerce_quantity_input(
-							array(
-								'input_name'   => "cart[{$cart_item_key}][qty]",
-								'input_value'  => $cart_item['quantity'],
-								'max_value'    => $max_quantity,
-								'min_value'    => $min_quantity,
-								'product_name' => $product_name,
-							),
-							$item,
-							false
-						);
-
-						echo apply_filters( 'woocommerce_cart_item_quantity', $product_quantity, $cart_item_key, $cart_item ); // PHPCS: XSS ok.*/
-						?>
-						</td>                        
+                        </td>                     
                     </tr>
                 <?php } ?>
             </tbody>
