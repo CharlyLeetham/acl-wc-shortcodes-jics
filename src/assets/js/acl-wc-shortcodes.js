@@ -1,4 +1,7 @@
 jQuery(document).ready(function($) {
+    console.log('ajax_url:', acl_wc_shortcodes.ajax_url);
+    console.log('nonce:', acl_wc_shortcodes.nonce);
+ 
     $('.quote-button').on('click', function(e) {
         e.preventDefault();
         var productId = $(this).data('product-id');
