@@ -79,6 +79,7 @@ jQuery(document).ready(function($) {
     });  
     
     $('.acl_remove_from_quote_cart').on('click', function(e) {
+        console.log ('Remove clicked');
         e.preventDefault();
         var productId = $(this).data('product-id');
         var quantity = $(this).closest('tr').find('.acl_qty_input').val(); // Get the quantity of the item being removed
