@@ -106,27 +106,21 @@ class ACL_WC_RFQ_cart {
      *
      * @return string HTML for the mini RFQ cart widget.
      */
-    public static function acl_mini_rfq_cart_widget( ) {
-        if ( ! WC()->session instanceof WC_Session ) {
-            WC()->initialize_session( );
+    public static function acl_mini_rfq_cart_widget() {
+        if ( !WC()->session instanceof WC_Session ) {
+            WC()->initialize_session();
         }
         $session_id = WC()->session->get_customer_id();
-        error_log('Mini Cart Widget - Session ID: ' . $session_id);
-        WC()->session->_dirty = true; 
-        WC()->session->save_data( );  
-        $quote_cart = WC()->session->get( 'quote_cart', array( ) );
-        error_log( 'Quote Cart in Widget After Save - Session ID: ' . $session_id . ' - Content: ' . var_export( $quote_cart, true ) );
-    
-        $session_data = WC()->session->_data;
-        //error_log( 'Session Data: ' . var_export( $session_data, true ) );
-        if ( isset( $session_data['quote_cart'] ) ) {
-            $quote_cart = $session_data['quote_cart'];
-        } else {
-            $quote_cart = array( );
-        }
-        //error_log( 'Quote Cart from Session Data: ' . var_export( $quote_cart, true ) );        
-        //error_log( 'Mini Cart - Quote Cart Content: ' . var_export( $quote_cart, true ) );
+        error_log( 'Mini Cart Widget - Session ID: ' . $session_id );
         
+        // No need to mark session as dirty and save data unless you've modified something in this method
+        // WC()->session->_dirty = true; 
+        // WC()->session->save_data();  
+        
+        // Get quote cart directly from session since that's where it's stored
+        $quote_cart = WC()->session->get('quote_cart', array());
+        error_log( 'Quote Cart in Widget - Session ID: ' . $session_id . ' - Content: ' . var_export( $quote_cart, true ) );
+    
         $cart_url = home_url( '/rfq-cart' );
     
         if ( empty( $quote_cart ) ) {

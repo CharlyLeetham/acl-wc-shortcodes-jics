@@ -17,8 +17,8 @@ jQuery(document).ready(function($) {
                     // Update the mini cart display
                     var cartElement = $('.acl-mini-rfq-cart a');
                     if (cartElement.length) {
-                        var currentCount = parseInt(cartElement.text().match(/\d+/)[0]) || 0;
-                        cartElement.text('RFQ Cart: ' + (currentCount + 1) + ' item(s)');
+                        var newCount = response.data.cart_count || (parseInt(cartElement.text().match(/\d+/)[0]) || 0) + 1;
+                        cartElement.text('RFQ Cart: ' + newCount + ' item(s)');
                     }
                 } else {
                     console.error('Error:', response.data);
