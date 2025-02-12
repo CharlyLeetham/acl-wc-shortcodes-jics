@@ -67,6 +67,7 @@ jQuery(document).ready(function($) {
     // Update Cart Button
     $('form.woocommerce-cart-form').on('submit', function(e) {
         e.preventDefault();
+        console.log('Form submit event triggered');
         // Collect all quantities and send via AJAX to update the cart
         var quantities = {};
         $('.acl_qty_input').each(function() {
