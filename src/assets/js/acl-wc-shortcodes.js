@@ -77,9 +77,9 @@ jQuery(document).ready(function($) {
         // AJAX call to update cart quantities goes here
         console.log('Update quantities:', quantities);
     });  
-    
-    $('.acl_remove_from_quote_cart').on('click', function(e) {
-        console.log ('Remove clicked');
+     
+    $(document).on('click', '.acl_remove_from_quote_cart', function(e) {
+        console.log('Remove clicked');
         e.preventDefault();
         var productId = $(this).data('product-id');
         var quantity = $(this).closest('tr').find('.acl_qty_input').val(); // Get the quantity of the item being removed
@@ -90,7 +90,7 @@ jQuery(document).ready(function($) {
             data: {
                 'action': 'acl_remove_from_quote_cart',
                 'product_id': productId,
-                'quantity': quantity, // Include quantity for update or logging
+                'quantity': quantity,
                 'security': acl_wc_shortcodes.nonce
             },
             success: function(response) {
@@ -112,5 +112,5 @@ jQuery(document).ready(function($) {
                 console.error('Error removing product:', error);
             }
         });
-    });    
+    });
 });
