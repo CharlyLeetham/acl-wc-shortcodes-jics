@@ -43,7 +43,7 @@ if ( empty( $quote_cart ) ) {
                         <td class="product-name" data-title="<?php esc_attr_e( 'Product', 'woocommerce' ); ?>">
                             <?php echo esc_html( $item['name'] ); ?>
                         </td>
-                        <?php do_action( 'woocommerce_after_cart_item_name', $cart_item, $cart_item_key ); ?>
+                        <?php //do_action( 'woocommerce_after_cart_item_name', $cart_item, $cart_item_key ); ?>
                         <td class="product-quantity" data-title="<?php esc_attr_e( 'Quantity', 'woocommerce' ); ?>">
                             <?php echo esc_html( $item['quantity'] ); ?>
                         </td>                     
