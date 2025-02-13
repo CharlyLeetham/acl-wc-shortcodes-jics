@@ -258,7 +258,7 @@ class ACL_WC_Helpers {
     }  
     
     public static function acl_update_quantity_in_quote_cart() {
-        error.log ("entering update in quote cart");
+        error_log ("entering update in quote cart");
         check_ajax_referer('acl_wc_shortcodes_nonce', 'security');
     
         $product_id = isset($_POST['product_id']) ? intval($_POST['product_id']) : 0;
