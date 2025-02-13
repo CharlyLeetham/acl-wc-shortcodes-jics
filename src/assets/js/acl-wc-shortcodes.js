@@ -68,7 +68,7 @@ jQuery(document).ready(function($) {
                     'quantity': qty,
                     'security': acl_wc_shortcodes.nonce
                 },
-                console.log('Five');
+
                 success: function(response) {
                     console.log('Server response:', response);
                     if (response.success) {
