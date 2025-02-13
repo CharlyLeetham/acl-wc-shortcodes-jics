@@ -11,7 +11,7 @@ class ACLWcShortcodes {
     public static function init() {
 
         add_action( 'init', array( __CLASS__, 'acl_wc_shortcodes_init' ) );
-        add_action( 'wp_enqueue_scripts', array( __CLASS__, 'acl_wc_shortcodes_scripts' ) );
+        add_action( 'wp_enqueue_scripts', array( __CLASS__, 'acl_wc_shortcodes_scripts' ), 5 );
         add_action( 'wp_loaded', array( __CLASS__, 'acl_sc_remove' ) );
 
         // Hook methods from ACL_WC_RFQ_cart assuming they are static
