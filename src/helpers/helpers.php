@@ -257,7 +257,7 @@ class ACL_WC_Helpers {
         }
     }  
     
-    function acl_update_quantity_in_quote_cart() {
+    public static function acl_update_quantity_in_quote_cart() {
         error.log ("entering update in quote cart");
         check_ajax_referer('acl_wc_shortcodes_nonce', 'security');
     
