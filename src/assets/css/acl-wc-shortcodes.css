@@ -137,3 +137,7 @@
 .cart-template-wrapper {
 
 }
+.cart-template-wrapper .woocommerce .woocommerce-cart-form {
+    flex-basis: calc(100%);
+    margin-right: 0;
+}
