@@ -99,6 +99,45 @@ jQuery(document).ready(function($) {
         }
     });
 
+    $('.acl_qty_input').on('keyup', function() {
+        var $input = $(this);
+        var productId = $input.attr('name').match(/\d+/)[0];
+        var qty = parseInt($input.val(), 10);
+    
+        // Clear any existing timeout for this input
+        clearTimeout($input.data('timeout'));
+    
+        // Set a new timeout
+        $input.data('timeout', setTimeout(function() {
+            if (!isNaN(qty) && qty > 0) {
+                console.log('Updating quantity after delay for product ID:', productId, 'to:', qty);
+                $.ajax({
+                    type: 'POST',
+                    url: acl_wc_shortcodes.ajax_url,
+                    data: {
+                        'action': 'acl_update_quantity_in_quote_cart',
+                        'product_id': productId,
+                        'quantity': qty,
+                        'security': acl_wc_shortcodes.nonce
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            console.log('Quantity updated for product ID:', productId, 'to:', qty);
+                            updateMiniCartDisplay(response.data.cart_count);
+                        } else {
+                            console.error('Error updating quantity:', response.data);
+                        }
+                    },
+                    error: function(error) {
+                        console.error('Error updating quantity:', error);
+                    }
+                });
+            } else {
+                console.log('Invalid quantity entered for product ID:', productId);
+            }
+        }, 2000)); // 2000 milliseconds = 2 seconds
+    });    
+
     // Function to update mini cart
     function updateMiniCart(productId, newQuantity) {
         console.log (productId, newQuantity);
