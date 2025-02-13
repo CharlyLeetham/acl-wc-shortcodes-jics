@@ -122,6 +122,7 @@ jQuery(document).ready(function($) {
 
     // Update Quantity
     $('.acl_qty_input').on('change', function() {
+        console.log ("Here");
         var productId = $(this).attr('name').match(/\d+/)[0];
         var qty = $(this).val();
         $.ajax({
