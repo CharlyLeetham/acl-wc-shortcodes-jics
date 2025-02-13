@@ -55,6 +55,7 @@ jQuery(document).ready(function($) {
     $('.acl_qty_input').on('blur', function() {
         var productId = $(this).attr('name').match(/\d+/)[0];
         var qty = parseInt($(this).val(), 10); // Ensure it's a number
+        console.log ("Here");
         if (!isNaN(qty) && qty > 0) { // Validate that qty is a positive number
             $.ajax({
                 type: 'POST',
