@@ -44,7 +44,7 @@ if ( empty( $quote_cart ) ) {
                                 <?php echo esc_html( $item['name'] ); ?>
                             </td>
                             <td class="product-quantity" data-title="<?php esc_attr_e( 'Quantity', 'woocommerce' ); ?>">
-                                <div class="acl_quantity">
+                                <div class="acl_quantity quantity">
                                     <button type="button" class="acl_minus_qty tve-woo-quantity-button" data-product-id="<?php echo esc_attr( $product_id ); ?>">-</button>
                                     <input type="number" class="acl_qty_input input-text qty text" name="acl_qty[<?php echo esc_attr( $product_id ); ?>]" value="<?php echo esc_attr( $item['quantity'] ); ?>" min="1" />
                                     <button type="button" class="acl_plus_qty tve-woo-quantity-button" data-product-id="<?php echo esc_attr( $product_id ); ?>">+</button>
