@@ -57,6 +57,8 @@ jQuery(document).ready(function($) {
         var qty = parseInt($(this).val(), 10); // Ensure it's a number
         console.log ("Here 1");
         if (!isNaN(qty) && qty > 0) { // Validate that qty is a positive number
+            console.log ('ProductId', productId,'Qty:',qty);
+            console.log('Sending AJAX request to:', acl_wc_shortcodes.ajax_url, 'Method:', 'POST');
             $.ajax({
                 type: 'POST',
                 url: acl_wc_shortcodes.ajax_url,
