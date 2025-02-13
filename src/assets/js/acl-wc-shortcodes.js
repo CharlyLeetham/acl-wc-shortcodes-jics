@@ -59,6 +59,16 @@ jQuery(document).ready(function($) {
         if (!isNaN(qty) && qty > 0) { // Validate that qty is a positive number
             console.log ('ProductId', productId,'Qty:',qty);
             console.log('Sending AJAX request to:', acl_wc_shortcodes.ajax_url, 'Method:', 'POST');
+            console.log('Sending AJAX request:', {
+                url: acl_wc_shortcodes.ajax_url,
+                method: 'POST',
+                data: {
+                    'action': 'acl_update_quantity_in_quote_cart',
+                    'product_id': productId,
+                    'quantity': qty,
+                    'security': acl_wc_shortcodes.nonce
+                }
+            });
             $.ajax({
                 type: 'POST',
                 url: acl_wc_shortcodes.ajax_url,
