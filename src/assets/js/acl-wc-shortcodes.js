@@ -68,7 +68,9 @@ jQuery(document).ready(function($) {
                     'quantity': qty,
                     'security': acl_wc_shortcodes.nonce
                 },
+                console.log('Five');
                 success: function(response) {
+                    console.log('Server response:', response);
                     if (response.success) {
                         console.log('Quantity updated for product ID:', productId, 'to:', qty);
                         // Update mini cart here
