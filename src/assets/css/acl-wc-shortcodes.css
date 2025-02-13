@@ -133,3 +133,9 @@
 .woocommerce div.product .acl-single-product-button-wrapper form.cart {
     margin-bottom:0;
 }
+
+.cart-template-wrapper {
+    padding: 0;
+    width: 40px;
+    transition: opacity .15s;
+}
