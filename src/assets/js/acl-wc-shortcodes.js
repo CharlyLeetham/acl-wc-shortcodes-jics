@@ -14,11 +14,12 @@ jQuery(document).ready(function($) {
                 console.log('Quote submission response:', response);
                 if (response.success) {
                     console.log('Quote submitted successfully');
-                    // Here you might want to redirect or show a success message
-                    // Example: window.location.href = wc_get_page_permalink('shop');
+                    if (response.data.redirect) {
+                        window.location.href = response.data.redirect;                    
                 } else {
+                    alert('Quote submitted successfully, but no redirect URL provided.');
                     console.error('Error submitting quote:', response.data);
-                }
+                }                
             },
             error: function(xhr, status, error) {
                 console.error('AJAX submission error:', status, error);

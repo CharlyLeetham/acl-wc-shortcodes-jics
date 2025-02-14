@@ -318,10 +318,9 @@ class ACL_WC_Helpers {
     
                 // Clear the quote cart
                 WC()->session->set( 'quote_cart', array() );
-    
-                error_log( wc_get_page_permalink( 'shop' ) );
+
                 // Redirect or show success message
-                wp_redirect( wc_get_page_permalink( 'shop' ) );
+                wp_send_json_success(array('redirect' => wc_get_page_permalink( 'shop' )));
                 exit;
             }
         }
