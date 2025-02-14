@@ -35,7 +35,6 @@ class ACL_WC_RFQ_checkout {
 
     public static function acl_quote_form() {
         ?>
-        <form method="post" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>">
             <input type="hidden" name="action" value="acl_create_quote">
             <label for="acl_name">Name:</label><br>
             <input type="text" id="acl_name" name="acl_name" required><br>
@@ -47,8 +46,6 @@ class ACL_WC_RFQ_checkout {
             <input type="email" id="acl_email" name="acl_email" required><br>
             <label for="acl_postcode">Shipping Post Code:</label><br>
             <input type="text" id="acl_postcode" name="acl_postcode" required><br>
-            <input type="submit" value="Submit Quote">
-        </form>
         <?php
     }
     

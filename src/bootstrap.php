@@ -26,7 +26,7 @@ class ACLWcShortcodes {
 
         //Hook methods for Quote checkout and management
         add_action( 'init', array( 'ACLWcShortcodes\ACLWCRFQCheckout\ACL_WC_RFQ_checkout','acl_register_quote_post_type' ) );
-        add_action( 'woocommerce_before_cart', array ( 'ACLWcShortcodes\ACLWCRFQCheckout\ACL_WC_RFQ_checkout', 'acl_display_quote_form' ) ); 
+        add_action( 'acl_woocommerce_before_cart', array ( 'ACLWcShortcodes\ACLWCRFQCheckout\ACL_WC_RFQ_checkout', 'acl_display_quote_form' ) ); 
         add_action( 'admin_post_acl_create_quote', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_process_quote_submission' ) );
         add_action( 'admin_post_nopriv_acl_create_quote', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_process_quote_submission' ) );               
 
