@@ -1,33 +1,36 @@
 jQuery(document).ready(function($) {
-
+    // Quote Submission Form
     $('.acl_quote_submission_form').on('submit', function(e) {
         e.preventDefault();
-        console.log('Form submit event triggered');
+        console.log('Quote form submit event triggered');
         
         var formData = $(this).serialize();
         
         $.ajax({
             type: 'POST',
             url: acl_wc_shortcodes.ajax_url,
-            data: formData + '&action=acl_create_quote', // Append action to ensure the correct function is called
+            data: formData + '&action=acl_create_quote',
             success: function(response) {
                 console.log('Quote submission response:', response);
                 if (response.success) {
                     console.log('Quote submitted successfully');
                     if (response.data.redirect) {
-                        window.location.href = response.data.redirect;                    
+                        window.location.href = response.data.redirect;
+                    } else {
+                        alert('Quote submitted successfully, but no redirect URL provided.');
+                    }
                 } else {
-                    alert('Quote submitted successfully, but no redirect URL provided.');
                     console.error('Error submitting quote:', response.data);
-                }                
+                }
             },
             error: function(xhr, status, error) {
                 console.error('AJAX submission error:', status, error);
                 console.error('Error details:', xhr.responseText);
             }
         });
-    });    
+    });
 
+    // Add to Quote Cart
     $('.quote-button').on('click', function(e) {
         e.preventDefault();
         var productId = $(this).data('product-id');
@@ -67,7 +70,7 @@ jQuery(document).ready(function($) {
             input.val(newVal).change();
             updateMiniCart(input.attr('name').match(/\d+/)[0], newVal);
         }
-    });    
+    });
 
     // Decrement Quantity
     $('.acl_minus_qty').on('click', function() {
@@ -80,23 +83,11 @@ jQuery(document).ready(function($) {
         }
     });
 
+    // Update Quantity on Blur
     $('.acl_qty_input').on('blur', function() {
         var productId = $(this).attr('name').match(/\d+/)[0];
-        var qty = parseInt($(this).val(), 10); // Ensure it's a number
-        console.log ("Here 1");
-        if (!isNaN(qty) && qty > 0) { // Validate that qty is a positive number
-            console.log ('ProductId', productId,'Qty:',qty);
-            console.log('Sending AJAX request to:', acl_wc_shortcodes.ajax_url, 'Method:', 'POST');
-            console.log('Sending AJAX request:', {
-                url: acl_wc_shortcodes.ajax_url,
-                method: 'POST',
-                data: {
-                    'action': 'acl_update_quantity_in_quote_cart',
-                    'product_id': productId,
-                    'quantity': qty,
-                    'security': acl_wc_shortcodes.nonce
-                }
-            });
+        var qty = parseInt($(this).val(), 10);
+        if (!isNaN(qty) && qty > 0) {
             $.ajax({
                 type: 'POST',
                 url: acl_wc_shortcodes.ajax_url,
@@ -106,12 +97,9 @@ jQuery(document).ready(function($) {
                     'quantity': qty,
                     'security': acl_wc_shortcodes.nonce
                 },
-
                 success: function(response) {
-                    console.log('Server response:', response);
                     if (response.success) {
                         console.log('Quantity updated for product ID:', productId, 'to:', qty);
-                        // Update mini cart here
                         updateMiniCartDisplay(response.data.cart_count);
                     } else {
                         console.error('Error updating quantity:', response.data);
@@ -123,22 +111,19 @@ jQuery(document).ready(function($) {
             });
         } else {
             console.log('Invalid quantity entered for product ID:', productId);
-            // Optionally, reset to previous valid value or show an error message
         }
     });
 
+    // Update Quantity on Keyup with Delay
     $('.acl_qty_input').on('keyup', function() {
         var $input = $(this);
         var productId = $input.attr('name').match(/\d+/)[0];
         var qty = parseInt($input.val(), 10);
-    
-        // Clear any existing timeout for this input
+
         clearTimeout($input.data('timeout'));
-    
-        // Set a new timeout
+
         $input.data('timeout', setTimeout(function() {
             if (!isNaN(qty) && qty > 0) {
-                console.log('Updating quantity after delay for product ID:', productId, 'to:', qty);
                 $.ajax({
                     type: 'POST',
                     url: acl_wc_shortcodes.ajax_url,
@@ -163,12 +148,11 @@ jQuery(document).ready(function($) {
             } else {
                 console.log('Invalid quantity entered for product ID:', productId);
             }
-        }, 2000)); // 2000 milliseconds = 2 seconds
-    });    
+        }, 2000));
+    });
 
-    // Function to update mini cart
+    // Update Mini Cart Function
     function updateMiniCart(productId, newQuantity) {
-        console.log (productId, newQuantity);
         $.ajax({
             type: 'POST',
             url: acl_wc_shortcodes.ajax_url,
@@ -192,54 +176,26 @@ jQuery(document).ready(function($) {
         });
     }
 
-    // Function to update mini cart display
+    // Update Mini Cart Display Function
     function updateMiniCartDisplay(count) {
         var cartElement = $('.acl-mini-rfq-cart a');
         if (cartElement.length) {
             cartElement.text('RFQ Cart: ' + count + ' item(s)');
         }
-    }    
-
-
-    // Update Quantity
-    $('.acl_qty_input').on('change', function() {
-        console.log ("Here");
-        var productId = $(this).attr('name').match(/\d+/)[0];
-        var qty = $(this).val();
-        $.ajax({
-            type: 'POST',
-            url: acl_wc_shortcodes.ajax_url,
-            data: {
-                'action': 'acl_update_quantity_in_quote_cart',
-                'product_id': productId,
-                'quantity': qty,
-                'security': acl_wc_shortcodes.nonce
-            },
-            success: function(response) {
-                if (response.success) {
-                    console.log('Quantity updated for product ID:', productId, 'to:', qty);
-                } else {
-                    console.error('Error updating quantity:', response.data);
-                }
-            },
-            error: function(error) {
-                console.error('Error updating quantity:', error);
-            }
-        });
-    });
+    }
 
     // Remove from Quote Cart
     $(document).on('click', '.acl_remove_from_quote_cart', function(e) {
         console.log('Remove clicked');
         e.preventDefault();
         var productId = $(this).data('product-id');
-        var quantity = $(this).closest('tr').find('.acl_qty_input').val(); // Get the quantity of the item being removed
-        
+        var quantity = $(this).closest('tr').find('.acl_qty_input').val();
+
         $.ajax({
             type: 'POST',
             url: acl_wc_shortcodes.ajax_url,
             data: {
-                'action': 'acl_remove_from_quote_cart', // Ensure this matches the action in your PHP hook
+                'action': 'acl_remove_from_quote_cart',
                 'product_id': productId,
                 'quantity': quantity,
                 'security': acl_wc_shortcodes.nonce
@@ -247,9 +203,7 @@ jQuery(document).ready(function($) {
             success: function(response) {
                 if (response.success) {
                     console.log('Product removed from quote cart:', productId);
-                    // Remove the row from the DOM
                     $(e.target).closest('tr').remove();
-                    // Update mini cart if needed
                     var cartElement = $('.acl-mini-rfq-cart a');
                     if (cartElement.length) {
                         var newCount = response.data.cart_count || (parseInt(cartElement.text().match(/\d+/)[0]) || 0) - 1;
@@ -265,15 +219,16 @@ jQuery(document).ready(function($) {
         });
     });
 
-    // Update Cart Button
-    $('form.woocommerce-cart-form').on('submit', function(e) {
+    // Update Cart Button (for updating all quantities)
+    $('form.woocommerce-cart-form:not(.acl_quote_submission_form)').on('submit', function(e) {
         e.preventDefault();
-        console.log('Form submit event triggered');
+        console.log('Form submit event triggered for cart update');
         var quantities = {};
         $('.acl_qty_input').each(function() {
             var productId = $(this).attr('name').match(/\d+/)[0];
             quantities[productId] = $(this).val();
         });
         console.log('Update quantities:', quantities);
+        // Here you would implement an AJAX call to update all quantities at once if needed
     });
 });
