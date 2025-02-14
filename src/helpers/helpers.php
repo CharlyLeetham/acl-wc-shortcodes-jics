@@ -286,6 +286,7 @@ class ACL_WC_Helpers {
     } 
     
     public static function acl_process_quote_submission() {
+        error_log ("entring process quote submission");
         if ( isset( $_POST['action'] ) && $_POST['action'] == 'acl_create_quote' ) {
             $name = sanitize_text_field( $_POST['acl_name'] );
             $address = sanitize_text_field( $_POST['acl_address'] );
