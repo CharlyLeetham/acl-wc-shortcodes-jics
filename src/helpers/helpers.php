@@ -283,6 +283,63 @@ class ACL_WC_Helpers {
         } else {
             wp_send_json_error('Invalid product ID or quantity');
         }
+    } 
+    
+    public static function acl_process_quote_submission() {
+        if ( isset( $_POST['action'] ) && $_POST['action'] == 'acl_create_quote' ) {
+            $name = sanitize_text_field( $_POST['acl_name'] );
+            $address = sanitize_text_field( $_POST['acl_address'] );
+            $phone = sanitize_text_field( $_POST['acl_phone'] );
+            $email = sanitize_email( $_POST['acl_email'] );
+            $postcode = sanitize_text_field( $_POST['acl_postcode'] );
+    
+            // Create a new quote post
+            $quote_id = wp_insert_post( array(
+                'post_type'   => 'acl_quote',
+                'post_title'  => sprintf( 'Quote for %s', $name ),
+                'post_status' => 'publish',
+                'post_author' => get_current_user_id(),
+            ) );
+    
+            if ( $quote_id ) {
+                // Save quote details as meta data
+                update_post_meta( $quote_id, '_acl_name', $name );
+                update_post_meta( $quote_id, '_acl_address', $address );
+                update_post_meta( $quote_id, '_acl_phone', $phone );
+                update_post_meta( $quote_id, '_acl_email', $email );
+                update_post_meta( $quote_id, '_acl_postcode', $postcode );
+    
+                // Optionally, link this quote to the current cart session
+                $quote_cart = WC()->session->get( 'quote_cart', array() );
+                update_post_meta( $quote_id, '_acl_quote_items', $quote_cart );
+    
+                // Send email
+                self::acl_send_quote_email( $quote_id );
+    
+                // Clear the quote cart
+                WC()->session->set( 'quote_cart', array() );
+    
+                // Redirect or show success message
+                wp_redirect( wc_get_page_permalink( 'shop' ) );
+                exit;
+            }
+        }
+    } 
+    
+    public static function acl_send_quote_email( $quote_id ) {
+        $quote_details = get_post_meta( $quote_id );
+        $email = $quote_details['_acl_email'][0];
+        $to = get_option( 'admin_email' ); // Or any other appropriate email
+        $subject = 'New Quote Request';
+        $message = "A new quote request has been submitted:\n";
+        $message .= "Name: " . $quote_details['_acl_name'][0] . "\n";
+        $message .= "Email: " . $email . "\n";
+        $message .= "Phone: " . $quote_details['_acl_phone'][0] . "\n";
+        $message .= "Address: " . $quote_details['_acl_address'][0] . "\n";
+        $message .= "Post Code: " . $quote_details['_acl_postcode'][0] . "\n";
+        $message .= "Quote Items: " . print_r( $quote_details['_acl_quote_items'][0], true );
+    
+        wp_mail( $to, $subject, $message );
     }    
 
 }
