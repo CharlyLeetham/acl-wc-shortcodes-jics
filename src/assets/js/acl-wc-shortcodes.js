@@ -1,5 +1,32 @@
 jQuery(document).ready(function($) {
 
+    $('.acl_quote_submission_form').on('submit', function(e) {
+        e.preventDefault();
+        console.log('Form submit event triggered');
+        
+        var formData = $(this).serialize();
+        
+        $.ajax({
+            type: 'POST',
+            url: acl_wc_shortcodes.ajax_url,
+            data: formData + '&action=acl_create_quote', // Append action to ensure the correct function is called
+            success: function(response) {
+                console.log('Quote submission response:', response);
+                if (response.success) {
+                    console.log('Quote submitted successfully');
+                    // Here you might want to redirect or show a success message
+                    // Example: window.location.href = wc_get_page_permalink('shop');
+                } else {
+                    console.error('Error submitting quote:', response.data);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX submission error:', status, error);
+                console.error('Error details:', xhr.responseText);
+            }
+        });
+    });    
+
     $('.quote-button').on('click', function(e) {
         e.preventDefault();
         var productId = $(this).data('product-id');
