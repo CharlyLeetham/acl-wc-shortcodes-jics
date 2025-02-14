@@ -56,6 +56,12 @@ if ( empty( $quote_cart ) ) {
             </table>
             <input type="submit" class="button" name="acl_update_cart" value="<?php esc_attr_e( 'Update Cart', 'woocommerce' ); ?>" />
         </form>
+        <!-- New form for quote submission -->
+        <form method="post" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" class="acl_quote_submission_form">
+            <input type="hidden" name="action" value="acl_process_quote_checkout"> <!-- Assuming this is your quote submission action -->
+            <button type="submit" class="button alt" name="acl_place_quote" value="Submit Quote"><?php esc_html_e( 'Submit Quote', 'woocommerce' ); ?></button>
+        </form>
+        
     </div>
     <?php
 }
