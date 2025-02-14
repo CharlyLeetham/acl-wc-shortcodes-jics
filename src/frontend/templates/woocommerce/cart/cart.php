@@ -57,21 +57,6 @@ if ( empty( $quote_cart ) ) {
                     <?php } ?>
                 </tbody>
             </table>
-            
-            <h3><?php esc_html_e( 'Quote Details', 'woocommerce' ); ?></h3>
-            <div class="acl_quote_details">
-                <label for="acl_name"><?php esc_html_e( 'Name:', 'woocommerce' ); ?></label><br>
-                <input type="text" id="acl_name" name="acl_name" required><br>
-                <label for="acl_address"><?php esc_html_e( 'Address:', 'woocommerce' ); ?></label><br>
-                <input type="text" id="acl_address" name="acl_address"><br>
-                <label for="acl_phone"><?php esc_html_e( 'Phone Number:', 'woocommerce' ); ?></label><br>
-                <input type="tel" id="acl_phone" name="acl_phone" required><br>
-                <label for="acl_email"><?php esc_html_e( 'Email Address:', 'woocommerce' ); ?></label><br>
-                <input type="email" id="acl_email" name="acl_email" required><br>
-                <label for="acl_postcode"><?php esc_html_e( 'Shipping Post Code:', 'woocommerce' ); ?></label><br>
-                <input type="text" id="acl_postcode" name="acl_postcode" required><br>
-            </div>
-
             <input type="submit" class="button" name="acl_update_cart" value="<?php esc_attr_e( 'Update Cart', 'woocommerce' ); ?>" />
             <button type="submit" class="button alt" name="acl_place_quote" value="Submit Quote"><?php esc_html_e( 'Submit Quote', 'woocommerce' ); ?></button>
         </form>
