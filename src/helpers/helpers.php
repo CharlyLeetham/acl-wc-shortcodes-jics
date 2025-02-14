@@ -286,8 +286,6 @@ class ACL_WC_Helpers {
     } 
     
     public static function acl_process_quote_submission() {
-        error_log ("entring process quote submission");
-        error_log(var_export($_POST, true));
         if ( isset( $_POST['action'] ) && $_POST['action'] == 'acl_create_quote' ) {
             $name = sanitize_text_field( $_POST['acl_name'] );
             $address = sanitize_text_field( $_POST['acl_address'] );
@@ -321,6 +319,7 @@ class ACL_WC_Helpers {
                 // Clear the quote cart
                 WC()->session->set( 'quote_cart', array() );
     
+                error_log( wc_get_page_permalink( 'shop' ) );
                 // Redirect or show success message
                 wp_redirect( wc_get_page_permalink( 'shop' ) );
                 exit;
