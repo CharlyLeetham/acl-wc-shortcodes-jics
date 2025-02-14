@@ -20,7 +20,10 @@ if ( empty( $quote_cart ) ) {
     }
     ?>
     <div class="woocommerce">
-        <form class="woocommerce-cart-form" action="<?php echo esc_url( wc_get_cart_url() ); ?>" method="post">
+        <form class="woocommerce-cart-form acl_quote_submission_form" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post">
+            <?php wp_nonce_field( 'acl_quote_submission', 'acl_quote_nonce' ); ?>
+            <input type="hidden" name="action" value="acl_create_quote">
+            
             <?php do_action( 'acl_woocommerce_before_cart_table' ); ?>
             <table class="shop_table shop_table_responsive cart woocommerce-cart-form__contents" cellspacing="0">
                 <thead>
@@ -54,14 +57,24 @@ if ( empty( $quote_cart ) ) {
                     <?php } ?>
                 </tbody>
             </table>
+            
+            <h3><?php esc_html_e( 'Quote Details', 'woocommerce' ); ?></h3>
+            <div class="acl_quote_details">
+                <label for="acl_name"><?php esc_html_e( 'Name:', 'woocommerce' ); ?></label><br>
+                <input type="text" id="acl_name" name="acl_name" required><br>
+                <label for="acl_address"><?php esc_html_e( 'Address:', 'woocommerce' ); ?></label><br>
+                <input type="text" id="acl_address" name="acl_address"><br>
+                <label for="acl_phone"><?php esc_html_e( 'Phone Number:', 'woocommerce' ); ?></label><br>
+                <input type="tel" id="acl_phone" name="acl_phone" required><br>
+                <label for="acl_email"><?php esc_html_e( 'Email Address:', 'woocommerce' ); ?></label><br>
+                <input type="email" id="acl_email" name="acl_email" required><br>
+                <label for="acl_postcode"><?php esc_html_e( 'Shipping Post Code:', 'woocommerce' ); ?></label><br>
+                <input type="text" id="acl_postcode" name="acl_postcode" required><br>
+            </div>
+
             <input type="submit" class="button" name="acl_update_cart" value="<?php esc_attr_e( 'Update Cart', 'woocommerce' ); ?>" />
-        </form>
-        <!-- New form for quote submission -->
-        <form method="post" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" class="acl_quote_submission_form">
-            <input type="hidden" name="action" value="acl_process_quote_checkout"> <!-- Assuming this is your quote submission action -->
             <button type="submit" class="button alt" name="acl_place_quote" value="Submit Quote"><?php esc_html_e( 'Submit Quote', 'woocommerce' ); ?></button>
         </form>
-        
     </div>
     <?php
 }
