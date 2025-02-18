@@ -35,17 +35,38 @@ class ACL_WC_RFQ_checkout {
 
     public static function acl_quote_form() {
         ?>
-            <input type="hidden" name="action" value="acl_create_quote">
-            <label for="acl_name">Name:</label><br>
-            <input type="text" id="acl_name" name="acl_name" required><br>
-            <label for="acl_address">Address:</label><br>
-            <input type="text" id="acl_address" name="acl_address"><br>
-            <label for="acl_phone">Phone Number:</label><br>
-            <input type="tel" id="acl_phone" name="acl_phone" required><br>
-            <label for="acl_email">Email Address:</label><br>
-            <input type="email" id="acl_email" name="acl_email" required><br>
-            <label for="acl_postcode">Shipping Post Code:</label><br>
-            <input type="text" id="acl_postcode" name="acl_postcode" required><br>
+        <div class="rfq-form-layout">
+            <div class="form-row">
+                <label for="acl_first_name">First Name:</label>
+                <input type="text" id="acl_first_name" name="acl_first_name" required>
+                <label for="acl_last_name">Last Name:</label>
+                <input type="text" id="acl_last_name" name="acl_last_name" required>
+            </div>
+            <div class="form-row">
+                <label for="acl_email">Email Address:</label>
+                <input type="email" id="acl_email" name="acl_email" required>
+                <label for="acl_phone">Phone Number:</label>
+                <input type="tel" id="acl_phone" name="acl_phone" required>
+            </div>
+            <div class="form-row">
+                <label for="acl_address_line1">Shipping Address Line 1:</label>
+                <input type="text" id="acl_address_line1" name="acl_address_line1" required>
+            </div>
+            <div class="form-row">
+                <label for="acl_address_line2">Shipping Address Line 2:</label>
+                <input type="text" id="acl_address_line2" name="acl_address_line2">
+            </div>
+            <div class="form-row">
+                <label for="acl_suburb">Shipping Suburb:</label>
+                <input type="text" id="acl_suburb" name="acl_suburb" required>
+                <label for="acl_state">Shipping State:</label>
+                <input type="text" id="acl_state" name="acl_state" required>
+            </div>
+            <div class="form-row">
+                <label for="acl_postcode">Shipping Post Code:</label>
+                <input type="text" id="acl_postcode" name="acl_postcode" required>
+            </div>
+        </div>
         <?php
     }
     
