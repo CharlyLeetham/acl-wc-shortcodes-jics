@@ -156,7 +156,7 @@
 }
 
 .woocommerce form .rfq-form-layout .field-group {
-    width: calc(50% - 10px); /* Two fields per row, with some space between */
+    width: calc(50% - 20px); /* Two fields per row, with some space between */
     margin-right: 10px;
 }
 
