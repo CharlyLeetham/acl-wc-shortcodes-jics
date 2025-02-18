@@ -156,8 +156,8 @@
 }
 
 .woocommerce form .rfq-form-layout .field-group {
-    width: calc(50% - 5px); /* Two fields per row, with some space between */
-    margin-right: 5px;
+    width: calc(50% - 10px); /* Two fields per row, with some space between */
+    margin-right: 10px;
 }
 
 .woocommerce form .rfq-form-layout .field-group:last-child {
@@ -172,7 +172,7 @@
 }
 
 .woocommerce form .rfq-form-layout .field-group input {
-    width: 100%;
+    width: calc(100% - 10px);
 }
 
 .woocommerce form .rfq-form-layout .form-row.single-field .field-group {
