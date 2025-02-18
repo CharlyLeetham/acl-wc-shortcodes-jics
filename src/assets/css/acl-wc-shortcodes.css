@@ -142,38 +142,38 @@
     margin-right: 0;
 }
 
-.rfq-form-layout {
+.woocommerce form .rfq-form-layout {
     width: 100%; /* Adjust as needed */
     margin: 0 auto;
 }
 
-.rfq-form-layout .form-row {
+.woocommerce form .rfq-form-layout .form-row {
     display: flex;
     justify-content: space-between;
     margin-bottom: 5px; /* Reduced from 10px */
 }
 
-.rfq-form-layout .form-row label, .rfq-form-layout .form-row input {
+.woocommerce form .rfq-form-layout .form-row label, .woocommerce form .rfq-form-layout .form-row input {
     flex: 1;
     margin-right: 5px; /* Reduced from 10px */
 }
 
-.rfq-form-layout .form-row input:last-child {
+.woocommerce form .rfq-form-layout .form-row input:last-child {
     margin-right: 0;
 }
 
 /* For labels and inputs on the same row */
-.rfq-form-layout .form-row label {
+.woocommerce form .rfq-form-layout .form-row label {
     margin-bottom: 2px; /* Reduced from 5px */
     display: block;
 }
 
 /* Adjust for multi-line address fields */
-.rfq-form-layout .form-row:nth-child(3), .rfq-form-layout .form-row:nth-child(4) {
+.woocommerce form .rfq-form-layout .form-row:nth-child(3), .woocommerce form .rfq-form-layout .form-row:nth-child(4) {
     flex-direction: column;
 }
 
-.rfq-form-layout .form-row:nth-child(3) input, .rfq-form-layout .form-row:nth-child(4) input {
+.woocommerce form .rfq-form-layout .form-row:nth-child(3) input, .woocommerce form .rfq-form-layout .form-row:nth-child(4) input {
     flex: none;
     width: 100%;
 }
