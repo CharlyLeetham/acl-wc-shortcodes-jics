@@ -177,14 +177,12 @@
 
 .woocommerce form .rfq-form-layout .form-row.single-field .field-group {
     width: 100%;
-    margin-right: 0; /* Removes margin for full-width fields */
+    margin-left: 10px; /* Half of (50% - 5px)/2 */
+    box-sizing: border-box; /* Ensures padding is included in the width */
 }
 
-.woocommerce form .rfq-form-layout .form-row.single-field .field-group {
-    width: 100%;
-    padding-left: 5px; /* Half of (50% - 5px)/2 */
-    padding-right: 5px; /* Half of (50% - 5px)/2 */
-    box-sizing: border-box; /* Ensures padding is included in the width */
+.woocommerce form .rfq-form-layout .form-row.single-field .field-group input {
+    width: calc(100%);
 }
 
 @media (min-width: 900px) {
