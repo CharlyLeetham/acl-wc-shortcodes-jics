@@ -142,6 +142,9 @@
     margin-right: 0;
 }
 
+
+/* RFQ Cart Layout */
+
 .woocommerce form .rfq-form-layout {
     width: 100%; /* Adjust as needed */
     margin: 0 auto;
@@ -150,12 +153,17 @@
 .woocommerce form .rfq-form-layout .form-row {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 5px; /* Reduced from 10px */
+    margin-bottom: 5px;
 }
 
-.woocommerce form .rfq-form-layout .form-row label, .woocommerce form .rfq-form-layout .form-row input {
-    flex: 1;
-    margin-right: 5px; /* Reduced from 10px */
+.woocommerce form .rfq-form-layout .form-row label {
+    margin-right: 5px; /* Space between label and input */
+    flex: 0 0 auto; /* Prevents label from growing */
+}
+
+.woocommerce form .rfq-form-layout .form-row input {
+    flex: 1 1 auto; /* Allows input to grow and take remaining space */
+    margin-right: 10px; /* Space between inputs */
 }
 
 .woocommerce form .rfq-form-layout .form-row input:last-child {
@@ -164,8 +172,7 @@
 
 /* For labels and inputs on the same row */
 .woocommerce form .rfq-form-layout .form-row label {
-    margin-bottom: 2px; /* Reduced from 5px */
-    display: block;
+    margin-bottom: 0; /* No additional bottom margin */
 }
 
 /* Adjust for multi-line address fields */
