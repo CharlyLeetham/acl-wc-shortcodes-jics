@@ -156,13 +156,19 @@
 }
 
 .woocommerce form .rfq-form-layout .field-group {
-    width: 50%;
+    width: calc(50% - 5px); /* Two fields per row, with some space between */
+    margin-right: 5px;
+}
+
+.woocommerce form .rfq-form-layout .field-group:last-child {
+    margin-right: 0; /* Removes margin from the last child to prevent overflow */
 }
 
 .woocommerce form .rfq-form-layout .field-group label {
     text-align: right;
     display: block;
     margin-bottom: 5px;
+    width: 100%; /* Ensures label spans full width of field group */
 }
 
 .woocommerce form .rfq-form-layout .field-group input {
@@ -171,6 +177,7 @@
 
 .woocommerce form .rfq-form-layout .form-row.single-field .field-group {
     width: 100%;
+    margin-right: 0; /* Removes margin for full-width fields */
 }
 
 @media (min-width: 900px) {
