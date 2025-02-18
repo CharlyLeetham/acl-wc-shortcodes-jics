@@ -147,39 +147,30 @@
 
 .woocommerce form .rfq-form-layout {
     width: 100%; /* Adjust as needed */
-    margin: 0 auto;
 }
 
 .woocommerce form .rfq-form-layout .form-row {
     display: flex;
     justify-content: space-between;
-    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.woocommerce form .rfq-form-layout .field-group {
+    width: 50%;
+}
+
+.woocommerce form .rfq-form-layout .field-group label {
+    text-align: right;
+    display: block;
     margin-bottom: 5px;
 }
 
-.woocommerce form .rfq-form-layout .form-row label, 
-.woocommerce form .rfq-form-layout .form-row input {
-    width: calc(50% - 5px); /* Two fields per row, accounting for margin */
-    margin: 0 5px 5px 0; /* Top and right margin */
-}
-
-.woocommerce form .rfq-form-layout .form-row input {
-    margin-bottom: 10px; /* Space below inputs */
-}
-
-/* For single column fields like address lines */
-.woocommerce form .rfq-form-layout .form-row:nth-child(3) label,
-.woocommerce form .rfq-form-layout .form-row:nth-child(4) label,
-.woocommerce form .rfq-form-layout .form-row:nth-child(3) input,
-.woocommerce form .rfq-form-layout .form-row:nth-child(4) input {
+.woocommerce form .rfq-form-layout .field-group input {
     width: 100%;
-    margin-right: 0; /* No right margin for full-width fields */
 }
 
-/* Clear right margin on every second element in a row */
-.woocommerce form .rfq-form-layout .form-row label:nth-child(2n),
-.woocommerce form .rfq-form-layout .form-row input:nth-child(2n) {
-    margin-right: 0;
+.woocommerce form .rfq-form-layout .form-row.single-field .field-group {
+    width: 100%;
 }
 
 @media (min-width: 900px) {
