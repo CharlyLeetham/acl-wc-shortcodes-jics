@@ -165,7 +165,7 @@
 }
 
 .woocommerce form .rfq-form-layout .field-group label {
-    text-align: right;
+    text-align: left;
     display: block;
     margin-bottom: 5px;
     width: 100%; /* Ensures label spans full width of field group */
