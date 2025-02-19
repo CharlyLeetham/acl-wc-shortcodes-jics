@@ -343,7 +343,7 @@ class ACL_WC_Helpers {
     
         if ( class_exists('ACLWcShortcodes\ACLWCRFQWCEMail\ACL_WC_RFQ_Email') ) {
             error_log("✅ ACL_WC_RFQ_Email class exists!");
-            $emails['ACL_WC_RFQ_Email'] = new \ACLWCRFQWCEMail\ACL_WC_RFQ_Email();
+            $emails['ACL_WC_RFQ_Email'] = new \ACLWcShortcodes\ACLWCRFQWCEMail\ACL_WC_RFQ_Email();
         } else {
             error_log("❌ ACL_WC_RFQ_Email class NOT FOUND!");
         }
