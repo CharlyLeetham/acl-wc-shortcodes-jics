@@ -68,3 +68,11 @@ function acl_load_rfq_email( $emails ) {
         $emails['ACL_WC_RFQ_Email'] = new ACL_WC_RFQ_Email(); // Register it
         return $emails;
 }
+
+add_action('init', function() {
+    if ( class_exists('ACLWcShortcodes\ACLWCRFQWCEMail\ACL_WC_RFQ_Email') ) {
+        error_log("✅ ACL_WC_RFQ_Email is loaded!");
+    } else {
+        error_log("❌ ACL_WC_RFQ_Email is NOT loaded!");
+    }
+});
