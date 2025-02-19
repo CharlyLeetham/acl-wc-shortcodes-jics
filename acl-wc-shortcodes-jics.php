@@ -56,24 +56,4 @@ try {
     }
 }
 
-add_action( 'woocommerce_loaded', 'acl_load_wc_email', 10, 1 );
 
-function acl_load_wc_email( $emails ) {
-    error_log("🚀 woocommerce_loaded hook executed");
-    add_filter( 'woocommerce_email_classes', 'acl_load_rfq_email', 10, 1 );
-}
-
-function acl_load_rfq_email( $emails ) {
-        error_log('woocommerce_email_classes filter executed.');
-        require_once ACL_WC_SHORTCODES_PATH . 'src/frontend/ACL_WC_rfq_email.php'; // Include your custom email class
-        $emails['ACL_WC_RFQ_Email'] = new ACL_WC_RFQ_Email(); // Register it
-        return $emails;
-}
-
-add_action('init', function() {
-    if ( class_exists('ACLWcShortcodes\ACLWCRFQWCEMail\ACL_WC_RFQ_Email') ) {
-        error_log("✅ ACL_WC_RFQ_Email is loaded!");
-    } else {
-        error_log("❌ ACL_WC_RFQ_Email is NOT loaded!");
-    }
-});

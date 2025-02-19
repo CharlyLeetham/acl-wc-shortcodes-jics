@@ -6,6 +6,7 @@
 
 namespace ACLWcShortcodes\Helpers;
 use ACLWcShortcodes\ACLWCRFQCart\ACL_WC_RFQ_cart;
+use ACLWcShortcodes\ACLWCRFQWCEMail\ACL_WC_RFQ_Email;
 
 class ACL_WC_Helpers {
     /**
@@ -333,6 +334,26 @@ class ACL_WC_Helpers {
                 exit;
             }
         }
-    }   
+    } 
+    
+    public static function acl_register_custom_email( $emails ) {
+        error_log('🚀 woocommerce_email_classes filter executed.');
+    
+        require_once ACL_WC_SHORTCODES_PATH . 'src/frontend/ACL_WC_rfq_email.php'; // Ensure the file is loaded
+    
+        if ( class_exists('ACLWcShortcodes\ACLWCRFQWCEMail\ACL_WC_RFQ_Email') ) {
+            error_log("✅ ACL_WC_RFQ_Email class exists!");
+            $emails['ACL_WC_RFQ_Email'] = new ACLWCRFQWCEMail\ACL_WC_RFQ_Email();
+        } else {
+            error_log("❌ ACL_WC_RFQ_Email class NOT FOUND!");
+        }
+    
+        return $emails;
+    }
+
+    public static function acl_ensure_email_system_ready() {
+        error_log("🚀 WooCommerce has initialized, ensuring email system is ready.");
+        WC()->mailer()->get_emails(); // This ensures `woocommerce_email_classes` gets applied
+    }
 
 }
