@@ -56,7 +56,7 @@ try {
     }
 }
 
-add_action('woocommerce_loaded', 'acl_load_wc_email');
+add_action('woocommerce_email_classes', 'acl_load_wc_email');
 
 function acl_load_wc_email() {
     //require_once ACL_WC_SHORTCODES_PATH . 'src/frontend/ACL_WC_rfq_email.php';
@@ -68,15 +68,5 @@ function acl_load_wc_email() {
         error_log('WC_Email class exists and is available.');
     } else {
         error_log('WC_Email class NOT found.');
-    }
-}
-
-add_action('plugins_loaded', 'acl_testwc', 20);
-
-function acl_testwc() {
-    if (class_exists('WooCommerce')) {
-        error_log('WooCommerce is loaded.');
-    } else {
-        error_log('WooCommerce is NOT loaded.');
     }
 }
