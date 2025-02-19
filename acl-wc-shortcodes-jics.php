@@ -62,3 +62,12 @@ function acl_load_wc_email() {
     error_log ("Woocommerce Loaded. Email loaded.");
     require_once ACL_WC_SHORTCODES_PATH . 'src/frontend/ACL_WC_rfq_email.php';
 }
+
+function acl_check_wc_email() {
+    if ( class_exists('WC_Email') ) {
+        error_log('WC_Email class exists and is available.');
+    } else {
+        error_log('WC_Email class NOT found.');
+    }
+}
+add_action ('woocommerce_loaded', acl_check_wc_email);
