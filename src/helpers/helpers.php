@@ -287,8 +287,12 @@ class ACL_WC_Helpers {
     
     public static function acl_process_quote_submission() {
         if ( isset( $_POST['action'] ) && $_POST['action'] == 'acl_create_quote' ) {
-            $name = sanitize_text_field( $_POST['acl_name'] );
-            $address = sanitize_text_field( $_POST['acl_address'] );
+            $firstname = sanitize_text_field( $_POST['acl_first_name'] );
+            $lastname = sanitize_text_field( $_POST['acl_last_name'] );
+            $address1 = sanitize_text_field( $_POST['acl_address_line1'] );
+            $address2 = sanitize_text_field( $_POST['acl_address_line2'] );
+            $suburb = sanitize_text_field( $_POST['acl_suburb'] );
+            $state = sanitize_text_field( $_POST['acl_state'] );            
             $phone = sanitize_text_field( $_POST['acl_phone'] );
             $email = sanitize_email( $_POST['acl_email'] );
             $postcode = sanitize_text_field( $_POST['acl_postcode'] );
@@ -303,8 +307,12 @@ class ACL_WC_Helpers {
     
             if ( $quote_id ) {
                 // Save quote details as meta data
-                update_post_meta( $quote_id, '_acl_name', $name );
-                update_post_meta( $quote_id, '_acl_address', $address );
+                update_post_meta( $quote_id, '_acl_first_name', $firstname );
+                update_post_meta( $quote_id, '_acl_last_name', $lastname );                
+                update_post_meta( $quote_id, '_acl_address1', $address1 );
+                update_post_meta( $quote_id, '_acl_address2', $address2 );
+                update_post_meta( $quote_id, '_acl_suburb', $suburb );
+                update_post_meta( $quote_id, '_acl_state', $state );                                                
                 update_post_meta( $quote_id, '_acl_phone', $phone );
                 update_post_meta( $quote_id, '_acl_email', $email );
                 update_post_meta( $quote_id, '_acl_postcode', $postcode );
@@ -313,8 +321,8 @@ class ACL_WC_Helpers {
                 $quote_cart = WC()->session->get( 'quote_cart', array() );
                 update_post_meta( $quote_id, '_acl_quote_items', $quote_cart );
     
-                // Send email
-                self::acl_send_quote_email( $quote_id );
+                // Trigger email sending through action hook
+                do_action( 'acl_quote_request_created', $quote_id );
     
                 // Clear the quote cart
                 WC()->session->set( 'quote_cart', array() );
@@ -324,22 +332,6 @@ class ACL_WC_Helpers {
                 exit;
             }
         }
-    } 
-    
-    public static function acl_send_quote_email( $quote_id ) {
-        $quote_details = get_post_meta( $quote_id );
-        $email = $quote_details['_acl_email'][0];
-        $to = get_option( 'admin_email' ); // Or any other appropriate email
-        $subject = 'New Quote Request';
-        $message = "A new quote request has been submitted:\n";
-        $message .= "Name: " . $quote_details['_acl_name'][0] . "\n";
-        $message .= "Email: " . $email . "\n";
-        $message .= "Phone: " . $quote_details['_acl_phone'][0] . "\n";
-        $message .= "Address: " . $quote_details['_acl_address'][0] . "\n";
-        $message .= "Post Code: " . $quote_details['_acl_postcode'][0] . "\n";
-        $message .= "Quote Items: " . print_r( $quote_details['_acl_quote_items'][0], true );
-    
-        wp_mail( $to, $subject, $message );
-    }    
+    }   
 
 }
