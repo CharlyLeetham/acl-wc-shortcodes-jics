@@ -59,6 +59,7 @@ try {
 add_action( 'woocommerce_loaded', 'acl_load_wc_email', 10, 1 );
 
 function acl_load_wc_email( $emails ) {
+    error_log("🚀 woocommerce_loaded hook executed");
     add_filter( 'woocommerce_email_classes', 'acl_load_rfq_email', 10, 1 );
 }
 
