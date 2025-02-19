@@ -37,7 +37,7 @@ try {
     require_once ACL_WC_SHORTCODES_PATH . 'src/helpers/helpers.php';
     require_once ACL_WC_SHORTCODES_PATH . 'src/frontend/ACL_WC_rfq_cart.php';
     require_once ACL_WC_SHORTCODES_PATH . 'src/frontend/ACL_WC_rfq_checkout.php';
-    require_once ACL_WC_SHORTCODES_PATH . 'src/frontend/ACL_WC_rfq_email.php';
+    //require_once ACL_WC_SHORTCODES_PATH . 'src/frontend/ACL_WC_rfq_email.php';
     require_once ACL_WC_SHORTCODES_PATH . 'src/bootstrap.php'; 
 
     // Initialize the plugin using the static init method
@@ -54,4 +54,10 @@ try {
             echo '<div class="notice notice-error"><p>' . esc_html__( 'ACL WC Shortcodes JICS Error:', 'acl-wc-shortcodes-jics' ) . ' ' . esc_html( $e->getMessage() ) . '</p></div>';
         } );
     }
+}
+
+add_action('woocommerce_loaded', 'acl_load_wc_email');
+
+function acl_load_wc_email() {
+    require_once ACL_WC_SHORTCODES_PATH . 'src/frontend/ACL_WC_rfq_checkout.php';
 }
