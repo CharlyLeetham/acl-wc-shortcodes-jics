@@ -7,7 +7,7 @@ use \WC_Email;
  * Class ACL_WC_RFQ_Email
  * Handles the functionality for email templates
  */
-class ACL_WC_RFQ_Email extends WC_Email {
+class ACL_WC_RFQ_Email extends \WC_Email {
 
     public function __construct() {
         // Email slug can be used in emails
