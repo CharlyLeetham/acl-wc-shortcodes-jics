@@ -67,3 +67,13 @@ function acl_load_wc_email() {
         error_log('WC_Email class NOT found.');
     }
 }
+
+add_action('plugins_loaded', 'acl_testwc', 20);
+
+function acl_testwc() {
+    if (class_exists('WooCommerce')) {
+        error_log('WooCommerce is loaded.');
+    } else {
+        error_log('WooCommerce is NOT loaded.');
+    }
+}
