@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Use the quote details passed from the email class
-$quote_details = isset( $quote_details ) ? $quote_details : array();
+$quote_items = isset( $quote_details['_acl_quote_items'][0] ) ? maybe_unserialize( $quote_details['_acl_quote_items'][0] ) : array();
 $email = isset( $quote_details['_acl_email'][0] ) ? $quote_details['_acl_email'][0] : '';
 $name = isset( $quote_details['_acl_first_name'][0] ) && isset( $quote_details['_acl_last_name'][0]) ? $quote_details['_acl_first_name'][0] . ' ' . $quote_details['_acl_last_name'][0] : '';
 $phone = isset( $quote_details['_acl_phone'][0] ) ? $quote_details['_acl_phone'][0] : '';
@@ -19,7 +19,6 @@ $address2 = isset( $quote_details['_acl_address2'][0] ) ? $quote_details['_acl_a
 $suburb = isset( $quote_details['_acl_suburb'][0] ) ? $quote_details['_acl_suburb'][0] : '';
 $state = isset( $quote_details['_acl_state'][0] ) ? $quote_details['_acl_state'][0] : '';
 $postcode = isset( $quote_details['_acl_postcode'][0] ) ? $quote_details['_acl_postcode'][0] : '';
-$quote_items = isset( $quote_details['_acl_quote_items'][0] ) ? $quote_details['_acl_quote_items'][0] : array();
 
 ?>
 <!DOCTYPE html>
@@ -65,7 +64,7 @@ $quote_items = isset( $quote_details['_acl_quote_items'][0] ) ? $quote_details['
         }
     </style>
 </head>
-<body <?php echo is_rtl() ? 'rightmargin' : 'leftmargin'; ?>="0" marginwidth="0" topmargin="0" marginheight="0" offset="0">
+<body dir="<?php echo is_rtl() ? 'rtl' : 'ltr'; ?>" style="margin: 0; padding: 0; width: 100%;">
     <table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" style="border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
         <tr>
             <td align="center" valign="top" style="padding: 0;">
@@ -97,8 +96,8 @@ $quote_items = isset( $quote_details['_acl_quote_items'][0] ) ? $quote_details['
                                     <td><strong><?php esc_html_e( 'Address:', 'woocommerce' ); ?></strong></td>
                                     <td>
                                         <?php echo esc_html( $address1 ); ?><br>
-                                        <?php echo esc_html( $address2 ); ?><br>
-                                        <?php echo esc_html( $suburb . ' ' . $state ); ?>
+                                        <?php echo ! empty( $address2 ) ? esc_html( $address2 ) . '<br>' : ''; ?>
+                                        <?php echo esc_html( trim( $suburb . ' ' . $state ) ); ?>
                                     </td>
                                 </tr>
                                 <tr>
@@ -109,11 +108,15 @@ $quote_items = isset( $quote_details['_acl_quote_items'][0] ) ? $quote_details['
                                     <td><strong><?php esc_html_e( 'Quote Items:', 'woocommerce' ); ?></strong></td>
                                     <td>
                                         <?php 
-                                        if ( ! empty( $quote_items ) ) {
-                                            echo '<pre>' . esc_html( print_r( $quote_items, true ) ) . '</pre>';
-                                        } else {
-                                            echo esc_html__( 'No items specified.', 'woocommerce' );
-                                        }
+                                            if ( ! empty( $quote_items ) && is_array( $quote_items ) ) {
+                                                echo '<ul>';
+                                                foreach ( $quote_items as $item ) {
+                                                    echo '<li>' . esc_html( $item ) . '</li>';
+                                                }
+                                                echo '</ul>';
+                                            } else {
+                                                echo esc_html__( 'No items specified.', 'woocommerce' );
+                                            }
                                         ?>
                                     </td>
                                 </tr>

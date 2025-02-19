@@ -56,25 +56,15 @@ try {
     }
 }
 
-add_action( 'woocommerce_email_classes', 'acl_load_wc_email', 10, 1 );
+add_action( 'woocommerce_loaded', 'acl_load_wc_email', 10, 1 );
 
 function acl_load_wc_email( $emails ) {
+    add_filter( 'woocommerce_email_classes', 'acl_load_rfq_email', 10, 1 );
+}
 
-    //static $ran = false; // Track if function has run
-    //if ( $ran ) {
-       // return $emails;
-    //}
-    //$ran = true; // Mark function as executed
-
-    //require_once ACL_WC_SHORTCODES_PATH . 'src/frontend/ACL_WC_rfq_email.php';
-
-    if (!class_exists('WC_Email')) {
-        include_once WP_PLUGIN_DIR . '/woocommerce/includes/emails/class-wc-email.php';
-    }
-    
-    if ( class_exists('WC_Email') ) {
-        error_log('WC_Email class exists and is available.');
-    } else {
-        error_log('WC_Email class NOT found.');
-    }
+function acl_load_rfq_email( $emails ) {
+        error_log('woocommerce_email_classes filter executed.');
+        require_once ACL_WC_SHORTCODES_PATH . 'src/frontend/ACL_WC_rfq_email.php'; // Include your custom email class
+        $emails['ACL_WC_RFQ_Email'] = new ACL_WC_RFQ_Email(); // Register it
+        return $emails;
 }

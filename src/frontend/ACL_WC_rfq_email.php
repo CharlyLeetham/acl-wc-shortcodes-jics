@@ -1,7 +1,7 @@
 <?php
 namespace ACLWcShortcodes\ACLWCRFQWCEMail;
 use ACLWcShortcodes\Helpers\ACL_WC_Helpers;
-use \WC_Email;
+
 
 /**
  * Class ACL_WC_RFQ_Email
@@ -33,10 +33,14 @@ class ACL_WC_RFQ_Email extends \WC_Email {
 
     public function trigger( $quote_id ) {
         if ( $quote_id ) {
-            $this->object = wc_get_product( $quote_id );
+            $this->object = get_post( $quote_id );
             $this->placeholders['{quote_id}'] = $quote_id;
             $this->send( get_option( 'admin_email' ), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
         }
+    }
+
+    public function get_headers() {
+        return "Content-Type: text/html\r\n";
     }
 
     public function get_subject() {
@@ -45,26 +49,29 @@ class ACL_WC_RFQ_Email extends \WC_Email {
 
     public function get_content_html() {
         ob_start();
+        $quote_meta = get_post_meta( $this->placeholders['{quote_id}'], '', true ); // Ensure correct format
         wc_get_template( $this->template_html, array(
             'quote_id'       => $this->placeholders['{quote_id}'],
             'email_heading'  => $this->get_heading(),
             'sent_to_admin'  => true,
             'plain_text'     => false,
             'email'          => $this,
-            'quote_details'  => get_post_meta( $this->placeholders['{quote_id}'] )
+            'quote_details'  => !empty($quote_meta) ? $quote_meta : array(), // Prevent null issues
         ), '', $this->template_base );
         return ob_get_clean();
     }    
 
+
     public function get_content_plain() {
         ob_start();
+        $quote_meta = get_post_meta( $this->placeholders['{quote_id}'], '', true );
         wc_get_template( $this->template_plain, array(
             'quote_id'       => $this->placeholders['{quote_id}'],
             'email_heading'  => $this->get_heading(),
             'sent_to_admin'  => true,
             'plain_text'     => true,
             'email'          => $this,
-            'quote_details'  => get_post_meta( $this->placeholders['{quote_id}'] )
+            'quote_details'  => !empty($quote_meta) ? $quote_meta : array(), // Prevent null issues
         ), '', $this->template_base );
         return ob_get_clean();
     }
@@ -74,12 +81,10 @@ class ACL_WC_RFQ_Email extends \WC_Email {
             'subject' => array(
                 'title'       => __( 'Subject', 'woocommerce' ),
                 'type'        => 'text',
-                'description' => sprintf( __( 'Defaults to <code>%s</code>', 'woocommerce' ), $this->get_default_subject() ),
-                'placeholder' => $this->get_default_subject(),
+                'description' => sprintf( __( 'Defaults to <code>%s</code>', 'woocommerce' ), $this->get_subject() ),
+                'placeholder' => $this->get_subject(),
                 'default'     => '',
             ),
         );
     }
 }
-
-return new ACL_WC_RFQ_Email();
