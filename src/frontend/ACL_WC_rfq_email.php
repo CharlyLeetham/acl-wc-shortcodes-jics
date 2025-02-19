@@ -1,6 +1,7 @@
 <?php
 namespace ACLWcShortcodes\ACLWCRFQWCEMail;
 use ACLWcShortcodes\Helpers\ACL_WC_Helpers;
+use WooCommerce;
 
 /**
  * Class ACL_WC_RFQ_Email
