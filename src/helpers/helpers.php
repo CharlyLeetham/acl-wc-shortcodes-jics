@@ -321,6 +321,7 @@ class ACL_WC_Helpers {
                 $quote_cart = WC()->session->get( 'quote_cart', array() );
                 update_post_meta( $quote_id, '_acl_quote_items', $quote_cart );
     
+                error_log ("We're in acl_process_quote_submission $quote_id");
                 // Trigger email sending through action hook
                 do_action( 'acl_quote_request_created', $quote_id );
     
