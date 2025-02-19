@@ -59,6 +59,6 @@ try {
 add_action('woocommerce_loaded', 'acl_load_wc_email');
 
 function acl_load_wc_email() {
-    error_log ("Woocommerce Loaded. Email loaded.")
+    error_log ("Woocommerce Loaded. Email loaded.");
     require_once ACL_WC_SHORTCODES_PATH . 'src/frontend/ACL_WC_rfq_email.php';
 }
