@@ -79,27 +79,53 @@ class ACL_WC_RFQ_Email extends \WC_Email {
     }
 
     public function get_content_html() {
-        error_log("ACL_WC_RFQ_Email: Generating HTML content for Quote ID: " . $this->placeholders['{quote_id}']);
+        error_log( "ACL_WC_RFQ_Email: Generating HTML content for Quote ID: " . $this->placeholders['{quote_id}'] );
+    
         ob_start();
-        $quote_meta = get_post_meta( $this->placeholders['{quote_id}'], '', true ); // Ensure correct format
+        
+        // Retrieve meta data for the quote
+        $quote_meta = get_post_meta( $this->placeholders['{quote_id}'], '', true );
+    
         if ( empty( $quote_meta ) ) {
             error_log("ACL_WC_RFQ_Email: No metadata found for Quote ID: " . $this->placeholders['{quote_id}']);
         }
-        wc_get_template( $this->template_html, array(
-            'quote_id'       => $this->placeholders['{quote_id}'],
-            'email_heading'  => $this->get_heading(),
-            'sent_to_admin'  => true,
-            'plain_text'     => false,
-            'email'          => $this,
-            'quote_details'  => !empty($quote_meta) ? $quote_meta : array(), // Prevent null issues
-        ), '', $this->template_base );
-        return ob_get_clean();
+    
+        // Ensure quote_items is properly unserialized
+        $quote_items = isset( $quote_meta['_acl_quote_items'][0] ) ? maybe_unserialize( $quote_meta['_acl_quote_items'][0] ) : array();
+        
+        if ( empty( $quote_items ) ) {
+            error_log("ACL_WC_RFQ_Email: No items found in quote!");
+        }
+    
+        wc_get_template(
+            $this->template_html,
+            array(
+                'quote_id'       => $this->placeholders['{quote_id}'],
+                'email_heading'  => $this->get_heading(),
+                'sent_to_admin'  => true,
+                'plain_text'     => false,
+                'email'          => $this,
+                'quote_details'  => !empty($quote_meta) ? $quote_meta : array(),
+                'quote_items'    => $quote_items, // Ensure quote items are passed to the template
+            ),
+            '',
+            $this->template_base
+        );
+    
+        $content = ob_get_clean(); // Store the generated content
+    
+        // Log if content is empty or successfully generated
         if ( empty( $content ) ) {
             error_log("ACL_WC_RFQ_Email: Generated email content is empty!");
         } else {
             error_log("ACL_WC_RFQ_Email: Email content generated successfully.");
         }
-    }    
+    
+        return $content; // Return content AFTER logging
+    }
+        
+
+    
 
 
     public function get_content_plain() {
