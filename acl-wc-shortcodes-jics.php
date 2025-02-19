@@ -61,7 +61,7 @@ add_action('woocommerce_email_classes', 'acl_load_wc_email');
 function acl_load_wc_email() {
     //require_once ACL_WC_SHORTCODES_PATH . 'src/frontend/ACL_WC_rfq_email.php';
     if (!class_exists('WC_Email')) {
-        include_once WP_PLUGIN_DIR . '/woocommerce/includes/emails/class-wc-email.php';
+        //include_once WP_PLUGIN_DIR . '/woocommerce/includes/emails/class-wc-email.php';
     }
     
     if ( class_exists('WC_Email') ) {
