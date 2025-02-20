@@ -33,7 +33,7 @@ class ACLWcShortcodes {
         //Activate the Email Template and mailing program
         add_filter('woocommerce_init', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_ensure_email_system_ready' ) );
         add_filter('woocommerce_email_classes', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_register_custom_email' ) );
-        add_action('admin_init', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_force_html_email_setting' ) );
+        add_action('admin_init', array( 'ACLWcShortcodes\ACLWCRFQWCEMail\ACL_WC_RFQ_Email', 'acl_force_html_email_setting' ) );
 
     }
 
