@@ -88,4 +88,14 @@ class ACL_WC_Shortcodes {
         ACL_WC_RFQ_cart::acl_rfq_cart_content(); // This should be the function that builds your RFQ cart
         return ob_get_clean();
     }
+
+    public static function acl_test_send_email_shortcode() {
+        $quote_id = 20585; // Replace with a valid quote ID
+    
+        error_log("🚀 Manually triggering acl_quote_request_created with Quote ID: $quote_id");
+    
+        do_action('acl_quote_request_created', $quote_id); // Triggers the email system
+    
+        return "<strong>✅ Test email function executed.</strong> Check your inbox and debug.log!";
+    }    
 }

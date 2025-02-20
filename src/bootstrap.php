@@ -70,6 +70,7 @@ class ACLWcShortcodes {
         add_action( 'woocommerce_single_product_summary', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_custom_product_buttons' ), 30 );
         add_shortcode( 'acl_mini_rfq_cart', array( 'ACLWcShortcodes\ACLWCShortcodes\ACL_WC_Shortcodes', 'acl_mini_rfq_cart_shortcode' ) );
         add_shortcode( 'acl_rfq_cart', array( 'ACLWcShortcodes\ACLWCShortcodes\ACL_WC_Shortcodes', 'acl_rfq_cart_shortcode' ) );   
+        add_shortcode( 'acl_test_send_email', array( 'ACLWcShortcodes\ACLWCShortcodes\ACL_WC_Shortcodes', 'acl_test_send_email_shortcode' ) );
     }
 
     public static function force_show_all_products( $visible, $product_id ) {
