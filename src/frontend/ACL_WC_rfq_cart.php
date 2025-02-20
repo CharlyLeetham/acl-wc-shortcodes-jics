@@ -15,33 +15,19 @@ class ACL_WC_RFQ_cart {
         if ( ! isset( WC()->session ) || ! WC()->session instanceof WC_Session ) {
             WC()->initialize_session();
         }
+        
         $session_id = is_user_logged_in() ? get_current_user_id() : WC()->session->get_customer_id();
-   
-        // Check if RFQ cart exists in the session
-        $quote_cart = WC()->session->get( 'quote_cart' );
-
-        // If there's no quote cart, attempt to retrieve it from wp_woocommerce_sessions
-        if (!$quote_cart) {
-            global $wpdb;
-            $session_data = $wpdb->get_var( $wpdb->prepare(
-                "SELECT session_value FROM {$wpdb->prefix}woocommerce_sessions WHERE session_key = %s",
-                $session_id
-            ) );
-
-            if ($session_data) {
-                $unserialized_data = maybe_unserialize( $session_data );
-                if ( !empty( $unserialized_data['quote_cart'] ) ) {
-                    $quote_cart = $unserialized_data['quote_cart'];
-                    WC()->session->set( ' quote_cart', $quote_cart );
-                }
-            }
+        
+        // Ensure session exists and retrieves correctly
+        $quote_cart = WC()->session->get( 'quote_cart', array() );
+    
+        // If quote_cart is somehow not an array, reset it
+        if ( ! is_array( $quote_cart ) ) {
+            $quote_cart = array();
         }
-
-        // Ensure session always has a quote cart
-        if (!$quote_cart) {
-            WC()->session->set( 'quote_cart', array() );
-        } 
-
+    
+        // Store the corrected cart back into session
+        WC()->session->set( 'quote_cart', $quote_cart );
     }
 
 
@@ -102,7 +88,7 @@ class ACL_WC_RFQ_cart {
             }
         }    
     }
-    
+
     /**
      * Send a quote request email to the shop owner.
      *
