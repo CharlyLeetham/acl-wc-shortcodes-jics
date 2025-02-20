@@ -91,21 +91,27 @@ class ACL_WC_RFQ_Email extends \WC_Email {
         error_log( "ACL_WC_RFQ_Email: Generating HTML content for Quote ID: " . $this->placeholders['{quote_id}'] );
     
         ob_start();
-        
+    
         // Retrieve meta data for the quote
         $quote_meta = get_post_meta( $this->placeholders['{quote_id}'], '', true );
     
-        if ( empty( $quote_meta ) ) {
-            error_log("ACL_WC_RFQ_Email: No metadata found for Quote ID: " . $this->placeholders['{quote_id}']);
+        // Get email and check if user was created
+        $email = $quote_meta['_acl_email'][0] ?? '';
+        $user = get_user_by( 'email', $email );
+        $password_message = '';
+    
+        if ( $user && get_user_meta( $user->ID, '_acl_generated_password', true ) ) {
+            // User was created during RFQ submission
+            $password_reset_link = wp_lostpassword_url();
+            $password_message = "
+                <h3>We've created an account for you to track your quote.</h3>
+                <p>Your username: <strong>{$email}</strong></p>
+                <p>To set your password, visit this link: <a href='{$password_reset_link}'>Reset Password</a></p>
+            ";
         }
     
         // Ensure quote_items is properly unserialized
         $quote_items = isset( $quote_meta['_acl_quote_items'][0] ) ? maybe_unserialize( $quote_meta['_acl_quote_items'][0] ) : array();
-        error_log("quote_items: $quote_items");
-        
-        if ( empty( $quote_items ) ) {
-            error_log("ACL_WC_RFQ_Email: No items found in quote!");
-        }
     
         wc_get_template(
             $this->template_html,
@@ -116,22 +122,14 @@ class ACL_WC_RFQ_Email extends \WC_Email {
                 'plain_text'     => false,
                 'email'          => $this,
                 'quote_details'  => !empty($quote_meta) ? $quote_meta : array(),
-                'quote_items'    => $quote_items, // Ensure quote items are passed to the template
+                'quote_items'    => $quote_items,
+                'password_message' => $password_message // Include new user message
             ),
             '',
             $this->template_base
         );
     
-        $content = ob_get_clean(); // Store the generated content
-    
-        // Log if content is empty or successfully generated
-        if ( empty( $content ) ) {
-            error_log("ACL_WC_RFQ_Email: Generated email content is empty!");
-        } else {
-            error_log("ACL_WC_RFQ_Email: Email content generated successfully.");
-        }
-    
-        return $content; // Return content AFTER logging
+        return ob_get_clean();
     }
     
     public function get_content_plain() {

@@ -32,11 +32,14 @@ class ACLWcShortcodes {
         add_action( 'wp_ajax_nopriv_acl_create_quote', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_process_quote_submission' ) );
         add_filter( 'wc_session_expiring', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_extend_session_lifetime' ) );
         add_filter( 'wc_session_expiration', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_extend_session_lifetime' ) );  
+        add_action( 'wp_ajax_acl_process_login', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_process_login_submission' ) );
+        add_action( 'wp_ajax_nopriv_acl_process_login', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_process_login_submission' ) );
+
         
         //Activate the Email Template and mailing program
-        add_filter('woocommerce_init', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_ensure_email_system_ready' ) );
-        add_filter('woocommerce_email_classes', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_register_custom_email' ) );
-        add_action('admin_init', array( 'ACLWcShortcodes\ACLWCRFQWCEMail\ACL_WC_RFQ_Email', 'acl_force_html_email_setting' ) );
+        add_filter( 'woocommerce_init', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_ensure_email_system_ready' ) );
+        add_filter( 'woocommerce_email_classes', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_register_custom_email' ) );
+        add_action( 'admin_init', array( 'ACLWcShortcodes\ACLWCRFQWCEMail\ACL_WC_RFQ_Email', 'acl_force_html_email_setting' ) );
 
     }
 
@@ -45,7 +48,7 @@ class ACLWcShortcodes {
         add_action( 'woocommerce_before_subcategory', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_woocommerce_template_loop_category_link_open' ), 10 );
         add_action( 'woocommerce_before_shop_loop_item', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_woocommerce_template_loop_product_link_open' ), 10 );
         add_action( 'woocommerce_shop_loop_subcategory_title', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_woocommerce_template_loop_category_title' ), 10 );
-        add_action ( 'woocommerce_after_shop_loop_item_title', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_woocommerce_template_loop_product_title' ), 10 );
+        add_action( 'woocommerce_after_shop_loop_item_title', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_woocommerce_template_loop_product_title' ), 10 );
     }
 
     public static function acl_wc_shortcodes_scripts() {

@@ -231,4 +231,46 @@ jQuery(document).ready(function($) {
         console.log('Update quantities:', quantities);
         // Here you would implement an AJAX call to update all quantities at once if needed
     });
+
+    // Submit Quote Form
+    $('.acl_quote_submission_form').on('submit', function(e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        
+        $.ajax({
+            type: 'POST',
+            url: acl_wc_shortcodes.ajax_url,
+            data: formData + '&action=acl_create_quote',
+            success: function(response) {
+                if (response.success) {
+                    if (response.login_form) {
+                        $('.acl_quote_submission_form').replaceWith(response.login_form);
+                    } else if (response.redirect) {
+                        window.location.href = response.redirect;
+                    }
+                } else {
+                    alert('Error: ' + response.message);
+                }
+            }
+        });
+    });
+
+    // Login Form Submission
+    $(document).on('submit', '.woocommerce-form-login', function(e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+
+        $.ajax({
+            type: 'POST',
+            url: acl_wc_shortcodes.ajax_url,
+            data: formData + '&action=acl_process_login',
+            success: function(response) {
+                if (response.success) {
+                    window.location.href = response.redirect;
+                } else {
+                    alert('Login failed: ' + response.message);
+                }
+            }
+        });
+    });    
 });
