@@ -48,6 +48,11 @@ class ACL_WC_RFQ_Email extends \WC_Email {
     
         $this->placeholders['{quote_id}'] = $quote_id;
         error_log("ACL_WC_RFQ_Email: Preparing to send email to admin: " . get_option( 'admin_email' ));
+
+        // Force WooCommerce to send the email as HTML
+        add_filter('woocommerce_mail_content_type', function() {
+            return 'text/html';
+        });
     
         // Log email parameters before sending
         $subject = $this->get_subject();
