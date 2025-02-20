@@ -50,9 +50,7 @@ class ACL_WC_RFQ_Email extends \WC_Email {
         error_log("ACL_WC_RFQ_Email: Preparing to send email to admin: " . get_option( 'admin_email' ));
 
         // Force WooCommerce to send the email as HTML
-        add_filter('woocommerce_mail_content_type', function() {
-            return 'text/html';
-        });
+        add_filter( 'woocommerce_mail_content_type', array( $this, 'set_email_content_type' ) );
     
         // Log email parameters before sending
         $subject = $this->get_subject();
@@ -74,6 +72,9 @@ class ACL_WC_RFQ_Email extends \WC_Email {
         error_log("ACL_WC_RFQ_Email: Email send() function executed.");
     }
     
+    public function set_email_content_type() {
+        return 'text/html';
+    }
 
     public function get_headers() {
         return "Content-Type: text/html\r\n";
