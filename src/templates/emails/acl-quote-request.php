@@ -124,7 +124,7 @@ $postcode = isset( $quote_details['_acl_postcode'][0] ) ? $quote_details['_acl_p
                     <!-- Footer -->
                     <tr>
                         <td class="footer" style="padding: 20px;">
-                            <p><?php echo esc_html( apply_filters( 'woocommerce_email_footer_text', get_option( 'woocommerce_email_footer_text' ) ) ); ?></p>
+                            <p><?php echo wp_kses_post( apply_filters( 'woocommerce_email_footer_text', get_option( 'woocommerce_email_footer_text' ) ) ); ?></p>
                         </td>
                     </tr>
                 </table>
