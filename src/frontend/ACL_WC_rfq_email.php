@@ -126,8 +126,20 @@ class ACL_WC_RFQ_Email extends \WC_Email {
     }
     
     public function get_content_plain() {
+        error_log( "ACL_WC_RFQ_Email: Generating Plain text content for Quote ID: " . $this->placeholders['{quote_id}'] );
         ob_start();
+
+        // Retrieve meta data for the quote
         $quote_meta = get_post_meta( $this->placeholders['{quote_id}'], '', true );
+
+        if ( empty( $quote_meta ) ) {
+            error_log("ACL_WC_RFQ_Email: No metadata found for Quote ID: " . $this->placeholders['{quote_id}']);
+        }
+    
+        // Ensure quote_items is properly unserialized
+        $quote_items = isset( $quote_meta['_acl_quote_items'][0] ) ? maybe_unserialize( $quote_meta['_acl_quote_items'][0] ) : array();
+        error_log("quote_items: $quote_items");
+
         wc_get_template( $this->template_plain, array(
             'quote_id'       => $this->placeholders['{quote_id}'],
             'email_heading'  => $this->get_heading(),
