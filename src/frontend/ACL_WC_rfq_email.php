@@ -172,7 +172,7 @@ class ACL_WC_RFQ_Email extends \WC_Email {
         );
     }
 
-    public function acl_force_html_email_setting() {
+    public static function acl_force_html_email_setting() {
         $email_settings = get_option( 'woocommerce_acl_quote_email_settings', array() );
     
         if ( ! isset($email_settings['email_type']) || $email_settings['email_type'] !== 'html' ) {
