@@ -39,8 +39,10 @@ echo esc_html( $suburb . ' ' . $state ) . "\n";
 echo esc_html__( 'Post Code:', 'woocommerce' ) . ' ' . esc_html( $postcode ) . "\n";
 echo esc_html__( 'Quote Items:', 'woocommerce' ) . "\n";
 
-if ( ! empty( $quote_items ) ) {
-    echo esc_html( print_r( $quote_items, true ) );
+if ( ! empty( $quote_items ) && is_array( $quote_items ) ) {
+    foreach ( $quote_items as $item ) {
+        echo esc_html__( '• ', 'woocommerce' ) . esc_html( $item['name'] ) . ' (' . esc_html( $item['quantity'] ) . ")\n";
+    }
 } else {
     echo esc_html__( 'No items specified.', 'woocommerce' ) . "\n";
 }
