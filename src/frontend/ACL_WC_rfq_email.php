@@ -16,6 +16,9 @@ class ACL_WC_RFQ_Email extends \WC_Email {
         $this->title = __( 'ACL Quote Request', 'woocommerce' );
         $this->description = __( 'This email is sent when a new quote request is submitted.', 'woocommerce' );
 
+        // Force WooCommerce to recognize this as an HTML email
+        $this->email_type = 'html';
+
         // Triggers for this email
         add_action( 'acl_quote_request_created', array( $this, 'trigger' ) );
 
@@ -167,5 +170,15 @@ class ACL_WC_RFQ_Email extends \WC_Email {
                 'default'     => '',
             ),
         );
+    }
+
+    public function acl_force_html_email_setting() {
+        $email_settings = get_option( 'woocommerce_acl_quote_email_settings', array() );
+    
+        if ( ! isset($email_settings['email_type']) || $email_settings['email_type'] !== 'html' ) {
+            $email_settings['email_type'] = 'html';
+            update_option( 'woocommerce_acl_quote_email_settings', $email_settings );
+            error_log ("✅ WooCommerce email type forced to HTML." );
+        }
     }
 }
