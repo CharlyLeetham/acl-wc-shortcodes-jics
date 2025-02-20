@@ -51,7 +51,7 @@ class ACL_WC_RFQ_Email extends \WC_Email {
     
         // Log email parameters before sending
         $subject = $this->get_subject();
-        $content = $this->get_content();
+        $content = $this->get_content_html();
         $headers = $this->get_headers();
     
         error_log("ACL_WC_RFQ_Email: Subject: " . $subject);
