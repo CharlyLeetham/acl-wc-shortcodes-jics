@@ -92,6 +92,7 @@ class ACL_WC_RFQ_Email extends \WC_Email {
     
         // Ensure quote_items is properly unserialized
         $quote_items = isset( $quote_meta['_acl_quote_items'][0] ) ? maybe_unserialize( $quote_meta['_acl_quote_items'][0] ) : array();
+        error_log("quote_items: $quote_items");
         
         if ( empty( $quote_items ) ) {
             error_log("ACL_WC_RFQ_Email: No items found in quote!");
@@ -123,11 +124,7 @@ class ACL_WC_RFQ_Email extends \WC_Email {
     
         return $content; // Return content AFTER logging
     }
-        
-
     
-
-
     public function get_content_plain() {
         ob_start();
         $quote_meta = get_post_meta( $this->placeholders['{quote_id}'], '', true );
