@@ -15,10 +15,30 @@ class ACL_WC_RFQ_cart {
         if ( ! isset( WC()->session ) || ! WC()->session instanceof WC_Session ) {
             WC()->initialize_session();
         }
-        $session_id = WC()->session->get_customer_id();
+        $session_id = is_user_logged_in() ? get_current_user_id() : WC()->session->get_customer_id();
    
-        // Check if quote_cart already exists, only initialize if it doesn't
-        if (!WC()->session->get( 'quote_cart' )) {
+        // Check if RFQ cart exists in the session
+        $quote_cart = WC()->session->get( 'quote_cart' );
+
+        // If there's no quote cart, attempt to retrieve it from wp_woocommerce_sessions
+        if (!$quote_cart) {
+            global $wpdb;
+            $session_data = $wpdb->get_var( $wpdb->prepare(
+                "SELECT session_value FROM {$wpdb->prefix}woocommerce_sessions WHERE session_key = %s",
+                $session_id
+            ) );
+
+            if ($session_data) {
+                $unserialized_data = maybe_unserialize( $session_data );
+                if ( !empty( $unserialized_data['quote_cart'] ) ) {
+                    $quote_cart = $unserialized_data['quote_cart'];
+                    WC()->session->set( ' quote_cart', $quote_cart );
+                }
+            }
+        }
+
+        // Ensure session always has a quote cart
+        if (!$quote_cart) {
             WC()->session->set( 'quote_cart', array() );
         } 
 
@@ -30,26 +50,59 @@ class ACL_WC_RFQ_cart {
      *
      * @param int $product_id The ID of the product to add to the quote cart.
      */
-    public static function acl_add_to_quote_cart( $product_id ) {
-        $session_id = WC()->session->get_customer_id();
-        $product = wc_get_product( $product_id );
-        if ( $product ) {
-            //error_log('Product Found: ' . $product->get_name());
-            $current_quote_cart = WC()->session->get('quote_cart', array());
-            $current_quote_cart[] = array(
+    public static function acl_add_to_quote_cart($product_id) {
+        if (!WC()->session instanceof WC_Session) {
+            WC()->initialize_session();
+        }
+    
+        $session_id = is_user_logged_in() ? get_current_user_id() : WC()->session->get_customer_id();
+        $product = wc_get_product($product_id);
+    
+        if ($product) {
+            $quote_cart = WC()->session->get('quote_cart', array());
+    
+            // Add product to RFQ cart
+            $quote_cart[$product_id] = array(
                 'product_id' => $product_id,
                 'quantity'   => 1,
                 'name'       => $product->get_name(),
                 'price'      => $product->get_price()
             );
-            WC()->session->set('quote_cart', $current_quote_cart); // Set the updated cart
-            WC()->session->save_data(); // Ensure session data is saved
-        } else {
-            //error_log('Product Not Found for ID: ' . $product_id);
+    
+            WC()->session->set('quote_cart', $quote_cart);
+            WC()->session->save_data();
+    
+            // Also store in WooCommerce session table
+            global $wpdb;
+            $wpdb->query($wpdb->prepare(
+                "UPDATE {$wpdb->prefix}woocommerce_sessions SET session_value = %s WHERE session_key = %s",
+                maybe_serialize(array_merge(WC()->session->get_session_data(), ['quote_cart' => $quote_cart])),
+                $session_id
+            ));
         }
-        //error_log( 'After Adding - Quote Cart Content: ' . var_export( WC()->session->get('quote_cart'), true ) );
     }
 
+    function acl_restore_rfq_login( $user_login, $user ) {
+        if (!WC()->session instanceof WC_Session) {
+            WC()->initialize_session();
+        }
+    
+        $user_id = $user->ID;
+    
+        global $wpdb;
+        $session_data = $wpdb->get_var( $wpdb->prepare(
+            "SELECT session_value FROM { $wpdb->prefix}woocommerce_sessions WHERE session_key = %s",
+            $user_id
+        ) );
+    
+        if ( $session_data ) {
+            $unserialized_data = maybe_unserialize( $session_data );
+            if ( !empty( $unserialized_data['quote_cart'] ) ) {
+                WC()->session->set( 'quote_cart', $unserialized_data['quote_cart'] );
+            }
+        }    
+    }
+    
     /**
      * Send a quote request email to the shop owner.
      *

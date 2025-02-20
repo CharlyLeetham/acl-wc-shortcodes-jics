@@ -356,4 +356,8 @@ class ACL_WC_Helpers {
         WC()->mailer()->get_emails(); // This ensures `woocommerce_email_classes` gets applied
     }
 
+    public static function acl_extend_session_lifetime( $time ) {
+        return WEEK_IN_SECONDS * 4; // 4 weeks
+    }
+
 }
