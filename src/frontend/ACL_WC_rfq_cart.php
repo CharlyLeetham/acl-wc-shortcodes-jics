@@ -89,6 +89,7 @@ class ACL_WC_RFQ_cart {
 
 
     public static function acl_restore_rfq_login( $user_login, $user ) {
+        error_log( 'Restoring Quote_cart part 1' );
         if ( ! isset( WC()->session ) || ! WC()->session instanceof WC_Session ) {
             WC()->initialize_session();
         }
