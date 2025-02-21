@@ -73,41 +73,37 @@ class ACL_WC_RFQ_cart {
     }
 
     public static function acl_save_rfq_cart_to_user_meta( $user_id ) {
-        if ( ! isset( WC()->session ) || ! WC()->session instanceof WC_Session ) {
-            return;
-        }
-    
+        $user_id = get_current_user_id();
         $quote_cart = WC()->session->get( 'quote_cart', array() );
 
-        error_log( "RFQ Cart Saved (On Logout): " . print_r( $quote_cart, true ) );
+        error_log( 'Saving Quote_cart to user meta: '.print_r( $quote_cart ) );
     
         if ( ! empty( $quote_cart ) ) {
             update_user_meta( $user_id, '_acl_persistent_rfq_cart', maybe_serialize( $quote_cart ) );
         } else {
-            delete_user_meta( $user_id, '_acl_persistent_rfq_cart' ); // Remove if empty
+            delete_user_meta( $user_id, '_acl_persistent_rfq_cart' ); // Clean up if empty
         }
     }
 
+
     public static function acl_restore_rfq_login( $user_login, $user ) {
-        if (!WC()->session instanceof WC_Session) {
+        if ( ! isset( WC()->session ) || ! WC()->session instanceof WC_Session ) {
             WC()->initialize_session();
         }
     
         $user_id = $user->ID;
     
-        global $wpdb;
-        $session_data = $wpdb->get_var( $wpdb->prepare(
-            "SELECT session_value FROM { $wpdb->prefix}woocommerce_sessions WHERE session_key = %s",
-            $user_id
-        ) );
+        // Restore RFQ Cart from user meta
+        $saved_rfq_cart = get_user_meta( $user_id, '_acl_persistent_rfq_cart', true );
+
+        error_log( 'Restoring Quote_cart to user meta: '.print_r( $saved_rfq_cart ) );
     
-        if ( $session_data ) {
-            $unserialized_data = maybe_unserialize( $session_data );
-            if ( !empty( $unserialized_data['quote_cart'] ) ) {
-                WC()->session->set( 'quote_cart', $unserialized_data['quote_cart'] );
-            }
-        }    
+        if ( ! empty( $saved_rfq_cart ) ) {
+            WC()->session->set( 'quote_cart', maybe_unserialize( $saved_rfq_cart ) );
+        }  
     }
+
+    
 
     /**
      * Send a quote request email to the shop owner.
