@@ -72,6 +72,22 @@ class ACL_WC_RFQ_cart {
         }
     }
 
+    public static function acl_save_rfq_cart_to_user_meta( $user_id ) {
+        if ( ! isset( WC()->session ) || ! WC()->session instanceof WC_Session ) {
+            return;
+        }
+    
+        $quote_cart = WC()->session->get( 'quote_cart', array() );
+
+        error_log( "RFQ Cart Saved (On Logout): " . print_r( $quote_cart, true ) );
+    
+        if ( ! empty( $quote_cart ) ) {
+            update_user_meta( $user_id, '_acl_persistent_rfq_cart', maybe_serialize( $quote_cart ) );
+        } else {
+            delete_user_meta( $user_id, '_acl_persistent_rfq_cart' ); // Remove if empty
+        }
+    }
+
     public static function acl_restore_rfq_login( $user_login, $user ) {
         if (!WC()->session instanceof WC_Session) {
             WC()->initialize_session();
