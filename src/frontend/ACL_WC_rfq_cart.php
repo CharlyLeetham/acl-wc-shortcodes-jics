@@ -68,7 +68,7 @@ class ACL_WC_RFQ_cart {
         }
     }
 
-    function acl_restore_rfq_login( $user_login, $user ) {
+    public static function acl_restore_rfq_login( $user_login, $user ) {
         if (!WC()->session instanceof WC_Session) {
             WC()->initialize_session();
         }
