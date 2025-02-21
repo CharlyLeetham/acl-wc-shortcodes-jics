@@ -57,6 +57,10 @@ class ACL_WC_RFQ_cart {
     
             WC()->session->set('quote_cart', $quote_cart);
             WC()->session->save_data();
+
+            // Debugging: Log session data
+            error_log("RFQ Cart Session Data (Before Logout): " . print_r(WC()->session->get('quote_cart'), true));
+            
     
             // Also store in WooCommerce session table
             global $wpdb;
