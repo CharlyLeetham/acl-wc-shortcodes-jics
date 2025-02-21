@@ -76,11 +76,13 @@ class ACL_WC_RFQ_cart {
         $user_id = get_current_user_id();
         $quote_cart = WC()->session->get( 'quote_cart', array() );
 
-        error_log( 'Saving Quote_cart to user meta: '.print_r( $quote_cart ) );
+        error_log( 'Saving Quote_cart to user meta: '.print_r( $quote_cart, true ) );
     
         if ( ! empty( $quote_cart ) ) {
+            error_log('writing metadata');
             update_user_meta( $user_id, '_acl_persistent_rfq_cart', maybe_serialize( $quote_cart ) );
         } else {
+            error_log('no metadata');
             delete_user_meta( $user_id, '_acl_persistent_rfq_cart' ); // Clean up if empty
         }
     }
@@ -96,7 +98,7 @@ class ACL_WC_RFQ_cart {
         // Restore RFQ Cart from user meta
         $saved_rfq_cart = get_user_meta( $user_id, '_acl_persistent_rfq_cart', true );
 
-        error_log( 'Restoring Quote_cart to user meta: '.print_r( $saved_rfq_cart ) );
+        error_log( 'Restoring Quote_cart to user meta: '.print_r( $saved_rfq_cart, true ) );
     
         if ( ! empty( $saved_rfq_cart ) ) {
             WC()->session->set( 'quote_cart', maybe_unserialize( $saved_rfq_cart ) );
