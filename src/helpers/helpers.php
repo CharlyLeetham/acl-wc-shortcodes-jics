@@ -197,7 +197,7 @@ class ACL_WC_Helpers {
             WC()->session->set_customer_session_cookie( true );
         }
         $session_id = WC()->session->get_customer_id();
-        error_log( 'AJAX Request - Session ID: ' . $session_id );
+        //error_log( 'AJAX Request - Session ID: ' . $session_id );
 
         $product_id = isset( $_POST['product_id']) ? intval($_POST['product_id'] ) : 0;
         if ( $product_id ) {
@@ -259,7 +259,7 @@ class ACL_WC_Helpers {
     }  
     
     public static function acl_update_quantity_in_quote_cart() {
-        error_log ("entering update in quote cart");
+        //error_log ("entering update in quote cart");
         check_ajax_referer('acl_wc_shortcodes_nonce', 'security');
     
         $product_id = isset($_POST['product_id']) ? intval($_POST['product_id']) : 0;
@@ -375,28 +375,28 @@ class ACL_WC_Helpers {
     
     
     public static function acl_register_custom_email( $emails ) {
-        error_log('🚀 woocommerce_email_classes filter executed.');
+        //error_log('🚀 woocommerce_email_classes filter executed.');
     
         require_once ACL_WC_SHORTCODES_PATH . 'src/frontend/ACL_WC_rfq_email.php';
         require_once ACL_WC_SHORTCODES_PATH . 'src/frontend/ACL_WC_Customer_Account_Email.php';
     
         if ( class_exists( 'ACLWcShortcodes\ACLWCRFQWCEMail\ACL_WC_RFQ_Email' ) ) {
-            error_log( "ACL_WC_RFQ_Email class exists!" );
+            //error_log( "ACL_WC_RFQ_Email class exists!" );
             $emails['ACL_WC_RFQ_Email'] = new \ACLWcShortcodes\ACLWCRFQWCEMail\ACL_WC_RFQ_Email();
         }
     
         if ( class_exists( 'ACLWcShortcodes\ACLWCCustomerAccountEmail\ACL_WC_Customer_Account_Email' ) ) {
-            error_log( "ACL_WC_Customer_Account_Email class exists!" );
+            //error_log( "ACL_WC_Customer_Account_Email class exists!" );
             $emails['ACL_WC_Customer_Account_Email'] = new \ACLWcShortcodes\ACLWCCustomerAccountEmail\ACL_WC_Customer_Account_Email();
         } else {
-            error_log( "ACL_WC_Customer_Account_Email class NOT FOUND!" );
+            //error_log( "ACL_WC_Customer_Account_Email class NOT FOUND!" );
         }
     
         return $emails;
     }
 
     public static function acl_ensure_email_system_ready() {
-        error_log( "WooCommerce has initialized, ensuring email system is ready." );
+        //error_log( "WooCommerce has initialized, ensuring email system is ready." );
         WC()->mailer()->get_emails(); // This ensures `woocommerce_email_classes` gets applied
     }
 

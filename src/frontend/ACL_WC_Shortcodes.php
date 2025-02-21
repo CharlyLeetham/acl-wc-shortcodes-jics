@@ -92,7 +92,7 @@ class ACL_WC_Shortcodes {
     public static function acl_test_send_email_shortcode() {
         $quote_id = 20585; // Replace with a valid quote ID
     
-        error_log("🚀 Manually triggering acl_quote_request_created with Quote ID: $quote_id");
+        //error_log("🚀 Manually triggering acl_quote_request_created with Quote ID: $quote_id");
     
         do_action('acl_quote_request_created', $quote_id); // Triggers the email system
     

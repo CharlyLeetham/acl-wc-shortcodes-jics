@@ -35,22 +35,22 @@ class ACL_WC_RFQ_Email extends \WC_Email {
     }
 
     public function trigger( $quote_id ) {
-        error_log("ACL_WC_RFQ_Email: Trigger function called with Quote ID: " . $quote_id);
+        //error_log("ACL_WC_RFQ_Email: Trigger function called with Quote ID: " . $quote_id);
     
         if ( ! $quote_id ) {
-            error_log("ACL_WC_RFQ_Email: No Quote ID provided.");
+            //error_log("ACL_WC_RFQ_Email: No Quote ID provided.");
             return;
         }
     
         // Check if the quote exists
         $this->object = get_post( $quote_id );
         if ( ! $this->object ) {
-            error_log("ACL_WC_RFQ_Email: Quote ID " . $quote_id . " does not exist.");
+            //error_log("ACL_WC_RFQ_Email: Quote ID " . $quote_id . " does not exist.");
             return;
         }
     
         $this->placeholders['{quote_id}'] = $quote_id;
-        error_log("ACL_WC_RFQ_Email: Preparing to send email to admin: " . get_option( 'admin_email' ));
+        //error_log("ACL_WC_RFQ_Email: Preparing to send email to admin: " . get_option( 'admin_email' ));
 
         // Force WooCommerce to send the email as HTML
         add_filter( 'woocommerce_mail_content_type', array( $this, 'set_email_content_type' ) );
@@ -60,9 +60,9 @@ class ACL_WC_RFQ_Email extends \WC_Email {
         $content = $this->get_content_html();
         $headers = $this->get_headers();
     
-        error_log("ACL_WC_RFQ_Email: Subject: " . $subject);
-        error_log("ACL_WC_RFQ_Email: Headers: " . print_r($headers, true));
-        error_log("ACL_WC_RFQ_Email: Content Length: " . strlen($content));
+        //error_log("ACL_WC_RFQ_Email: Subject: " . $subject);
+        //error_log("ACL_WC_RFQ_Email: Headers: " . print_r($headers, true));
+        //error_log("ACL_WC_RFQ_Email: Content Length: " . strlen($content));
     
         $this->send(
             get_option( 'admin_email' ),
@@ -72,7 +72,7 @@ class ACL_WC_RFQ_Email extends \WC_Email {
             $this->get_attachments()
         );
     
-        error_log("ACL_WC_RFQ_Email: Email send() function executed.");
+        //error_log("ACL_WC_RFQ_Email: Email send() function executed.");
     }
     
     public function set_email_content_type() {
@@ -88,7 +88,7 @@ class ACL_WC_RFQ_Email extends \WC_Email {
     }
 
     public function get_content_html() {
-        error_log( "ACL_WC_RFQ_Email: Generating HTML content for Quote ID: " . $this->placeholders['{quote_id}'] );
+        //error_log( "ACL_WC_RFQ_Email: Generating HTML content for Quote ID: " . $this->placeholders['{quote_id}'] );
     
         ob_start();
     
@@ -133,19 +133,19 @@ class ACL_WC_RFQ_Email extends \WC_Email {
     }
     
     public function get_content_plain() {
-        error_log( "ACL_WC_RFQ_Email: Generating Plain text content for Quote ID: " . $this->placeholders['{quote_id}'] );
+        //error_log( "ACL_WC_RFQ_Email: Generating Plain text content for Quote ID: " . $this->placeholders['{quote_id}'] );
         ob_start();
 
         // Retrieve meta data for the quote
         $quote_meta = get_post_meta( $this->placeholders['{quote_id}'], '', true );
 
         if ( empty( $quote_meta ) ) {
-            error_log("ACL_WC_RFQ_Email: No metadata found for Quote ID: " . $this->placeholders['{quote_id}']);
+            //error_log("ACL_WC_RFQ_Email: No metadata found for Quote ID: " . $this->placeholders['{quote_id}']);
         }
     
         // Ensure quote_items is properly unserialized
         $quote_items = isset( $quote_meta['_acl_quote_items'][0] ) ? maybe_unserialize( $quote_meta['_acl_quote_items'][0] ) : array();
-        error_log("quote_items: $quote_items");
+        //error_log("quote_items: $quote_items");
 
         wc_get_template( $this->template_plain, array(
             'quote_id'       => $this->placeholders['{quote_id}'],
@@ -176,7 +176,7 @@ class ACL_WC_RFQ_Email extends \WC_Email {
         if ( ! isset($email_settings['email_type']) || $email_settings['email_type'] !== 'html' ) {
             $email_settings['email_type'] = 'html';
             update_option( 'woocommerce_acl_quote_email_settings', $email_settings );
-            error_log ("✅ WooCommerce email type forced to HTML." );
+            //error_log ("✅ WooCommerce email type forced to HTML." );
         }
     }
 }
