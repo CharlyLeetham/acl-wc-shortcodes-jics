@@ -76,7 +76,7 @@ class ACL_WC_RFQ_cart {
         $user_id = get_current_user_id();
         $quote_cart = WC()->session->get( 'quote_cart', array() );
 
-        error_log( 'Saving Quote_cart to user meta: '.print_r( $quote_cart, true ) );
+        error_log( 'Saving Quote_cart to user meta: '.print_r( $quote_cart, true ). 'For user: '.print_r( $user_id, true ) );
     
         if ( ! empty( $quote_cart ) ) {
             error_log('writing metadata');
