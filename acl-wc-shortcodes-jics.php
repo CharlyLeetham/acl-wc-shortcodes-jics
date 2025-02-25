@@ -56,8 +56,8 @@ try {
     }
 }
 
-add_action ('woocommerce_load_cart_from_session','acl-yes');
+add_action ('woocommerce_load_cart_from_session','acl_yes');
 
-function acl-yes() {
+function acl_yes() {
     error_log('HERE');
 }  
