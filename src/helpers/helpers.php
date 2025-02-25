@@ -447,7 +447,13 @@ class ACL_WC_Helpers {
     
     public static function acl_restore_rfq_cart_via_ajax() {
         error_log( '🔥 AJAX RFQ Cart Restore Triggered' );
-    
+
+        if ( !WC()->session->has_session() ) {
+            WC()->session->set_customer_session_cookie( true );
+        }
+        $session_id = WC()->session->get_customer_id();
+        error_log( 'AJAX Request - Session ID: ' . $session_id );
+            
         if ( !WC()->session->has_session() ) {
             error_log( '🚨 No WooCommerce session, forcing initialization...' );
             WC()->session->set_customer_session_cookie( true );
