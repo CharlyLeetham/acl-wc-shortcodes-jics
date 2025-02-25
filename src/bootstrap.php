@@ -23,12 +23,9 @@ class ACLWcShortcodes {
         add_action( 'wp_ajax_nopriv_acl_update_mini_cart', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_update_mini_cart' ) );
         add_action( 'wp_ajax_acl_update_quantity_in_quote_cart', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_update_quantity_in_quote_cart' ) );
         add_action( 'wp_ajax_nopriv_acl_update_quantity_in_quote_cart', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_update_quantity_in_quote_cart' ) );
-            // Hook for AJAX calls
-        //add_action( 'wp_ajax_acl_restore_rfq_cart', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_restore_rfq_cart_via_ajax' ) );
-        //add_action( 'wp_ajax_nopriv_acl_restore_rfq_cart', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_restore_rfq_cart_via_ajax' ) );
+
 
         //Hook methods for Quote checkout and management
-        //add_action( 'woocommerce_cart_loaded_from_session', array( 'ACLWcShortcodes\ACLWCRFQCart\ACL_WC_RFQ_cart','acl_restore_rfq_login' ) );
         add_action( 'init', array( 'ACLWcShortcodes\ACLWCRFQCheckout\ACL_WC_RFQ_checkout','acl_register_quote_post_type' ) );
         add_action( 'acl_woocommerce_after_cart_table', array ( 'ACLWcShortcodes\ACLWCRFQCheckout\ACL_WC_RFQ_checkout', 'acl_display_quote_form' ) ); 
         add_action( 'wp_ajax_acl_create_quote', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_process_quote_submission' ) );

@@ -193,12 +193,10 @@ class ACL_WC_Helpers {
     }
 
     public static function acl_add_to_quote_cart_ajax( ) {
-        error_log( 'Add to Quote ajax' );
         if ( !WC()->session->has_session() ) {
             WC()->session->set_customer_session_cookie( true );
         }
         $session_id = WC()->session->get_customer_id();
-        error_log( 'AJAX Request - Session ID: ' . $session_id );
 
         $product_id = isset( $_POST['product_id']) ? intval($_POST['product_id'] ) : 0;
         if ( $product_id ) {
@@ -260,7 +258,6 @@ class ACL_WC_Helpers {
     }  
     
     public static function acl_update_quantity_in_quote_cart() {
-        //error_log ("entering update in quote cart");
         check_ajax_referer('acl_wc_shortcodes_nonce', 'security');
     
         $product_id = isset($_POST['product_id']) ? intval($_POST['product_id']) : 0;
@@ -376,28 +373,21 @@ class ACL_WC_Helpers {
     
     
     public static function acl_register_custom_email( $emails ) {
-        //error_log('🚀 woocommerce_email_classes filter executed.');
-    
         require_once ACL_WC_SHORTCODES_PATH . 'src/frontend/ACL_WC_rfq_email.php';
         require_once ACL_WC_SHORTCODES_PATH . 'src/frontend/ACL_WC_Customer_Account_Email.php';
     
         if ( class_exists( 'ACLWcShortcodes\ACLWCRFQWCEMail\ACL_WC_RFQ_Email' ) ) {
-            //error_log( "ACL_WC_RFQ_Email class exists!" );
             $emails['ACL_WC_RFQ_Email'] = new \ACLWcShortcodes\ACLWCRFQWCEMail\ACL_WC_RFQ_Email();
         }
     
         if ( class_exists( 'ACLWcShortcodes\ACLWCCustomerAccountEmail\ACL_WC_Customer_Account_Email' ) ) {
-            //error_log( "ACL_WC_Customer_Account_Email class exists!" );
             $emails['ACL_WC_Customer_Account_Email'] = new \ACLWcShortcodes\ACLWCCustomerAccountEmail\ACL_WC_Customer_Account_Email();
-        } else {
-            //error_log( "ACL_WC_Customer_Account_Email class NOT FOUND!" );
         }
     
         return $emails;
     }
 
     public static function acl_ensure_email_system_ready() {
-        //error_log( "WooCommerce has initialized, ensuring email system is ready." );
         WC()->mailer()->get_emails(); // This ensures `woocommerce_email_classes` gets applied
     }
 
@@ -444,60 +434,4 @@ class ACL_WC_Helpers {
             exit;
         }
     }
-    
-    public static function acl_restore_rfq_cart_via_ajax() {
-        error_log('🔥 AJAX RFQ Cart Restore Triggered');
-    
-        // Ensure WooCommerce session is initialized
-        if (!WC()->session->has_session()) {
-            WC()->session->set_customer_session_cookie(true);
-            error_log('🚀 WooCommerce session forced initialization');
-        }
-    
-        // Get session ID (must be called AFTER session is initialized)
-        $session_id = WC()->session->get_customer_id();
-        error_log('AJAX Request - Session ID: ' . $session_id);
-    
-        // Double-check if session is now available
-        if (!isset(WC()->session) || !WC()->session instanceof WC_Session) {
-            error_log('❌ WooCommerce session still unavailable after AJAX trigger.');
-            wp_send_json_error(array('message' => 'Session unavailable'));
-            return;
-        }
-    
-        // Retrieve RFQ cart from session
-        $quote_cart = WC()->session->get('quote_cart', array());
-        if (!is_array($quote_cart)) {
-            $quote_cart = array();
-        }
-    
-        // If user is logged in, check for a stored RFQ cart
-        if (is_user_logged_in()) {
-            $user_id = get_current_user_id();
-            $blog_id = get_current_blog_id();
-            $meta_key = '_acl_persistent_rfq_cart_' . $blog_id;
-    
-            error_log('🔎 Checking saved RFQ cart for user: ' . $user_id);
-    
-            $saved_rfq_cart = get_user_meta($user_id, $meta_key, true);
-            if (!empty($saved_rfq_cart) && empty($quote_cart)) {
-                $quote_cart = maybe_unserialize($saved_rfq_cart);
-                WC()->session->set('quote_cart', $quote_cart);
-                error_log('✅ RFQ Cart Restored for user: ' . $user_id);
-            }
-        }
-    
-        // Save the restored cart back into WooCommerce session
-        WC()->session->set('quote_cart', $quote_cart);
-        WC()->session->save_data();
-        error_log('💾 Quote cart saved in session via AJAX: ' . print_r($quote_cart, true));
-    
-        // Send successful response with updated cart data
-        wp_send_json_success(array('message' => 'Cart restored', 'cart' => $quote_cart));
-    }
-    
-    
-
-    
-
 }

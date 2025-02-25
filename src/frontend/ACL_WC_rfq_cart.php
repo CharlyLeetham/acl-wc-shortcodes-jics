@@ -12,48 +12,39 @@ class ACL_WC_RFQ_cart {
      * Initialize the quote cart in the session.
      */
     public static function acl_start_quote_cart() {
-        error_log('🔥 Initializing Quote Cart');
     
-        // ✅ Ensure WooCommerce session is initialized
+        // Ensure WooCommerce session is initialized
         if (!WC()->session->has_session()) {
             WC()->session->set_customer_session_cookie(true);
-            error_log('🚀 WooCommerce session initialized');
         }
     
-        // ✅ Retrieve session ID (Customer ID for guests, User ID for logged-in users)
+        // Retrieve session ID (Customer ID for guests, User ID for logged-in users)
         $session_id = WC()->session->get_customer_id();
-        error_log('🆔 Session ID: ' . $session_id);
     
-        // ✅ Retrieve or initialize the RFQ cart
+        // Retrieve or initialize the RFQ cart
         $quote_cart = WC()->session->get('quote_cart', array());
         if (!is_array($quote_cart)) {
             $quote_cart = array();
         }
     
-        // ✅ Restore RFQ Cart for logged-in users
+        // Restore RFQ Cart for logged-in users
         if (is_user_logged_in()) {
             $user_id  = get_current_user_id();
             $blog_id  = get_current_blog_id();
             $meta_key = '_acl_persistent_rfq_cart_' . $blog_id;
-    
-            error_log('🔍 Checking saved RFQ cart for user: ' . $user_id);
-    
+        
             // Check if user has a saved RFQ cart
             $saved_rfq_cart = get_user_meta($user_id, $meta_key, true);
             if (!empty($saved_rfq_cart)) {
                 $quote_cart = maybe_unserialize($saved_rfq_cart);
-                error_log('✅ RFQ Cart Restored for user: ' . $user_id);
             }
-        } else {
-            error_log('🛑 User is not logged in, skipping cart restore.');
         }
     
-        // ✅ Store the corrected cart back into session
+        // Store the corrected cart back into session
         WC()->session->set('quote_cart', $quote_cart);
         WC()->session->save_data();
-        error_log('💾 Quote cart saved in session: ' . print_r(WC()->session->get('quote_cart'), true));
     
-        // ✅ Ensure session updates for guest users
+        // Ensure session updates for guest users
         global $wpdb;
         $wpdb->query(
             $wpdb->prepare(
@@ -63,19 +54,16 @@ class ACL_WC_RFQ_cart {
             )
         );
     
-        // ✅ Persist RFQ cart in user meta for logged-in users
+        // Persist RFQ cart in user meta for logged-in users
         if (is_user_logged_in() && apply_filters('woocommerce_persistent_cart_enabled', true)) {
             if (!empty($quote_cart)) {
-                error_log('💾 Saving updated RFQ cart for user: ' . $user_id);
                 update_user_meta($user_id, $meta_key, maybe_serialize($quote_cart));
             } else {
-                error_log('❌ RFQ cart is empty, removing from user meta for user: ' . $user_id);
                 delete_user_meta($user_id, $meta_key);
             }
         }
     }
-    
-    
+
 
 
     /**
@@ -84,15 +72,12 @@ class ACL_WC_RFQ_cart {
      * @param int $product_id The ID of the product to add to the quote cart.
      */
     public static function acl_add_to_quote_cart( $product_id ) {
-        error_log ( 'acl_add_to_quote_cart php' );
         if ( ! WC()->session instanceof WC_Session ) {
-            error_log ( 'atc php Session not exist' );
             WC()->initialize_session();
         }
     
         $session_id = is_user_logged_in() ? get_current_user_id() : WC()->session->get_customer_id();
         $product = wc_get_product( $product_id );
-        error_log ( 'Session id: ' );
     
         if ( $product ) {
             $quote_cart = WC()->session->get( 'quote_cart', array() );
@@ -109,8 +94,6 @@ class ACL_WC_RFQ_cart {
             WC()->session->set( 'quote_cart', $quote_cart );
             WC()->session->save_data();
     
-            // ✅ **Log for debugging**
-            error_log( 'RFQ Cart: Session data after update: ' . print_r( WC()->session->get( 'quote_cart' ), true ) );
     
             // ✅ **Always update WooCommerce sessions table directly (for guest users)**
             global $wpdb;
@@ -129,64 +112,14 @@ class ACL_WC_RFQ_cart {
                 $meta_key = '_acl_persistent_rfq_cart_' . $blog_id;
     
                 if ( ! empty( $quote_cart ) ) {
-                    error_log( 'RFQ Cart: Saving updated cart to user meta for user: ' . $user_id );
                     update_user_meta( $user_id, $meta_key, maybe_serialize( $quote_cart ) );
                 } else {
-                    error_log( 'RFQ Cart: RFQ cart is empty, deleting from user meta for user: ' . $user_id );
                     delete_user_meta( $user_id, $meta_key );
                 }
             }
         }
     }
-
-    public static function acl_delayed_rfq_cart_restore() {
-
-        if ( ! is_user_logged_in() ) {
-            return; // Ensure only logged-in users get their RFQ cart restored
-        }
-    
-        // Delay execution until WooCommerce session is available
-        add_action( 'woocommerce_init', array( 'ACLWcShortcodes\ACLWCRFQCart\ACL_WC_RFQ_cart', 'acl_restore_rfq_login' ), 20 );
-    }
-
-    public static function acl_restore_rfq_login() {
-
-        error_log( 'Did this run' );
-        error_log('User ID: ' . get_current_user_id());
-        error_log('User Logged In: ' . (is_user_logged_in() ? 'YES' : 'NO'));
-        error_log('Session Status: ' . session_status()); // PHP Session status
-        error_log('Cookies: ' . print_r($_COOKIE, true)); // Check if cookies are being sent        
-        if ( !is_user_logged_in() ) {
-            error_log( 'notloggedin?' );
-            return; // Only restore for logged-in users.
-        }
-    
-        $user_id  = get_current_user_id();
-        $blog_id  = get_current_blog_id();
-        $meta_key = '_acl_persistent_rfq_cart_' . $blog_id;
-    
-        error_log( 'RFQ Cart: Checking for saved RFQ cart for user: ' . $user_id );
-    
-        // Ensure WooCommerce session is initialized
-        if ( ! isset( WC()->session ) || ! WC()->session instanceof WC_Session ) {
-            error_log( 'RFQ Cart: WooCommerce session not available, attempting to initialize. 1' );
-            WC()->initialize_session();
-        }
-   
-        if ( ! isset( WC()->session ) || ! WC()->session instanceof WC_Session ) {
-            error_log( 'RFQ Cart: WooCommerce session still unavailable after initialization. 2' );
-            return;
-        }
-    
-        // Check if we should merge a saved RFQ cart
-        $saved_rfq_cart = get_user_meta( $user_id, '_acl_persistent_rfq_cart_' . $blog_id, true );
-
-        if ( ! empty( $saved_rfq_cart ) ) {
-            WC()->session->set( 'quote_cart', maybe_unserialize( $saved_rfq_cart ) );
-            error_log( 'RFQ Cart: Successfully restored for user: ' . $user_id );
-        }
-    }
-    
+ 
 
     /**
      * Send a quote request email to the shop owner.
