@@ -193,11 +193,12 @@ class ACL_WC_Helpers {
     }
 
     public static function acl_add_to_quote_cart_ajax( ) {
+        error_log( 'Add to Quote ajax' );
         if ( !WC()->session->has_session() ) {
             WC()->session->set_customer_session_cookie( true );
         }
         $session_id = WC()->session->get_customer_id();
-        //error_log( 'AJAX Request - Session ID: ' . $session_id );
+        error_log( 'AJAX Request - Session ID: ' . $session_id );
 
         $product_id = isset( $_POST['product_id']) ? intval($_POST['product_id'] ) : 0;
         if ( $product_id ) {
