@@ -93,12 +93,11 @@ class ACL_WC_RFQ_cart {
     public static function acl_delayed_rfq_cart_restore() {
 
         if ( ! is_user_logged_in() ) {
-            error_log('HEREeerkrkrkrk');
             return; // Ensure only logged-in users get their RFQ cart restored
         }
     
         // Delay execution until WooCommerce session is available
-        add_action( 'wp', array( 'ACLWcShortcodes\ACLWCRFQCart\ACL_WC_RFQ_cart', 'acl_restore_rfq_login' ), 20 );
+        add_action( 'woocommerce_init', array( 'ACLWcShortcodes\ACLWCRFQCart\ACL_WC_RFQ_cart', 'acl_restore_rfq_login' ), 20 );
     }
 
     public static function acl_restore_rfq_login() {
