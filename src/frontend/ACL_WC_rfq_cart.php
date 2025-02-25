@@ -73,12 +73,19 @@ class ACL_WC_RFQ_cart {
     }
 
     public static function acl_save_rfq_cart_to_user_meta() {
-        error_log( 'Saving Quote_cart to user meta: ' . print_r( $quote_cart, true ) . ' For user: ' . $user_id );
         if ( ! is_user_logged_in() ) {
             return; // Avoid saving if no user is logged in
         }
+
+        if ( isset( WC()->session ) && WC()->session instanceof WC_Session ) {
+            $quote_cart = WC()->session->get( 'quote_cart', array() );
+        } else {
+            error_log( 'WC session is not available at shutdown' );
+            return;
+        }
     
         $user_id = get_current_user_id();
+        error_log( 'Saving Quote_cart to user meta: ' . print_r( $quote_cart, true ) . ' For user: ' . $user_id );
         $quote_cart = WC()->session->get( 'quote_cart', array() );
     
         error_log( 'Saving Quote_cart to user meta: ' . print_r( $quote_cart, true ) . ' For user: ' . $user_id );
