@@ -69,7 +69,9 @@ class ACL_WC_RFQ_cart {
      * @param int $product_id The ID of the product to add to the quote cart.
      */
     public static function acl_add_to_quote_cart( $product_id ) {
+        error_log ( 'acl_add_to_quote_cart php' );
         if ( ! WC()->session instanceof WC_Session ) {
+            error_log ( 'atc php Session not exist' );
             WC()->initialize_session();
         }
     
