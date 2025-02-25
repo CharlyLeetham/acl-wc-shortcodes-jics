@@ -91,8 +91,9 @@ class ACL_WC_RFQ_cart {
     }
 
     public static function acl_delayed_rfq_cart_restore() {
-        error_log('HEREkkdkdkdkd');
+
         if ( ! is_user_logged_in() ) {
+            error_log('HEREeerkrkrkrk');
             return; // Ensure only logged-in users get their RFQ cart restored
         }
     
