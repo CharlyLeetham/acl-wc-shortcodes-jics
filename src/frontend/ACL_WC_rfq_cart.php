@@ -89,6 +89,15 @@ class ACL_WC_RFQ_cart {
         }
     }
 
+    public static function acl_delayed_rfq_cart_restore() {
+        if ( ! is_user_logged_in() ) {
+            return; // Ensure only logged-in users get their RFQ cart restored
+        }
+    
+        // Delay execution until WooCommerce session is available
+        add_action( 'wp', array( $this, 'acl_restore_rfq_login' ), 20 );
+    }
+
     public static function acl_restore_rfq_login() {
         if ( ! is_user_logged_in() ) {
             return; // Only restore for logged-in users.
