@@ -99,6 +99,8 @@ class ACL_WC_RFQ_cart {
     }
 
     public static function acl_restore_rfq_login() {
+
+        error_log( 'Did this run' );
         if ( ! is_user_logged_in() ) {
             return; // Only restore for logged-in users.
         }
