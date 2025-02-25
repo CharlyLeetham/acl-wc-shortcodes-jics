@@ -102,35 +102,21 @@ class ACL_WC_RFQ_cart {
     
         // Ensure WooCommerce session is initialized
         if ( ! isset( WC()->session ) || ! WC()->session instanceof WC_Session ) {
-            error_log( 'RFQ Cart: WooCommerce session not available, attempting to initialize.' );
+            error_log( 'RFQ Cart: WooCommerce session not available, attempting to initialize. 1' );
             WC()->initialize_session();
         }
     
         if ( ! isset( WC()->session ) || ! WC()->session instanceof WC_Session ) {
-            error_log( 'RFQ Cart: WooCommerce session still unavailable after initialization.' );
+            error_log( 'RFQ Cart: WooCommerce session still unavailable after initialization. 2' );
             return;
         }
     
         // Check if we should merge a saved RFQ cart
-        $merge_saved_cart = (bool) get_user_meta( $user_id, '_acl_load_saved_rfq_cart_after_login', true );
-    
-        if ( $merge_saved_cart ) {
-            $saved_rfq_cart = get_user_meta( $user_id, $meta_key, true );
-            error_log( 'RFQ Cart: Retrieved saved RFQ cart: ' . print_r( $saved_rfq_cart, true ) );
-    
-            if ( ! empty( $saved_rfq_cart ) ) {
-                // Merge saved cart with session cart
-                $session_rfq_cart = WC()->session->get( 'quote_cart', array() );
-                $new_rfq_cart = array_merge( $saved_rfq_cart, $session_rfq_cart );
-    
-                WC()->session->set( 'quote_cart', $new_rfq_cart );
-                error_log( 'RFQ Cart: Successfully restored for user: ' . $user_id );
-    
-                // Clean up user meta after restoring cart
-                delete_user_meta( $user_id, '_acl_load_saved_rfq_cart_after_login' );
-            } else {
-                error_log( 'RFQ Cart: No saved RFQ cart found for user: ' . $user_id );
-            }
+        $saved_rfq_cart = get_user_meta( $user_id, '_acl_persistent_rfq_cart_' . $blog_id, true );
+
+        if ( ! empty( $saved_rfq_cart ) ) {
+            WC()->session->set( 'quote_cart', maybe_unserialize( $saved_rfq_cart ) );
+            error_log( 'RFQ Cart: Successfully restored for user: ' . $user_id );
         }
     }
     
