@@ -73,6 +73,7 @@ class ACL_WC_RFQ_cart {
     }
 
     public static function acl_save_rfq_cart_to_user_meta() {
+        error_log( 'RFQ Cart 1: Saving quote_cart to user meta key: ' . $meta_key . ' for user: ' . $user_id );
         if ( ! is_user_logged_in() ) {
             return; // Ensure we have a logged-in user
         }
