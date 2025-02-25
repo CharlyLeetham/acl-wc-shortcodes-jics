@@ -88,10 +88,8 @@ class ACL_WC_RFQ_cart {
             }
         }
     }
-    
 
-
-    public static function acl_restore_rfq_cart() {
+    public static function acl_restore_rfq_login() {
         if ( ! is_user_logged_in() ) {
             return; // Only restore for logged-in users.
         }
