@@ -36,67 +36,56 @@ class ACL_WC_RFQ_cart {
      *
      * @param int $product_id The ID of the product to add to the quote cart.
      */
-    public static function acl_add_to_quote_cart($product_id) {
-        if (!WC()->session instanceof WC_Session) {
+    public static function acl_add_to_quote_cart( $product_id ) {
+        if ( ! WC()->session instanceof WC_Session ) {
             WC()->initialize_session();
         }
     
         $session_id = is_user_logged_in() ? get_current_user_id() : WC()->session->get_customer_id();
-        $product = wc_get_product($product_id);
+        $product = wc_get_product( $product_id );
     
-        if ($product) {
-            $quote_cart = WC()->session->get('quote_cart', array());
+        if ( $product ) {
+            $quote_cart = WC()->session->get( 'quote_cart', array() );
     
             // Add product to RFQ cart
-            $quote_cart[$product_id] = array(
+            $quote_cart[ $product_id ] = array(
                 'product_id' => $product_id,
                 'quantity'   => 1,
                 'name'       => $product->get_name(),
                 'price'      => $product->get_price()
             );
     
-            WC()->session->set('quote_cart', $quote_cart);
+            // ✅ **Always store RFQ cart in WooCommerce session**
+            WC()->session->set( 'quote_cart', $quote_cart );
             WC()->session->save_data();
-
-            // Debugging: Log session data
-            error_log("RFQ Cart Session Data (Before Logout): " . print_r(WC()->session->get('quote_cart'), true));
-            
     
-            // Also store in WooCommerce session table
+            // ✅ **Log for debugging**
+            error_log( 'RFQ Cart: Session data after update: ' . print_r( WC()->session->get( 'quote_cart' ), true ) );
+    
+            // ✅ **Always update WooCommerce sessions table directly (for guest users)**
             global $wpdb;
-            $wpdb->query($wpdb->prepare(
-                "UPDATE {$wpdb->prefix}woocommerce_sessions SET session_value = %s WHERE session_key = %s",
-                maybe_serialize(array_merge(WC()->session->get_session_data(), ['quote_cart' => $quote_cart])),
-                $session_id
-            ));
-        }
-    }
-
-    public static function acl_save_rfq_cart_to_user_meta() {
-        error_log( 'RFQ Cart 1: Saving quote_cart to user meta key: ' . $meta_key . ' for user: ' . $user_id );
-        if ( ! is_user_logged_in() ) {
-            return; // Ensure we have a logged-in user
-        }
+            $wpdb->query(
+                $wpdb->prepare(
+                    "UPDATE {$wpdb->prefix}woocommerce_sessions SET session_value = %s WHERE session_key = %s",
+                    maybe_serialize( array_merge( WC()->session->get_session_data(), [ 'quote_cart' => $quote_cart ] ) ),
+                    $session_id
+                )
+            );
     
-        $user_id = get_current_user_id();
-        $blog_id = get_current_blog_id();
-        $meta_key = '_acl_persistent_rfq_cart_' . $blog_id;
+            // ✅ **Only update User Meta if Persistent Cart is enabled**
+            if ( is_user_logged_in() && apply_filters( 'woocommerce_persistent_cart_enabled', true ) ) {
+                $user_id  = get_current_user_id();
+                $blog_id  = get_current_blog_id();
+                $meta_key = '_acl_persistent_rfq_cart_' . $blog_id;
     
-        if ( isset( WC()->session ) && WC()->session instanceof WC_Session ) {
-            $quote_cart = WC()->session->get( 'quote_cart', array() );
-        } else {
-            error_log( 'RFQ Cart: WC session is not available at the time of saving for user ID: ' . $user_id );
-            return;
-        }
-    
-        error_log( 'RFQ Cart: Saving quote_cart to user meta key: ' . $meta_key . ' for user: ' . $user_id );
-        
-        if ( ! empty( $quote_cart ) ) {
-            error_log( 'RFQ Cart: Writing metadata for user: ' . $user_id );
-            update_user_meta( $user_id, $meta_key, maybe_serialize( $quote_cart ) );
-        } else {
-            error_log( 'RFQ Cart: No metadata, deleting for user: ' . $user_id );
-            delete_user_meta( $user_id, $meta_key ); // Clean up if empty
+                if ( ! empty( $quote_cart ) ) {
+                    error_log( 'RFQ Cart: Saving updated cart to user meta for user: ' . $user_id );
+                    update_user_meta( $user_id, $meta_key, maybe_serialize( $quote_cart ) );
+                } else {
+                    error_log( 'RFQ Cart: RFQ cart is empty, deleting from user meta for user: ' . $user_id );
+                    delete_user_meta( $user_id, $meta_key );
+                }
+            }
         }
     }
     
