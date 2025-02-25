@@ -77,6 +77,7 @@ class ACL_WC_RFQ_cart {
     
         $session_id = is_user_logged_in() ? get_current_user_id() : WC()->session->get_customer_id();
         $product = wc_get_product( $product_id );
+        error_log ( 'Session id: '.$session_id );
     
         if ( $product ) {
             $quote_cart = WC()->session->get( 'quote_cart', array() );
