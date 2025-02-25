@@ -27,6 +27,8 @@ class ACL_WC_RFQ_cart {
     
         // Get session ID (Customer ID for guests, User ID for logged-in users)
         $session_id = is_user_logged_in() ? get_current_user_id() : WC()->session->get_customer_id();
+
+        error_log('Sessionid: '.$session_id);
     
         // Ensure session exists and retrieves correctly
         $quote_cart = WC()->session->get('quote_cart', array());
