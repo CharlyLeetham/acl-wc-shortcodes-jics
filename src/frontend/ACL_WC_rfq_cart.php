@@ -68,61 +68,75 @@ class ACL_WC_RFQ_cart {
      *
      * @param int $product_id The ID of the product to add to the quote cart.
      */
-    public static function acl_add_to_quote_cart( $product_id ) {
-        error_log ( 'acl_add_to_quote_cart php' );
-        if ( ! WC()->session instanceof WC_Session ) {
-            error_log ( 'atc php Session not exist' );
-            WC()->initialize_session();
+    public static function acl_add_to_quote_cart($product_id) {
+        error_log('🛒 acl_add_to_quote_cart Triggered');
+    
+        // Ensure WooCommerce session is properly initialized
+        if (!WC()->session->has_session()) {
+            WC()->session->set_customer_session_cookie(true);
+            error_log('🚀 WooCommerce session forced initialization');
         }
     
-        $session_id = is_user_logged_in() ? get_current_user_id() : WC()->session->get_customer_id();
-        $product = wc_get_product( $product_id );
-        error_log ( 'Session id: '.$session_id );
+        // Retrieve session ID after ensuring session is set
+        $session_id = WC()->session->get_customer_id();
+        error_log('Session ID: ' . $session_id);
     
-        if ( $product ) {
-            $quote_cart = WC()->session->get( 'quote_cart', array() );
+        // Validate product exists
+        $product = wc_get_product($product_id);
+        if (!$product) {
+            error_log('❌ Product not found for ID: ' . $product_id);
+            return;
+        }
     
-            // Add product to RFQ cart
-            $quote_cart[ $product_id ] = array(
+        // Retrieve or initialize the RFQ cart
+        $quote_cart = WC()->session->get('quote_cart', array());
+        if (!is_array($quote_cart)) {
+            $quote_cart = array();
+        }
+    
+        // Add product to RFQ cart (increment quantity if already added)
+        if (isset($quote_cart[$product_id])) {
+            $quote_cart[$product_id]['quantity'] += 1;
+        } else {
+            $quote_cart[$product_id] = array(
                 'product_id' => $product_id,
                 'quantity'   => 1,
                 'name'       => $product->get_name(),
                 'price'      => $product->get_price()
             );
+        }
     
-            // ✅ **Always store RFQ cart in WooCommerce session**
-            WC()->session->set( 'quote_cart', $quote_cart );
-            WC()->session->save_data();
+        // ✅ Store RFQ cart in WooCommerce session
+        WC()->session->set('quote_cart', $quote_cart);
+        WC()->session->save_data();
+        error_log('💾 RFQ Cart Updated in Session: ' . print_r(WC()->session->get('quote_cart'), true));
     
-            // ✅ **Log for debugging**
-            error_log( 'RFQ Cart: Session data after update: ' . print_r( WC()->session->get( 'quote_cart' ), true ) );
+        // ✅ Update WooCommerce sessions table for guest users
+        global $wpdb;
+        $wpdb->query(
+            $wpdb->prepare(
+                "UPDATE {$wpdb->prefix}woocommerce_sessions SET session_value = %s WHERE session_key = %s",
+                maybe_serialize(array_merge(WC()->session->get_session_data(), ['quote_cart' => $quote_cart])),
+                $session_id
+            )
+        );
     
-            // ✅ **Always update WooCommerce sessions table directly (for guest users)**
-            global $wpdb;
-            $wpdb->query(
-                $wpdb->prepare(
-                    "UPDATE {$wpdb->prefix}woocommerce_sessions SET session_value = %s WHERE session_key = %s",
-                    maybe_serialize( array_merge( WC()->session->get_session_data(), [ 'quote_cart' => $quote_cart ] ) ),
-                    $session_id
-                )
-            );
+        // ✅ Persist RFQ cart in user meta for logged-in users
+        if (is_user_logged_in() && apply_filters('woocommerce_persistent_cart_enabled', true)) {
+            $user_id  = get_current_user_id();
+            $blog_id  = get_current_blog_id();
+            $meta_key = '_acl_persistent_rfq_cart_' . $blog_id;
     
-            // ✅ **Only update User Meta if Persistent Cart is enabled**
-            if ( is_user_logged_in() && apply_filters( 'woocommerce_persistent_cart_enabled', true ) ) {
-                $user_id  = get_current_user_id();
-                $blog_id  = get_current_blog_id();
-                $meta_key = '_acl_persistent_rfq_cart_' . $blog_id;
-    
-                if ( ! empty( $quote_cart ) ) {
-                    error_log( 'RFQ Cart: Saving updated cart to user meta for user: ' . $user_id );
-                    update_user_meta( $user_id, $meta_key, maybe_serialize( $quote_cart ) );
-                } else {
-                    error_log( 'RFQ Cart: RFQ cart is empty, deleting from user meta for user: ' . $user_id );
-                    delete_user_meta( $user_id, $meta_key );
-                }
+            if (!empty($quote_cart)) {
+                error_log('💾 Saving updated RFQ cart for user: ' . $user_id);
+                update_user_meta($user_id, $meta_key, maybe_serialize($quote_cart));
+            } else {
+                error_log('❌ RFQ cart is empty, removing from user meta for user: ' . $user_id);
+                delete_user_meta($user_id, $meta_key);
             }
         }
     }
+    
 
     public static function acl_delayed_rfq_cart_restore() {
 
