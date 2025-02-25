@@ -16,12 +16,12 @@ class ACL_WC_RFQ_cart {
         
         // Ensure WooCommerce session is initialized
         if (!isset(WC()->session) || !WC()->session instanceof WC_Session) {
-            error_log('RFQ Cart: WooCommerce session not available, attempting to initialize.');
+            error_log('RFQ Cart: WooCommerce session not available, attempting to initialize. 1');
             WC()->initialize_session();
         }
     
         if (!isset(WC()->session) || !WC()->session instanceof WC_Session) {
-            error_log('RFQ Cart: WooCommerce session still unavailable after initialization.');
+            error_log('RFQ Cart: WooCommerce session still unavailable after initialization. 2');
             return;
         }
     
