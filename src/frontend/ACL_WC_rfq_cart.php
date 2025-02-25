@@ -103,6 +103,10 @@ class ACL_WC_RFQ_cart {
     public static function acl_restore_rfq_login() {
 
         error_log( 'Did this run' );
+        error_log('User ID: ' . get_current_user_id());
+        error_log('User Logged In: ' . (is_user_logged_in() ? 'YES' : 'NO'));
+        error_log('Session Status: ' . session_status()); // PHP Session status
+        error_log('Cookies: ' . print_r($_COOKIE, true)); // Check if cookies are being sent        
         if ( !is_user_logged_in() ) {
             error_log( 'notloggedin?' );
             return; // Only restore for logged-in users.
