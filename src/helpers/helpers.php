@@ -444,5 +444,47 @@ class ACL_WC_Helpers {
         }
     }
     
+    public static function acl_restore_rfq_cart_via_ajax() {
+        error_log( '🔥 AJAX RFQ Cart Restore Triggered' );
+    
+        if ( !WC()->session->has_session() ) {
+            error_log( '🚨 No WooCommerce session, forcing initialization...' );
+            WC()->session->set_customer_session_cookie( true );
+        }
+    
+        if ( !isset( WC()->session ) || !WC()->session instanceof WC_Session ) {
+            error_log( '❌ WooCommerce session still unavailable after AJAX trigger.' );
+            wp_send_json_error( array( 'message' => 'Session unavailable' ) );
+            return;
+        }
+    
+        $quote_cart = WC()->session->get( 'quote_cart', array() );
+        if ( !is_array( $quote_cart ) ) {
+            $quote_cart = array();
+        }
+    
+        if ( is_user_logged_in() ) {
+            $user_id = get_current_user_id();
+            $blog_id = get_current_blog_id();
+            $meta_key = '_acl_persistent_rfq_cart_' . $blog_id;
+    
+            error_log( '🔎 Checking saved RFQ cart for user: ' . $user_id );
+    
+            $saved_rfq_cart = get_user_meta( $user_id, $meta_key, true );
+            if ( !empty( $saved_rfq_cart ) ) {
+                $quote_cart = maybe_unserialize( $saved_rfq_cart );
+                WC()->session->set( 'quote_cart', $quote_cart );
+                error_log( '✅ RFQ Cart Restored for user: ' . $user_id );
+            }
+        }
+    
+        WC()->session->set( 'quote_cart', $quote_cart );
+        error_log ( '💾 Quote cart saved in session via AJAX: ' . print_r( $quote_cart, true ) );
+    
+        wp_send_json_success( array( 'message' => 'Cart restored', 'cart' => $quote_cart ) );
+    }
+    
+
+    
 
 }

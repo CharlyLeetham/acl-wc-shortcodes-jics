@@ -151,6 +151,22 @@ jQuery(document).ready(function($) {
         }, 2000));
     });
 
+    console.log("🚀 Running AJAX RFQ Cart Restoration");
+
+    $.ajax({
+        type: 'POST',
+        url: acl_wc_shortcodes.ajax_url,
+        data: {
+            action: 'acl_restore_rfq_cart'
+        },
+        success: function(response) {
+            console.log("✅ RFQ Cart Restored via AJAX:", response);
+        },
+        error: function(error) {
+            console.error("❌ Failed to restore RFQ Cart via AJAX:", error);
+        }
+    });    
+
     // Update Mini Cart Function
     function updateMiniCart(productId, newQuantity) {
         $.ajax({
