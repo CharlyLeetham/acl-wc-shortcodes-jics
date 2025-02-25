@@ -15,7 +15,7 @@ class ACLWcShortcodes {
         add_action( 'wp_loaded', array( __CLASS__, 'acl_sc_remove' ) );
 
         // Hook methods from ACL_WC_RFQ_cart assuming they are static
-        add_action( 'woocommerce_init', array( 'ACLWcShortcodes\ACLWCRFQCart\ACL_WC_RFQ_cart', 'acl_start_quote_cart' ) );
+        add_action( 'woocommerce_cart_loaded_from_session', array( 'ACLWcShortcodes\ACLWCRFQCart\ACL_WC_RFQ_cart', 'acl_start_quote_cart' ) );
         add_action( 'wp_ajax_acl_add_to_quote_cart', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_add_to_quote_cart_ajax' ) );
         add_action( 'wp_ajax_nopriv_acl_add_to_quote_cart', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_add_to_quote_cart_ajax' ) );
         add_action( 'wp_ajax_acl_remove_from_quote_cart', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_remove_from_quote_cart' ) );
