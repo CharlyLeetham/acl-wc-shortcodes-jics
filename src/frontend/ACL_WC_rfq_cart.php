@@ -74,49 +74,62 @@ class ACL_WC_RFQ_cart {
 
     public static function acl_save_rfq_cart_to_user_meta() {
         if ( ! is_user_logged_in() ) {
-            return; // Avoid saving if no user is logged in
-        }
-
-        if ( isset( WC()->session ) && WC()->session instanceof WC_Session ) {
-            $quote_cart = WC()->session->get( 'quote_cart', array() );
-        } else {
-            error_log( 'WC session is not available at shutdown' );
-            return;
+            return; // Ensure we have a logged-in user
         }
     
         $user_id = get_current_user_id();
-        error_log( 'Saving Quote_cart to user meta: ' . print_r( $quote_cart, true ) . ' For user: ' . $user_id );
-        $quote_cart = WC()->session->get( 'quote_cart', array() );
+        $blog_id = get_current_blog_id();
+        $meta_key = '_acl_persistent_rfq_cart_' . $blog_id;
     
-        error_log( 'Saving Quote_cart to user meta: ' . print_r( $quote_cart, true ) . ' For user: ' . $user_id );
-    
-        if ( ! empty( $quote_cart ) ) {
-            error_log( 'Writing metadata' );
-            update_user_meta( $user_id, '_acl_persistent_rfq_cart', maybe_serialize( $quote_cart ) );
+        if ( isset( WC()->session ) && WC()->session instanceof WC_Session ) {
+            $quote_cart = WC()->session->get( 'quote_cart', array() );
         } else {
-            error_log( 'No metadata' );
-            delete_user_meta( $user_id, '_acl_persistent_rfq_cart' ); // Clean up if empty
+            error_log( 'RFQ Cart: WC session is not available at the time of saving for user ID: ' . $user_id );
+            return;
+        }
+    
+        error_log( 'RFQ Cart: Saving quote_cart to user meta key: ' . $meta_key . ' for user: ' . $user_id );
+        
+        if ( ! empty( $quote_cart ) ) {
+            error_log( 'RFQ Cart: Writing metadata for user: ' . $user_id );
+            update_user_meta( $user_id, $meta_key, maybe_serialize( $quote_cart ) );
+        } else {
+            error_log( 'RFQ Cart: No metadata, deleting for user: ' . $user_id );
+            delete_user_meta( $user_id, $meta_key ); // Clean up if empty
         }
     }
+    
 
 
     public static function acl_restore_rfq_login( $user_login, $user ) {
-        error_log( 'Restoring Quote_cart part 1' );
+        error_log( 'RFQ Cart: Starting restore process for user login: ' . $user_login );
+    
         if ( ! isset( WC()->session ) || ! WC()->session instanceof WC_Session ) {
             WC()->initialize_session();
         }
     
-        $user_id = $user->ID;
+        if ( ! isset( WC()->session ) || ! WC()->session instanceof WC_Session ) {
+            error_log( 'RFQ Cart: WooCommerce session is still unavailable after initialization.' );
+            return;
+        }
     
-        // Restore RFQ Cart from user meta
-        $saved_rfq_cart = get_user_meta( $user_id, '_acl_persistent_rfq_cart', true );
-
-        error_log( 'Restoring Quote_cart to user meta: '.print_r( $saved_rfq_cart, true ) );
+        $user_id = $user->ID;
+        $blog_id = get_current_blog_id();
+        $meta_key = '_acl_persistent_rfq_cart_' . $blog_id;
+    
+        // Retrieve RFQ Cart from user meta
+        $saved_rfq_cart = get_user_meta( $user_id, $meta_key, true );
+    
+        error_log( 'RFQ Cart: Retrieved saved cart from user meta: ' . print_r( $saved_rfq_cart, true ) );
     
         if ( ! empty( $saved_rfq_cart ) ) {
             WC()->session->set( 'quote_cart', maybe_unserialize( $saved_rfq_cart ) );
-        }  
+            error_log( 'RFQ Cart: Successfully restored for user: ' . $user_id );
+        } else {
+            error_log( 'RFQ Cart: No saved cart found for user: ' . $user_id );
+        }
     }
+    
 
     
 

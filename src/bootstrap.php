@@ -34,7 +34,13 @@ class ACLWcShortcodes {
         add_filter( 'wc_session_expiration', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_extend_session_lifetime' ) );  
         add_action( 'wp_ajax_acl_process_login', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_process_login_submission' ) );
         add_action( 'wp_ajax_nopriv_acl_process_login', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_process_login_submission' ) );
-        add_action( 'shutdown', array( 'ACLWcShortcodes\ACLWCRFQCart\ACL_WC_RFQ_cart', 'acl_save_rfq_cart_to_user_meta' ), 9 );
+
+        //Persistent cart update
+        add_action( 'woocommerce_add_to_cart', array( 'ACLWcShortcodes\ACLWCRFQCart\ACL_WC_RFQ_cart', 'acl_save_rfq_cart_to_user_meta' ) );
+        add_action( 'woocommerce_cart_item_removed', array( 'ACLWcShortcodes\ACLWCRFQCart\ACL_WC_RFQ_cart', 'acl_save_rfq_cart_to_user_meta' ) );
+        add_action( 'woocommerce_cart_item_restored', array( 'ACLWcShortcodes\ACLWCRFQCart\ACL_WC_RFQ_cart', 'acl_save_rfq_cart_to_user_meta' ) );
+        add_action( 'woocommerce_cart_item_set_quantity', array( 'ACLWcShortcodes\ACLWCRFQCart\ACL_WC_RFQ_cart', 'acl_save_rfq_cart_to_user_meta' ) );
+
 
         
         //Activate the Email Template and mailing program
