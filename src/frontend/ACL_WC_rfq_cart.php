@@ -104,7 +104,7 @@ class ACL_WC_RFQ_cart {
 
         error_log( 'Did this run' );
         if ( ! is_user_logged_in() ) {
-            error_log( 'notloggedin?' )
+            error_log( 'notloggedin?' );
             return; // Only restore for logged-in users.
         }
     
