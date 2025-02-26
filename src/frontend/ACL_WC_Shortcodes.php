@@ -13,6 +13,7 @@ class ACL_WC_Shortcodes {
         $atts = shortcode_atts(
             array(
                 'on_sale' => 'false',
+                'category' => 
                 'limit'   => 12,
                 'columns' => 4,
             ),
@@ -31,6 +32,16 @@ class ACL_WC_Shortcodes {
             $product_ids_on_sale = wc_get_product_ids_on_sale();
             $args['post__in'] = $product_ids_on_sale;
         }
+
+        if (!empty($atts['category'])) {
+            $args['tax_query'] = array(
+                array(
+                    'taxonomy' => 'product_cat',
+                    'field'    => 'slug',
+                    'terms'    => explode(',', $atts['category']),
+                ),
+            );
+        }        
 
         $products = new \WP_Query($args);
         
