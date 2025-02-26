@@ -13,7 +13,7 @@ class ACL_WC_Shortcodes {
         $atts = shortcode_atts(
             array(
                 'on_sale' => 'false',
-                'category' => 
+                'category' => '',
                 'limit'   => 12,
                 'columns' => 4,
             ),
