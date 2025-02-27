@@ -64,8 +64,10 @@ class ACL_WC_Helpers {
                 $button_content = esc_html($button_text);
             }
             
+            $button_url = ($class === 'quote-button') ? '#' : esc_url($product->add_to_cart_url());
+
             $output .= '<div class="' . $button_class . '">';
-            $output .= '<a href="' . esc_url($product->add_to_cart_url()) . '" rel="nofollow" data-product_id="' . esc_attr($product->get_id()) . '" data-product_sku="' . esc_attr($product->get_sku()) . '" class="button ' . $button_class . ' ajax_add_to_cart" data-quantity="1">';
+            $output .= '<a href="' . $button_url . '" rel="nofollow" data-product_id="' . esc_attr($product->get_id()) . '" data-product_sku="' . esc_attr($product->get_sku()) . '" class="button ' . $button_class . ' ajax_add_to_cart" data-quantity="1">';
             $output .= $button_content;
             $output .= '</a>';
             $output .= '</div>';
