@@ -67,6 +67,10 @@
     justify-content: center;
 }
 
+.acl-product-buy-now:not(:has(.purchase-button)) .quote-button {
+    flex-basis: 100%;
+}
+
 .acl-product-buy-now .purchase-button {
     flex-basis: 30%; /* Always 30% width */
     background: #000000;
@@ -93,9 +97,6 @@
     height: 100%; /* Fill the height of the parent */
 }
 
-.acl-product-buy-now:not(:has(.purchase-button)) .quote-button {
-    width: 100%;
-}
 
 /* Apply border only when .quote-button is not present */
 .acl-product-buy-now:not(:has(.quote-button)) {
