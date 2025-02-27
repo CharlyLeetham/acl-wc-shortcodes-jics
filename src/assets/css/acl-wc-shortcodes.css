@@ -58,6 +58,10 @@
     text-decoration: none;
 }
 
+.quote-button:hover {
+    background: rgba(255, 144, 41, 0.8);
+}
+
 .acl-product-buy-now {
     display: flex; /* Use flexbox for layout */
     width: 100%;
