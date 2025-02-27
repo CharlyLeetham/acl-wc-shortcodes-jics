@@ -177,6 +177,8 @@ class ACL_WC_Helpers {
 
         echo self::generate_add_to_cart_buttons($product);
 
+        $debug = true;
+        if (!$debug) {
         // Show "Buy Now" button if purchase attribute contains 'purchase'
         if (strpos($purchase_attribute, 'purchase') !== false) {
             echo '<div class="acl-single-product-button-wrapper">';
@@ -189,6 +191,7 @@ class ACL_WC_Helpers {
             echo '<div class="acl-single-product-button-wrapper">';
             echo '<a href="#" data-product-id="' . esc_attr($product->get_id()) . '" class="button quote-button">Get Quote</a>';
             echo '</div>';
+        }
         }
         
         echo '</div>';
