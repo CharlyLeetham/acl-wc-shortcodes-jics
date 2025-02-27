@@ -54,6 +54,10 @@
     padding: 10px 0; /* This padding affects the total height */
 }
 
+.quote-button a {
+    text-decoration: none;
+}
+
 .acl-product-buy-now {
     display: flex; /* Use flexbox for layout */
     width: 100%;
