@@ -160,7 +160,7 @@
 }
 
 .woocommerce:where(body:not(.woocommerce-block-theme-has-button-styles)) .acl-single-product-custom-buttons a.quote-button.button:hover {
-    background: #ff9029;
+    opacity: .5;
 }
 
 .woocommerce div.product .acl-single-product-button-wrapper form.cart {
