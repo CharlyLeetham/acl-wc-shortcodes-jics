@@ -126,7 +126,7 @@
 
 .acl-product-price del {
     color: #ff9029;
-    opacity: -5;
+    opacity: .5;
 }
 
 .acl-single-product-custom-buttons {
