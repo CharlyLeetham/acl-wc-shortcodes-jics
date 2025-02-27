@@ -119,13 +119,15 @@
     border-left: 3px #f5f5f5 solid;
 }
 
-.acl-product-price ins {
+.acl-product-price {
     color: #ff9029;
+}
+
+.acl-product-price ins {
     font-weight: bold;
 }
 
 .acl-product-price del {
-    color: #ff9029;
     opacity: .5;
 }
 
