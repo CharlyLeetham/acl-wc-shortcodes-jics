@@ -73,7 +73,6 @@ class ACL_WC_Shortcodes {
                                 </a>
                             </h3>                          
                                 <span class="acl-product-price"><?php echo wp_kses_post($product->get_price_html()); ?></span>
-                            <?php } ?>
                         </div>
                     </div>
                 </div>
