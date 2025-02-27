@@ -175,6 +175,7 @@ class ACL_WC_Helpers {
 
         echo '<div class="acl-single-product-custom-buttons" style="display: flex; flex-wrap: nowrap; justify-content: flex-start; align-items: center;">';
 
+        echo 'here';
         self::generate_add_to_cart_buttons($product);
 
         // Show "Buy Now" button if purchase attribute contains 'purchase'
