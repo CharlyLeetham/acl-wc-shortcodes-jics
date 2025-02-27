@@ -95,6 +95,10 @@
     box-sizing: border-box; /* Ensure padding is included in the height */
 }
 
+.acl-product-buy-now .purchase-button:hover {
+    background: rgba(0,0,0,0.8);
+}
+
 /* Adjust the SVG icon size */
 .acl-product-buy-now .fa-svg {
     width: 1.5em; /* Increase size for better visibility */
