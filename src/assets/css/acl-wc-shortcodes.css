@@ -93,7 +93,7 @@
     height: 100%; /* Fill the height of the parent */
 }
 
-.acl-product-buy-now:not(:has(.purchase-button)) {
+.acl-product-buy-now:not(:has(.purchase-button)) .quote-button {
     width: 100%;
 }
 
