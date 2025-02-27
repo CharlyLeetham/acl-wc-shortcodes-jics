@@ -71,10 +71,7 @@ class ACL_WC_Shortcodes {
                                 <a href="<?php echo esc_url(get_permalink($product->get_id())); ?>">
                                     <?php echo wp_kses_post($product->get_name()); ?>
                                 </a>
-                            </h3>
-                            <?php if ($product->is_on_sale()) { ?>
-                                <span class="acl-product-sale-price"><?php echo wp_kses_post($product->get_price_html()); ?></span>
-                            <?php } else { ?>
+                            </h3>                          
                                 <span class="acl-product-price"><?php echo wp_kses_post($product->get_price_html()); ?></span>
                             <?php } ?>
                         </div>
