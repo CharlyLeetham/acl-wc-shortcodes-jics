@@ -62,6 +62,10 @@
     background: rgba(255, 144, 41, 0.8);
 }
 
+.quote-button:hover a {
+    background: transparent;
+}
+
 .acl-product-buy-now {
     display: flex; /* Use flexbox for layout */
     width: 100%;
