@@ -44,6 +44,8 @@ class ACL_WC_Shortcodes {
         }        
 
         $products = new \WP_Query($args);
+
+
         
         ob_start();
 

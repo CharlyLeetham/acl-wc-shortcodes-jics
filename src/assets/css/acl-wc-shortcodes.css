@@ -93,6 +93,10 @@
     height: 100%; /* Fill the height of the parent */
 }
 
+.acl-product-buy-now:not(:has(.purchase-button)) {
+    width: 100%;
+}
+
 /* Apply border only when .quote-button is not present */
 .acl-product-buy-now:not(:has(.quote-button)) {
     border-left: 3px #f5f5f5 solid;
