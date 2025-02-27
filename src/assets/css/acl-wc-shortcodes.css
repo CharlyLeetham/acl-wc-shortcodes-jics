@@ -54,7 +54,7 @@
     padding: 10px 0; /* This padding affects the total height */
 }
 
-.quote-button a {
+.quote-button a, .quote-button a:hover {
     text-decoration: none;
 }
 
