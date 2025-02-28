@@ -290,6 +290,10 @@
     margin-right: 10px;
 }
 
+.acl-single-product-custom-buttons .woocommerce-variation-price bdi {
+    font-weight: bold;
+}
+
 .acl-single-product-custom-buttons .single_variation_wrap {
     flex: 0 1 auto;
     display: flex;
