@@ -67,7 +67,7 @@ class ACL_WC_Helpers {
             $button_url = ($class === 'quote-button') ? '#' : esc_url($product->add_to_cart_url());
 
             $output .= '<div class="' . $button_class . '">';
-            $output .= '<a href="' . $button_url . '" rel="nofollow" data-product_id="' . esc_attr($product->get_id()) . '" data-product_sku="' . esc_attr($product->get_sku()) . '" class="button ' . $button_class . ' ajax_add_to_cart" data-quantity="1">';
+            $output .= '<a href="' . $button_url . '" rel="nofollow" data-product-id="' . esc_attr($product->get_id()) . '" data-product_sku="' . esc_attr($product->get_sku()) . '" class="button ' . $button_class . ' ajax_add_to_cart" data-quantity="1">';
             $output .= $button_content;
             $output .= '</a>';
             $output .= '</div>';
@@ -76,7 +76,7 @@ class ACL_WC_Helpers {
         if (empty($button_classes)) {
             // If no buttons were created, ensure a default 'quote' button is added
             $output .= '<div class="quote-button">';
-            $output .= '<a href="' . esc_url($product->add_to_cart_url()) . '" rel="nofollow" data-product_id="' . esc_attr($product->get_id()) . '" data-product_sku="' . esc_attr($product->get_sku()) . '" class="button quote-button ajax_add_to_cart" data-quantity="1">Get Quote</a>';
+            $output .= '<a href="' . esc_url($product->add_to_cart_url()) . '" rel="nofollow" data-product-id="' . esc_attr($product->get_id()) . '" data-product_sku="' . esc_attr($product->get_sku()) . '" class="button quote-button ajax_add_to_cart" data-quantity="1">Get Quote</a>';
             $output .= '</div>';
         }
 
