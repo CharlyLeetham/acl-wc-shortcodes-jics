@@ -313,6 +313,7 @@ class ACL_WC_Helpers {
                 )
             );
 
+            error_log('After db update - Quote Cart: ' . print_r(WC()->session->get('quote_cart'), true));
             
             $count = array_reduce($quote_cart, function($carry, $item) {
                 return $carry + $item['quantity'];
