@@ -58,11 +58,11 @@
     text-decoration: none;
 }
 
-.quote-button:hover {
+.add_to_cart_button:hover {
     background: rgba(255, 144, 41, 0.8);
 }
 
-.quote-button:hover a {
+.add_to_cart_button:hover a {
     background: transparent;
 }
 
