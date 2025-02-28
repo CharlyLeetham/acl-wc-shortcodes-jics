@@ -72,14 +72,14 @@
 	  justify-content: flex-end;
 }
 
-.acl-product-buy-now .quote-button {
+.acl-product-buy-now .add_to_cart_button {
     flex-basis: 70%; 
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.acl-product-buy-now:not(:has(.purchase-button)) .quote-button {
+.acl-product-buy-now:not(:has(.purchase-button)) .add_to_cart_button {
     flex-basis: 100%;
 }
 
