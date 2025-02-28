@@ -34,7 +34,8 @@ jQuery(document).ready(function($) {
     $('.quote-button').on('click', function(e) {
         e.preventDefault();
         var productId = $(this).data('product-id');
-
+        console.log('Quote button clicked, Run #', $(this).data('clickCount') || 1, 'Element:', this.outerHTML);
+        console.log('Product ID:', productId);
         $.ajax({
             type: 'POST',
             url: acl_wc_shortcodes.ajax_url,
@@ -52,7 +53,6 @@ jQuery(document).ready(function($) {
                         cartElement.text('RFQ Cart: ' + newCount + ' item(s)');
                     }
                 } else {
-                    console.log ('Product ID: '.productID);
                     console.error('Error:', response.data);
                 }
             },
@@ -60,6 +60,7 @@ jQuery(document).ready(function($) {
                 console.error('Error adding product to quote cart:', error);
             }
         });
+        console.log('Handler bound to .quote-button');
     });
 
     // Increment Quantity
