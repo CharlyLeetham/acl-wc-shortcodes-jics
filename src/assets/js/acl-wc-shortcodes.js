@@ -52,6 +52,7 @@ jQuery(document).ready(function($) {
                         cartElement.text('RFQ Cart: ' + newCount + ' item(s)');
                     }
                 } else {
+                    console.log ('Product ID: '.productID);
                     console.error('Error:', response.data);
                 }
             },
