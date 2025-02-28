@@ -83,7 +83,7 @@
     flex-basis: 100%;
 }
 
-div .acl-product-buy-now .purchase-button, .woocommerce .acl-single-product-custom-buttons {
+.acl-product-buy-now .purchase-button, div .woocommerce .acl-single-product-custom-buttons {
     flex-basis: 30%; /* Always 30% width */
     background: #000000;
     display: flex;
