@@ -278,6 +278,10 @@
     line-height: 2em;
 }
 
+.woocommerce div.product form.cart .acl-single-product-custom-buttons .variations th {
+    line-height: 2em;
+}
+
 .acl-single-product-custom-buttons .variations td select {
     margin: 0; /* Ensure dropdown doesn’t add extra spacing */
 }
