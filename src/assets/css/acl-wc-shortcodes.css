@@ -45,7 +45,7 @@
 }
 
 
-.quote-button {
+.add_to_cart_button {
     background: #ff9029;
     color: #ffffff;
     /* font-weight: bold; */
@@ -54,7 +54,7 @@
     padding: 10px 0; /* This padding affects the total height */
 }
 
-.quote-button a, .quote-button a:hover {
+.add_to_cart_button a, .add_to_cart_button a:hover {
     text-decoration: none;
 }
 
@@ -67,13 +67,13 @@
 }
 
 .acl-product-buy-now {
-    display: flex; /* Use flexbox for layout */
+    display: flex; 
     width: 100%;
 	  justify-content: flex-end;
 }
 
 .acl-product-buy-now .quote-button {
-    flex-basis: 70%; /* 70% of the space when both are present */
+    flex-basis: 70%; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -84,15 +84,14 @@
 }
 
 .acl-product-buy-now .purchase-button, .woocommerce div.acl-single-product-custom-buttons .purchase-button {
-    flex-basis: 30%; /* Always 30% width */
+    flex-basis: 30%; 
     background: #000000;
     display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
+    justify-content: center; 
+    align-items: center; 
     color: #ffffff;
-    /* Mimic the height of the quote button including padding */
-    padding: 10px 0; /* Match the padding of quote-button */
-    box-sizing: border-box; /* Ensure padding is included in the height */
+    padding: 10px 0; 
+    box-sizing: border-box; 
 }
 
 .woocommerce .acl-single-product-custom-buttons a.button.add_to_cart_button {
@@ -104,22 +103,20 @@
     background: rgba(0,0,0,0.8);
 }
 
-/* Adjust the SVG icon size */
 .acl-product-buy-now .fa-svg, .woocommerce .acl-single-product-custom-buttons a.button.add_to_cart_button .fa-svg {
-    width: 1.5em; /* Increase size for better visibility */
+    width: 1.5em; 
     height: 1.5em;
 }
 
-/* Ensure buttons are displayed inline within their containers */
 .acl-product-buy-now a {
     display: inline-block;
-    width: 100%; /* Full width of their parent container */
-    text-align: center; /* Center the content if needed */
-    height: 100%; /* Fill the height of the parent */
+    width: 100%; 
+    text-align: center; 
+    height: 100%; 
 }
 
 
-/* Apply border only when .quote-button is not present */
+
 .acl-product-buy-now:not(:has(.quote-button)) {
     border-left: 3px #f5f5f5 solid;
 }
@@ -180,58 +177,7 @@
     margin-right: 0;
 }
 
-
-/* RFQ Cart Layout */
-
-.woocommerce form .rfq-form-layout {
-    width: 100%; /* Adjust as needed */
-}
-
-.woocommerce form .rfq-form-layout .form-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-}
-
-.woocommerce form .rfq-form-layout .field-group {
-    width: calc(50% - 20px); /* Two fields per row, with some space between */
-    margin-right: 10px;
-}
-
-.woocommerce form .rfq-form-layout .field-group:last-child {
-    margin-right: 0; /* Removes margin from the last child to prevent overflow */
-}
-
-.woocommerce form .rfq-form-layout .field-group label {
-    text-align: left;
-    display: block;
-    margin-bottom: 5px;
-    width: 100%; /* Ensures label spans full width of field group */
-}
-
-.woocommerce form .rfq-form-layout .field-group input {
-    width: calc(100% - 10px);
-}
-
-.woocommerce form .rfq-form-layout .form-row.single-field .field-group {
-    width: 100%;
-    margin-left: 10px; /* Half of (50% - 5px)/2 */
-    box-sizing: border-box; /* Ensures padding is included in the width */
-}
-
-.woocommerce form .rfq-form-layout .form-row.single-field .field-group input {
-    width: calc(100%);
-}
-
-@media (min-width: 900px) {
-    .cart-template-wrapper .woocommerce .acl_quote_submission_form {
-        flex-basis: calc(100%) !important;
-        margin-right: 0 !important;
-    }
-}
-
-
-/* Testing */
+/* Single Product Page */
 
 .acl-single-product-custom-buttons {
     display: flex;
@@ -317,3 +263,55 @@
     min-width: 120px;
     white-space: nowrap;
 }
+
+
+/* RFQ Cart Layout */
+
+.woocommerce form .rfq-form-layout {
+    width: 100%; /* Adjust as needed */
+}
+
+.woocommerce form .rfq-form-layout .form-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.woocommerce form .rfq-form-layout .field-group {
+    width: calc(50% - 20px); /* Two fields per row, with some space between */
+    margin-right: 10px;
+}
+
+.woocommerce form .rfq-form-layout .field-group:last-child {
+    margin-right: 0; /* Removes margin from the last child to prevent overflow */
+}
+
+.woocommerce form .rfq-form-layout .field-group label {
+    text-align: left;
+    display: block;
+    margin-bottom: 5px;
+    width: 100%; /* Ensures label spans full width of field group */
+}
+
+.woocommerce form .rfq-form-layout .field-group input {
+    width: calc(100% - 10px);
+}
+
+.woocommerce form .rfq-form-layout .form-row.single-field .field-group {
+    width: 100%;
+    margin-left: 10px; /* Half of (50% - 5px)/2 */
+    box-sizing: border-box; /* Ensures padding is included in the width */
+}
+
+.woocommerce form .rfq-form-layout .form-row.single-field .field-group input {
+    width: calc(100%);
+}
+
+@media (min-width: 900px) {
+    .cart-template-wrapper .woocommerce .acl_quote_submission_form {
+        flex-basis: calc(100%) !important;
+        margin-right: 0 !important;
+    }
+}
+
+
