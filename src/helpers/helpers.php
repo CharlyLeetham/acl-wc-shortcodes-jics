@@ -179,7 +179,7 @@ class ACL_WC_Helpers {
 
         echo self::generate_add_to_cart_buttons($product);
 
-        $debug = true;
+        $debug = false;
         if (!$debug) {
         // Show "Buy Now" button if purchase attribute contains 'purchase'
         if (strpos($purchase_attribute, 'purchase') !== false) {

@@ -102,7 +102,6 @@
 
 .acl-product-buy-now .purchase-button:hover, .woocommerce .acl-single-product-custom-buttons .purchase-button:hover {
     background: rgba(0,0,0,0.8);
-    opacity: .5;
 }
 
 /* Adjust the SVG icon size */
