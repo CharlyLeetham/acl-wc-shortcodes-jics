@@ -95,6 +95,7 @@ jQuery(document).ready(function($) {
         var productId = $(this).attr('name').match(/\d+/)[0];
         var qty = parseInt($(this).val(), 10);
         if (!isNaN(qty) && qty > 0) {
+            console.log('Updating quantity - Product ID:', productId, 'New Quantity:', qty);
             $.ajax({
                 type: 'POST',
                 url: acl_wc_shortcodes.ajax_url,
@@ -105,7 +106,9 @@ jQuery(document).ready(function($) {
                     'security': acl_wc_shortcodes.nonce
                 },
                 success: function(response) {
+                    console.log('AJAX Response:', response);
                     if (response.success) {
+                        console.log('Quantity updated for product ID:', productId, 'to:', qty, 'Cart Count:', response.data.cart_count);
                         console.log('Quantity updated for product ID:', productId, 'to:', qty);
                         updateMiniCartDisplay(response.data.cart_count);
                     } else {

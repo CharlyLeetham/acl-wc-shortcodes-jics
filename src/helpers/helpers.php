@@ -286,6 +286,7 @@ class ACL_WC_Helpers {
     
         if ($product_id && $quantity > 0) {
             $quote_cart = WC()->session->get('quote_cart', array());
+            error_log('Before update - Product ID: ' . $product_id . ', Quantity: ' . $quantity . ', Quote Cart: ' . print_r($quote_cart, true));
             foreach ($quote_cart as &$item) {
                 if ($item['product_id'] === $product_id) {
                     $item['quantity'] = $quantity;
@@ -294,6 +295,7 @@ class ACL_WC_Helpers {
             }
             WC()->session->set('quote_cart', $quote_cart);
             WC()->session->save_data();
+            error_log('After update - Quote Cart: ' . print_r(WC()->session->get('quote_cart'), true));
             
             $count = array_reduce($quote_cart, function($carry, $item) {
                 return $carry + $item['quantity'];
