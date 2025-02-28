@@ -273,9 +273,9 @@
 
 .acl-single-product-custom-buttons .variations th,
 .acl-single-product-custom-buttons .variations td {
-    /*margin: 10px;*/
     padding: 0 5px; /* Minimal padding for spacing, adjust as needed */
     vertical-align: top; /* Fallback for table alignment */
+    line-height: 2em;
 }
 
 .acl-single-product-custom-buttons .variations td select {
