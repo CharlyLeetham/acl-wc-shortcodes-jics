@@ -253,6 +253,12 @@ class ACL_WC_Helpers {
     
     public static function acl_update_mini_cart() {
         check_ajax_referer( 'acl_wc_shortcodes_nonce', 'security' );
+
+                // Ensure session is active
+        if (!WC()->session->has_session()) {
+            WC()->session->set_customer_session_cookie(true);
+        }
+        $session_id = WC()->session->get_customer_id();
     
         $product_id = isset( $_POST['product_id'] ) ? intval( $_POST['product_id'] ) : 0;
         $quantity = isset( $_POST['quantity'] ) ? intval( $_POST['quantity'] ) : 0;
@@ -267,6 +273,15 @@ class ACL_WC_Helpers {
             }
             WC()->session->set( 'quote_cart', $quote_cart );
             WC()->session->save_data();
+
+            global $wpdb;
+            $wpdb->query(
+                $wpdb->prepare(
+                    "UPDATE {$wpdb->prefix}woocommerce_sessions SET session_value = %s WHERE session_key = %s",
+                    maybe_serialize(array_merge(WC()->session->get_session_data(), ['quote_cart' => $quote_cart])),
+                    $session_id
+                )
+            );            
             
             $count = array_reduce( $quote_cart, function( $carry, $item ) {
                 return $carry + $item['quantity'];
