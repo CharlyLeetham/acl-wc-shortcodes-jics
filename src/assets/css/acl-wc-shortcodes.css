@@ -261,6 +261,10 @@
     align-items: center;
 }
 
+.woocommerce div.product .acl-single-product-custom-buttons form.cart .variations {
+    margin-bottom: 1em;
+}
+
 .acl-single-product-custom-buttons .variations tr {
     display: flex;
     align-items: center;
@@ -269,7 +273,7 @@
 
 .acl-single-product-custom-buttons .variations th,
 .acl-single-product-custom-buttons .variations td {
-    margin: 0;
+    margin: 10px;
     padding: 0 5px; /* Minimal padding for spacing, adjust as needed */
     vertical-align: middle; /* Fallback for table alignment */
 }
