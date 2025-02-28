@@ -211,7 +211,7 @@ class ACL_WC_Helpers {
             $quote_cart = WC()->session->get( 'quote_cart' );
             if ( isset( $quote_cart[$product_id] ) ) {
                 wp_send_json_success( array(
-                    'message' => 'This product is already in your RFQ cart.',
+                    'message' => 'This product is already added for quote.',
                     'cart_count' => count($quote_cart),
                     'already_in_cart' => true
                 ) );
@@ -219,7 +219,7 @@ class ACL_WC_Helpers {
                 ACL_WC_RFQ_cart::acl_add_to_quote_cart( $product_id );
                 $quote_cart = WC()->session->get( 'quote_cart' );
                 wp_send_json_success(array(
-                    'message' => 'Product added',
+                    'message' => 'Product added for quote',
                     'cart_count' => count($quote_cart),
                     'already_in_cart' => false
                 ));
