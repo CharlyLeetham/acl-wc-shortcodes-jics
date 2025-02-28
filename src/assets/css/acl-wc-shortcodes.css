@@ -95,7 +95,7 @@
     box-sizing: border-box; /* Ensure padding is included in the height */
 }
 
-.woocommerce .acl-single-product-custom-buttons a.button {
+.woocommerce .acl-single-product-custom-buttons a.button.add_to_cart_button {
     background: transparent;
     color: #ffffff;
 }
