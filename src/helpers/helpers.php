@@ -283,7 +283,16 @@ class ACL_WC_Helpers {
                     maybe_serialize(array_merge(WC()->session->get_session_data(), ['quote_cart' => $quote_cart])),
                     $session_id
                 )
-            );            
+            );  
+            
+            // Persist RFQ cart in user meta for logged-in users
+            if (is_user_logged_in() && apply_filters('woocommerce_persistent_cart_enabled', true)) {
+                if (!empty($quote_cart)) {
+                    update_user_meta($user_id, $meta_key, maybe_serialize($quote_cart));
+                } else {
+                    delete_user_meta($user_id, $meta_key);
+                }
+            }            
             
             $count = array_reduce( $quote_cart, function( $carry, $item ) {
                 return $carry + $item['quantity'];
