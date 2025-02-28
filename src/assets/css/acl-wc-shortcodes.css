@@ -95,12 +95,12 @@
     box-sizing: border-box; /* Ensure padding is included in the height */
 }
 
-.acl-product-buy-now .purchase-button:hover, , .woocommerce .acl-product-buy-now a.button.add_to_cart_button:hover {
+.acl-product-buy-now .purchase-button:hover, .woocommerce .acl-single-product-custom-buttons a.button.add_to_cart_button:hover {
     background: rgba(0,0,0,0.8);
 }
 
 /* Adjust the SVG icon size */
-.acl-product-buy-now .fa-svg {
+.acl-product-buy-now .fa-svg, .woocommerce .acl-single-product-custom-buttons a.button.add_to_cart_button .fa-svg {
     width: 1.5em; /* Increase size for better visibility */
     height: 1.5em;
 }
