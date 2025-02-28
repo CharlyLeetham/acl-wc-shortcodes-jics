@@ -254,7 +254,9 @@ class ACL_WC_Helpers {
     public static function acl_update_mini_cart() {
         check_ajax_referer( 'acl_wc_shortcodes_nonce', 'security' );
 
-                // Ensure session is active
+        error_log('minicart 1: Post ' . print_r($_POST, true));
+
+        // Ensure session is active
         if (!WC()->session->has_session()) {
             WC()->session->set_customer_session_cookie(true);
         }
@@ -295,6 +297,8 @@ class ACL_WC_Helpers {
     
     public static function acl_update_quantity_in_quote_cart() {
         check_ajax_referer('acl_wc_shortcodes_nonce', 'security');
+
+        error_log('uqiqc 1: Post ' . print_r($_POST, true));
 
         // Ensure session is active
         if (!WC()->session->has_session()) {
