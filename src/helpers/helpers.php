@@ -77,7 +77,7 @@ class ACL_WC_Helpers {
         if (empty($button_classes)) {
             // If no buttons were created, ensure a default 'quote' button is added
             $output .= '<div class="add_to_cart_button">';
-            $output .= '<a href="#" rel="nofollow" data-product-id="' . esc_attr($product->get_id()) . '" data-product_sku="' . esc_attr($product->get_sku()) . '" class="button quote-button ajax_add_to_cart" data-quantity="1">Get Quote</a>';
+            $output .= '<a href="#" rel="nofollow" data-product-id="' . esc_attr($product->get_id()) . '" data-product_sku="' . esc_attr($product->get_sku()) . '" class="button quote-button ajax_add_to_cart add_to_cart_button" data-quantity="1">Get Quote</a>';
             $output .= '</div>';
         }
 
