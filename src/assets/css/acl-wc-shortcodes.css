@@ -235,13 +235,13 @@
 
 .acl-single-product-custom-buttons {
     display: flex;
-    flex-wrap: nowrap; /* Prevents wrapping to a new line */
+    flex-wrap: nowrap;
     align-items: center;
-    width: 100%; /* Ensures it takes full container width */
+    width: 100%;
 }
 
 .acl-single-product-button-wrapper {
-    flex: 0 1 auto; /* Allows it to shrink or grow as needed, no full width */
+    flex: 0 1 auto;
     display: flex;
     align-items: center;
 }
@@ -249,15 +249,17 @@
 .variations_form.cart {
     display: flex;
     align-items: center;
-    flex-wrap: nowrap; /* Keeps form elements in one row */
+    flex-wrap: nowrap;
+    width: 100%; /* Ensure form takes full width of its container */
 }
 
 .variations {
-    margin: 0; /* Remove default margins that might push elements */
+    margin: 0;
+    width: 40%; /* Set table to 40% of the form's width */
 }
 
 .single_variation_wrap {
-    flex: 0 1 auto; /* Adjusts size dynamically, prevents full width */
+    flex: 0 1 auto;
     display: flex;
     align-items: center;
 }
@@ -270,9 +272,12 @@
 .quantity {
     display: flex;
     align-items: center;
-    margin-right: 10px; /* Spacing between quantity and button */
+    margin-right: 10px;
 }
 
 .single_add_to_cart_button {
-    margin-left: 10px; /* Spacing from quantity input */
+    margin-left: 10px;
+    padding: 10px 20px; /* Add padding to prevent squashing */
+    min-width: 120px; /* Ensure button has a minimum width */
+    white-space: nowrap; /* Prevent text from wrapping */
 }
