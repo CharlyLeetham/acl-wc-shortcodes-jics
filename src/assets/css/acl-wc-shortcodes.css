@@ -229,3 +229,50 @@
         margin-right: 0 !important;
     }
 }
+
+
+/* Testing */
+
+.acl-single-product-custom-buttons {
+    display: flex;
+    flex-wrap: nowrap; /* Prevents wrapping to a new line */
+    align-items: center;
+    width: 100%; /* Ensures it takes full container width */
+}
+
+.acl-single-product-button-wrapper {
+    flex: 0 1 auto; /* Allows it to shrink or grow as needed, no full width */
+    display: flex;
+    align-items: center;
+}
+
+.variations_form.cart {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap; /* Keeps form elements in one row */
+}
+
+.variations {
+    margin: 0; /* Remove default margins that might push elements */
+}
+
+.single_variation_wrap {
+    flex: 0 1 auto; /* Adjusts size dynamically, prevents full width */
+    display: flex;
+    align-items: center;
+}
+
+.woocommerce-variation-add-to-cart {
+    display: flex;
+    align-items: center;
+}
+
+.quantity {
+    display: flex;
+    align-items: center;
+    margin-right: 10px; /* Spacing between quantity and button */
+}
+
+.single_add_to_cart_button {
+    margin-left: 10px; /* Spacing from quantity input */
+}
