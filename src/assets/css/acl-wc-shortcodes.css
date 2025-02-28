@@ -250,20 +250,32 @@
     display: flex;
     align-items: center;
     flex-wrap: nowrap;
-    width: 100%; /* Ensure form takes full width of its container */
-}
-
-.woocommerce div.product .acl-single-product-custom-buttons form.cart .variations {
-    margin: 0;
+    width: 100%;
 }
 
 .acl-single-product-custom-buttons .variations {
+    width: 40%;
     margin: 0;
-    width: 40%; /* Set table to 40% of the form's width */
+    padding: 0;
+    display: flex; /* Change table to flex for better alignment control */
+    align-items: center;
 }
 
-.woocommerce div.product .acl-single-product-custom-buttons form.cart .variations td {
-    margin-right: 0;
+.acl-single-product-custom-buttons .variations tr {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.acl-single-product-custom-buttons .variations th,
+.acl-single-product-custom-buttons .variations td {
+    margin: 0;
+    padding: 0 5px; /* Minimal padding for spacing, adjust as needed */
+    vertical-align: middle; /* Fallback for table alignment */
+}
+
+.acl-single-product-custom-buttons .variations td select {
+    margin: 0; /* Ensure dropdown doesn’t add extra spacing */
 }
 
 .acl-single-product-custom-buttons .single_variation_wrap {
@@ -285,7 +297,7 @@
 
 .acl-single-product-custom-buttons .single_add_to_cart_button {
     margin-left: 10px;
-    padding: 10px 20px; /* Add padding to prevent squashing */
-    min-width: 120px; /* Ensure button has a minimum width */
-    white-space: nowrap; /* Prevent text from wrapping */
+    padding: 10px 20px;
+    min-width: 120px;
+    white-space: nowrap;
 }
