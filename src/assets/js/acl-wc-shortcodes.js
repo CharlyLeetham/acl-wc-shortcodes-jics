@@ -36,6 +36,7 @@ jQuery(document).ready(function($) {
         var productId = $(this).data('product-id');
         console.log('Quote button clicked, Run #', $(this).data('clickCount') || 1, 'Element:', this.outerHTML);
         console.log('Product ID:', productId);
+
         $.ajax({
             type: 'POST',
             url: acl_wc_shortcodes.ajax_url,
@@ -46,11 +47,15 @@ jQuery(document).ready(function($) {
             },
             success: function(response) {
                 if (response.success) {
-                    console.log('Product added to quote cart:', response);
-                    var cartElement = $('.acl-mini-rfq-cart a');
-                    if (cartElement.length) {
-                        var newCount = response.data.cart_count || (parseInt(cartElement.text().match(/\d+/)[0]) || 0) + 1;
-                        cartElement.text('RFQ Cart: ' + newCount + ' item(s)');
+                    if (response.data.already_in_cart) {
+                        alert(response.data.message); // Show message
+                    } else {
+                        console.log('Product added to quote cart:', response);
+                        var cartElement = $('.acl-mini-rfq-cart a');
+                        if (cartElement.length) {
+                            var newCount = response.data.cart_count || (parseInt(cartElement.text().match(/\d+/)[0]) || 0) + 1;
+                            cartElement.text('RFQ Cart: ' + newCount + ' item(s)');
+                        }
                     }
                 } else {
                     console.error('Error:', response.data);

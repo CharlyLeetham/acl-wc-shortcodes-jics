@@ -208,9 +208,22 @@ class ACL_WC_Helpers {
 
         $product_id = isset( $_POST['product_id']) ? intval($_POST['product_id'] ) : 0;
         if ( $product_id ) {
-            ACL_WC_RFQ_cart::acl_add_to_quote_cart( $product_id );
             $quote_cart = WC()->session->get( 'quote_cart' );
-            wp_send_json_success( array( 'message' => 'Product added', 'cart_count' => count( $quote_cart ) ) );
+            if ( isset( $quote_cart[$product_id] ) ) {
+                wp_send_json_success( array(
+                    'message' => 'This product is already in your RFQ cart.',
+                    'cart_count' => count($quote_cart),
+                    'already_in_cart' => true
+                ) );
+            } else {
+                ACL_WC_RFQ_cart::acl_add_to_quote_cart( $product_id );
+                $quote_cart = WC()->session->get( 'quote_cart' );
+                wp_send_json_success(array(
+                    'message' => 'Product added',
+                    'cart_count' => count($quote_cart),
+                    'already_in_cart' => false
+                ));
+            }
         } else {
             wp_send_json_error( 'Invalid product ID' );
         }
