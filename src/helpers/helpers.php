@@ -301,7 +301,7 @@ class ACL_WC_Helpers {
             }
             WC()->session->set('quote_cart', $quote_cart);
             WC()->session->save_data();
-            error_log('After update - Quote Cart: ' . print_r(WC()->session->get('quote_cart'), true));
+            error_log('After update 1 - Quote Cart: ' . print_r(WC()->session->get('quote_cart'), true));
 
             // Sync to database explicitly
             global $wpdb;
