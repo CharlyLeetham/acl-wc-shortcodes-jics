@@ -188,8 +188,12 @@ class ACL_WC_RFQ_cart {
             return '<div class="acl-mini-rfq-cart"><a href="' . esc_url( $cart_url ) . '">RFQ Cart: 0 items</a></div>';
         }
     
-        $count = count( $quote_cart );
-        return '<div class="acl-mini-rfq-cart"><a href="' . esc_url( $cart_url ) . '">RFQ Cart: ' . esc_html( $count ) . ' item(s)</a></div>';
+        // Sum the 'quantity' field across all items
+        $total_quantity = array_reduce($quote_cart, function($carry, $item) {
+            return $carry + (isset($item['quantity']) ? intval($item['quantity']) : 0);
+        }, 0);
+
+        return '<div class="acl-mini-rfq-cart"><a href="' . esc_url( $cart_url ) . '">RFQ Cart: ' . esc_html( $total_quantity ) . ' item(s)</a></div>';
     }
 
     public static function acl_rfq_cart_content( ) {
