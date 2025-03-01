@@ -12,6 +12,8 @@ class ACL_WC_RFQ_cart {
      * Initialize the quote cart in the session.
      */
     public static function acl_start_quote_cart() {
+
+        error_log('ACL START QUOTE CART');
     
         // Ensure WooCommerce session is initialized
         if (!WC()->session->has_session()) {
