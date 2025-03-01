@@ -261,7 +261,7 @@ class ACL_WC_Helpers {
             WC()->session->set_customer_session_cookie(true);
         }
         $session_id = WC()->session->get_customer_id();
-        error_log( 'Mini Cart 2 ' . $session_id  );
+        error_log( 'Mini Cart 2 Session id: ' . $session_id  );
     
         $product_id = isset( $_POST['product_id'] ) ? intval( $_POST['product_id'] ) : 0;
         $quantity = isset( $_POST['quantity'] ) ? intval( $_POST['quantity'] ) : 0;
@@ -276,6 +276,8 @@ class ACL_WC_Helpers {
             }
             WC()->session->set( 'quote_cart', $quote_cart );
             WC()->session->save_data();
+
+            error_log( 'Mini Cart 3 update 1 - Quote Cart: ' . print_r(WC()->session->get( 'quote_cart' ), true ) );
 
             global $wpdb;
             $wpdb->query(
