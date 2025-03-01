@@ -180,6 +180,8 @@ class ACL_WC_RFQ_cart {
         // Get quote cart directly from session since that's where it's stored
         $quote_cart = WC()->session->get('quote_cart', array());
 
+        error_log( 'Mini Cart Widget Quote cart: ' . print_r( $quote_cart, true ) );
+
         $cart_url = home_url( '/rfq-cart' );
     
         if ( empty( $quote_cart ) ) {

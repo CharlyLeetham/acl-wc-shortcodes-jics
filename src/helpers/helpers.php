@@ -253,21 +253,17 @@ class ACL_WC_Helpers {
     
     public static function acl_update_mini_cart() {
         check_ajax_referer('acl_wc_shortcodes_nonce', 'security');
-    
-        error_log('minicart 1: Post ' . print_r($_POST, true));
-    
+        
         // Ensure session is active
         if (!WC()->session->has_session()) {
             WC()->session->set_customer_session_cookie(true);
         }
         $session_id = WC()->session->get_customer_id();
-        error_log('Mini Cart 2 Session id: ' . $session_id);
     
         $product_id = isset($_POST['product_id']) ? intval($_POST['product_id']) : 0;
         $quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : 0;
     
         $quote_cart = WC()->session->get('quote_cart', array());
-        error_log('Mini Cart 3 - Initial Quote Cart: ' . print_r($quote_cart, true));
     
         if ($product_id && $quantity > 0) {
             foreach ($quote_cart as &$item) {
@@ -278,7 +274,6 @@ class ACL_WC_Helpers {
             }
             WC()->session->set('quote_cart', $quote_cart);
             WC()->session->save_data();
-            error_log('Mini Cart 4 - Updated Quote Cart: ' . print_r(WC()->session->get('quote_cart'), true));
         }
     
         // For logged-in users, only load from meta if session cart is empty
@@ -310,10 +305,8 @@ class ACL_WC_Helpers {
         if (is_user_logged_in() && apply_filters('woocommerce_persistent_cart_enabled', true)) {
             if (!empty($quote_cart)) {
                 update_user_meta($user_id, $meta_key, maybe_serialize($quote_cart));
-                error_log('Mini Cart 6 - Saved to meta: ' . print_r($quote_cart, true));
             } else {
                 delete_user_meta($user_id, $meta_key);
-                error_log('Mini Cart 6 - Deleted meta');
             }
         }
     
