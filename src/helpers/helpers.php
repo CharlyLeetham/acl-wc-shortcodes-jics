@@ -261,6 +261,7 @@ class ACL_WC_Helpers {
             WC()->session->set_customer_session_cookie(true);
         }
         $session_id = WC()->session->get_customer_id();
+        error_log( 'Mini Cart 2 ' . $session_id  );
     
         $product_id = isset( $_POST['product_id'] ) ? intval( $_POST['product_id'] ) : 0;
         $quantity = isset( $_POST['quantity'] ) ? intval( $_POST['quantity'] ) : 0;
