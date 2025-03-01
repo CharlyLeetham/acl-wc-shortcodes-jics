@@ -319,9 +319,9 @@ class ACL_WC_Helpers {
     
     public static function acl_update_quantity_in_quote_cart() {
         check_ajax_referer('acl_wc_shortcodes_nonce', 'security');
-
+    
         error_log('uqiqc 1: Post ' . print_r($_POST, true));
-
+    
         // Ensure session is active
         if (!WC()->session->has_session()) {
             WC()->session->set_customer_session_cookie(true);
@@ -343,8 +343,8 @@ class ACL_WC_Helpers {
             WC()->session->set('quote_cart', $quote_cart);
             WC()->session->save_data();
             error_log('After update 1 - Quote Cart: ' . print_r(WC()->session->get('quote_cart'), true));
-
-            // Sync to database explicitly
+    
+            // Sync to database for guests
             global $wpdb;
             $wpdb->query(
                 $wpdb->prepare(
@@ -353,9 +353,23 @@ class ACL_WC_Helpers {
                     $session_id
                 )
             );
-
+    
+            // Sync to user meta for logged-in users
+            if (is_user_logged_in() && apply_filters('woocommerce_persistent_cart_enabled', true)) {
+                $user_id = get_current_user_id();
+                $blog_id = get_current_blog_id();
+                $meta_key = '_acl_persistent_rfq_cart_' . $blog_id;
+                if (!empty($quote_cart)) {
+                    update_user_meta($user_id, $meta_key, maybe_serialize($quote_cart));
+                    error_log('After meta update - Quote Cart: ' . print_r($quote_cart, true));
+                } else {
+                    delete_user_meta($user_id, $meta_key);
+                    error_log('After meta delete - Quote Cart empty');
+                }
+            }
+    
             error_log('After db update - Quote Cart: ' . print_r(WC()->session->get('quote_cart'), true));
-            
+    
             $count = array_reduce($quote_cart, function($carry, $item) {
                 return $carry + $item['quantity'];
             }, 0);
@@ -364,7 +378,7 @@ class ACL_WC_Helpers {
         } else {
             wp_send_json_error('Invalid product ID or quantity');
         }
-    } 
+    }
     
     public static function acl_process_quote_submission() {
         if ( isset( $_POST['action'] ) && $_POST['action'] == 'acl_create_quote' ) {
