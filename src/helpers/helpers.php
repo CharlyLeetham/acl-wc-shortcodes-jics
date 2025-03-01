@@ -279,31 +279,42 @@ class ACL_WC_Helpers {
 
             error_log( 'Mini Cart 3 update 1 - Quote Cart: ' . print_r(WC()->session->get( 'quote_cart' ), true ) );
 
-            global $wpdb;
-            $wpdb->query(
-                $wpdb->prepare(
-                    "UPDATE {$wpdb->prefix}woocommerce_sessions SET session_value = %s WHERE session_key = %s",
-                    maybe_serialize(array_merge(WC()->session->get_session_data(), ['quote_cart' => $quote_cart])),
-                    $session_id
-                )
-            );  
             
-            // Persist RFQ cart in user meta for logged-in users
-            if (is_user_logged_in() && apply_filters('woocommerce_persistent_cart_enabled', true)) {
-                if (!empty($quote_cart)) {
-                    update_user_meta($user_id, $meta_key, maybe_serialize($quote_cart));
-                } else {
-                    delete_user_meta($user_id, $meta_key);
-                }
-            }            
-            
-            $count = array_reduce( $quote_cart, function( $carry, $item ) {
-                return $carry + $item['quantity'];
-            }, 0 );
+
+        // Restore RFQ Cart for logged-in users
+        if (is_user_logged_in()) {
+            $user_id  = get_current_user_id();
+            $blog_id  = get_current_blog_id();
+            $meta_key = '_acl_persistent_rfq_cart_' . $blog_id;
+        
+            // Check if user has a saved RFQ cart
+            $saved_rfq_cart = get_user_meta($user_id, $meta_key, true);
+            if (!empty($saved_rfq_cart)) {
+                $quote_cart = maybe_unserialize($saved_rfq_cart);
+            }
+        }
     
-            wp_send_json_success( array( 'cart_count' => $count ) );
-        } else {
-            wp_send_json_error( 'Invalid product ID or quantity' );
+        // Store the corrected cart back into session
+        WC()->session->set('quote_cart', $quote_cart);
+        WC()->session->save_data();
+    
+        // Ensure session updates for guest users
+        global $wpdb;
+        $wpdb->query(
+            $wpdb->prepare(
+                "UPDATE {$wpdb->prefix}woocommerce_sessions SET session_value = %s WHERE session_key = %s",
+                maybe_serialize(array_merge(WC()->session->get_session_data(), ['quote_cart' => $quote_cart])),
+                $session_id
+            )
+        );
+    
+        // Persist RFQ cart in user meta for logged-in users
+        if (is_user_logged_in() && apply_filters('woocommerce_persistent_cart_enabled', true)) {
+            if (!empty($quote_cart)) {
+                update_user_meta($user_id, $meta_key, maybe_serialize($quote_cart));
+            } else {
+                delete_user_meta($user_id, $meta_key);
+            }
         }
     }  
     
