@@ -341,7 +341,7 @@
 
 /* Optional: Ensure price stays visible and centered */
 .acl-category-thumbnail .price {
-    position: absolute;
+   /* position: absolute;*/
     bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
