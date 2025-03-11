@@ -320,7 +320,8 @@
 }
 
 /* Style the link to fill the container */
-.acl-category-thumbnail a {
+
+.woocommerce ul.products li.product .acl-category-thumbnail a.woocommerce-loop-product__link, .acl-category-thumbnail a {
     display: block;
     width: 80%; /* Image and link at 80% of container */
     height: 80%;
@@ -328,6 +329,7 @@
 }
 
 /* Style the image with echoed clip-path */
+.woocommerce ul.products li.product .acl-category-thumbnail a.woocommerce-loop-product__link img, 
 .acl-category-thumbnail img {
     width: 100%; /* Fills the 80% link container */
     height: 100%;
