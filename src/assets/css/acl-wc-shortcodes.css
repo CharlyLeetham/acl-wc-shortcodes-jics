@@ -343,6 +343,8 @@
 .woocommerce ul.products li.product .acl-category-thumbnail .price {
     margin-bottom: 0;
     line-height: 1;
+    color: #ff9029;
+    font-weight: bold;
 }
 
 @media (min-width: 900px) {
