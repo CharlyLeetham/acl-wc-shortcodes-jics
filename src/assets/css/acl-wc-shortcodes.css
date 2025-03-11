@@ -317,7 +317,7 @@
     align-items: center; /* Center image vertically if needed */
     width: 100%;
     height: 100%;
-    padding: 10px 0;
+    padding: 15px 0;
 }
 
 /* Style the link to fill the container */
@@ -342,6 +342,7 @@
 
 .woocommerce ul.products li.product .acl-category-thumbnail .price {
     margin-bottom: 0;
+    line-height: 1;
 }
 
 @media (min-width: 900px) {
