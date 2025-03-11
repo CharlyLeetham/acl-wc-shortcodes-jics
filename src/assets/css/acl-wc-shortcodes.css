@@ -307,6 +307,47 @@
     width: calc(100%);
 }
 
+/* Product page styling */
+
+.acl-category-thumbnail {
+	background: #000000;
+	clip-path: polygon(5% 0%, 95% 0%, 100% 10%, 100% 90%, 95% 100%, 5% 100%, 0 90%, 0 10%);
+  display: flex;
+  justify-content: center; /* Center image horizontally */
+  align-items: center; /* Center image vertically if needed */
+	width: 100%;
+	height: 100%;
+}
+
+/* Style the link to fill the container */
+.acl-category-thumbnail a {
+    display: block;
+    width: 80%; /* Image and link at 80% of container */
+    height: 80%;
+    position: relative;
+}
+
+/* Style the image with echoed clip-path */
+.acl-category-thumbnail img {
+    width: 100%; /* Fills the 80% link container */
+    height: 100%;
+    object-fit: cover;
+    clip-path: polygon(5% 0%, 95% 0%, 100% 10%, 100% 90%, 95% 100%, 5% 100%, 0 90%, 0 10%);
+    display: block;
+}
+
+/* Optional: Ensure price stays visible and centered */
+.acl-category-thumbnail .price {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #fff; /* White text for contrast against black */
+    background: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+
 @media (min-width: 900px) {
     .cart-template-wrapper .woocommerce .acl_quote_submission_form {
         flex-basis: calc(100%) !important;
