@@ -43,6 +43,7 @@ if ( empty( $quote_cart ) ) {
 
                 <tbody>
                     <?php do_action( 'woocommerce_before_cart_contents' ); ?>
+                    <?php var_dump($grouped_cart ); ?>
                     <?php foreach ( $grouped_cart as $product_id => $item ) { ?>
                         <tr class="woocommerce-cart-form__cart-item">
                             <td class="product-remove">
