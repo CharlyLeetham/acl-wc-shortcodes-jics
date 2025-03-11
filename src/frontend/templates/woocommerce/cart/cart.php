@@ -12,6 +12,12 @@ if ( empty( $quote_cart ) ) {
     $grouped_cart = array();
     foreach ( $quote_cart as $item ) {
         $product_id = $item['product_id'];
+        // Get the product object using the product ID
+        $product = wc_get_product($product_id);
+
+        // Fetch the 'getdetails' attribute
+        $getdetails = $product ? $product->get_attribute('getdetails') : '';
+
         if ( isset( $grouped_cart[$product_id] ) ) {
             $grouped_cart[$product_id]['quantity'] += $item['quantity'];
         } else {
@@ -31,6 +37,7 @@ if ( empty( $quote_cart ) ) {
                         <th class="product-remove"><span class="screen-reader-text"><?php esc_html_e( 'Remove item', 'woocommerce' ); ?></span></th>
                         <th class="product-name"><?php esc_html_e( 'Product', 'woocommerce' ); ?></th>
                         <th class="product-quantity"><?php esc_html_e( 'Quantity', 'woocommerce' ); ?></th>
+                        <th class="product-details"><?php esc_html_e( 'What do you need?', 'woocommerce' ); ?></th>
                     </tr>
                 </thead>
 
@@ -53,6 +60,17 @@ if ( empty( $quote_cart ) ) {
                                     <button type="button" class="acl_plus_qty tve-woo-quantity-button" data-product-id="<?php echo esc_attr( $product_id ); ?>">+</button>
                                 </div>
                             </td>
+                            <td class="product-details" data-title="<?php esc_attr_e( 'Deails', 'woocommerce' ); ?>">
+                                <?php 
+                                if ( strtolower(trim($getdetails)) === 'yes' ) {
+                                ?>
+                                    <div class="product-details">
+                                        <input type="text" id="product-deets-<?php echo esc_attr( $product_id ); ?>" name="product-deets[<?php echo esc_attr( $product_id ); ?>]" class="input-text">
+                                    </div>
+                                <?php
+                                }
+                                ?>
+                            </td>                            
                         </tr>
                     <?php } ?>
                 </tbody>
