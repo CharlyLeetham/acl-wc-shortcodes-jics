@@ -362,6 +362,9 @@
     font-weight: bold;
 }
 
+.woocommerce ul.products li.product .woocommerce-loop-product__title {
+    text-transform: initial;
+}
 @media (min-width: 900px) {
     .cart-template-wrapper .woocommerce .acl_quote_submission_form {
         flex-basis: calc(100%) !important;
