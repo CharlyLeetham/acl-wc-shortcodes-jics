@@ -152,7 +152,13 @@ class ACL_WC_RFQ_cart {
 
         // Add products to the order
         foreach ( $quote_cart as $item ) {
-            $order->add_product( wc_get_product( $item['product_id'] ), $item['quantity'] );
+            $product = wc_get_product( $item['product_id'] );
+            $order_item = $order->add_product( $product, $item['quantity'] );
+    
+            // Check if product details were provided
+            if ( isset( $item['product-deets'] ) && !empty( $item['product-deets'] ) ) {
+                wc_add_order_item_meta( $order_item, 'Size & Specs', sanitize_text_field( $item['product-deets'] ) );
+            }
         }
 
         // Set customer details
