@@ -339,18 +339,6 @@
     margin: 0;
 }
 
-/* Optional: Ensure price stays visible and centered */
-.acl-category-thumbnail .price {
-   /* position: absolute;*/
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: #fff; /* White text for contrast against black */
-    background: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
-    padding: 5px 10px;
-    border-radius: 3px;
-}
-
 @media (min-width: 900px) {
     .cart-template-wrapper .woocommerce .acl_quote_submission_form {
         flex-basis: calc(100%) !important;
