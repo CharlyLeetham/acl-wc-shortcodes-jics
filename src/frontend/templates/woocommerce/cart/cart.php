@@ -20,8 +20,10 @@ if ( empty( $quote_cart ) ) {
 
         if ( isset( $grouped_cart[$product_id] ) ) {
             $grouped_cart[$product_id]['quantity'] += $item['quantity'];
+            $grouped_cart[$product_id]['getdetails'] = $getdetails;
         } else {
             $grouped_cart[$product_id] = $item;
+            $grouped_cart[$product_id]['getdetails'] = $getdetails;
         }
     }
     ?>
