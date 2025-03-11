@@ -118,7 +118,7 @@
 
 
 
-.acl-product-buy-now:not(:has(.add_to_cart_button)) {
+.acl-product-buy-now:not(:has(.add_to_cart_button)), .acl-product-buy-now:not(:has(.quote_button)) {
     border-left: 3px #f5f5f5 solid;
 }
 
