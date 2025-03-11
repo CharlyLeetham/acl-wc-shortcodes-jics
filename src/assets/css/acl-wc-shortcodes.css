@@ -126,6 +126,10 @@
     color: #ff9029;
 }
 
+.woocommerce ul.products li.product .button {
+    background: #ff9029;
+}
+
 .acl-product-price ins {
     font-weight: bold;
 }
