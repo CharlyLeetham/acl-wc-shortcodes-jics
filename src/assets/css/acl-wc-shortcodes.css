@@ -339,6 +339,10 @@
     margin: 0;
 }
 
+.woocommerce ul.products li.product .acl-category-thumbnail .price {
+    margin-bottom: 0;
+}
+
 @media (min-width: 900px) {
     .cart-template-wrapper .woocommerce .acl_quote_submission_form {
         flex-basis: calc(100%) !important;
