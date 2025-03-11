@@ -128,6 +128,11 @@
 
 .woocommerce ul.products li.product .button {
     background: #ff9029;
+    color: #ffffff;
+}
+
+.woocommerce ul.products li.product .button:hover {
+    color: rgba(255,255,255,0.8);
 }
 
 .acl-product-price ins {
