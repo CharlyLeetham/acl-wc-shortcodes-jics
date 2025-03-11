@@ -269,6 +269,10 @@
     white-space: nowrap;
 }
 
+.woocommerce a.button.add_to_cart_button, .woocommerce a.button.product_type_variable{
+    color: #ffffff;
+}
+
 
 /* RFQ Cart Layout */
 
