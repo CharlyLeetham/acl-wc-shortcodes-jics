@@ -132,7 +132,7 @@
 }
 
 .woocommerce ul.products li.product .button:hover {
-    color: rgba(255,255,255,0.8);
+    opacity: 0.5;
 }
 
 .acl-product-price ins {
