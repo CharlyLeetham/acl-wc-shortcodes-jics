@@ -65,7 +65,8 @@ if ( empty( $quote_cart ) ) {
                             </td>
                             <td class="product-details" data-title="<?php esc_attr_e( 'Deails', 'woocommerce' ); ?>">
                                 <?php 
-                                if ( strtolower(trim($getdetails)) === 'yes' ) {
+                                // Ensure grouped_cart has the product and check if getdetails is set
+                                if ( isset( $grouped_cart[$product_id]['getdetails'] ) && strtolower(trim($grouped_cart[$product_id]['getdetails'])) === 'yes' ) { 
                                 ?>
                                     <div class="product-details">
                                         <input type="text" id="product-deets-<?php echo esc_attr( $product_id ); ?>" name="product-deets[<?php echo esc_attr( $product_id ); ?>]" class="input-text">
