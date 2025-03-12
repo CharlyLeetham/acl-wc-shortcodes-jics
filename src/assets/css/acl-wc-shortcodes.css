@@ -84,7 +84,7 @@
     flex-basis: 100%;
 }
 
-.acl-product-buy-now .purchase-button, .woocommerce div.acl-single-product-custom-buttons .purchase-button, .acl-single-product-custom-buttons {
+.acl-product-buy-now .purchase-button, .woocommerce div.acl-single-product-custom-buttons .purchase-button {
     flex-basis: 30%; 
     background: #000000;
     display: flex;
@@ -167,6 +167,12 @@
 
 .woocommerce:where(body:not(.woocommerce-block-theme-has-button-styles)) .acl-single-product-custom-buttons a.quote-button.button {
     background: transparent;
+    color: #ffffff;
+    text-transform: unset;
+}
+
+.woocommerce.single-product:where(body:not(.woocommerce-block-theme-has-button-styles)) .acl-single-product-custom-buttons a.quote-button.button {
+    background: #ff9029;
     color: #ffffff;
     text-transform: unset;
 }

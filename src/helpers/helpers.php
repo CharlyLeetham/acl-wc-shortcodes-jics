@@ -182,7 +182,7 @@ class ACL_WC_Helpers {
 
         $debug = false;
         if (!$debug) {
-            echo 'here';
+
             // Show "Buy Now" button if purchase attribute contains 'purchase'
             if ( strpos( $purchase_attribute, 'purchase' ) !== false ) {
                 echo '<div class="acl-single-product-button-wrapper">';
