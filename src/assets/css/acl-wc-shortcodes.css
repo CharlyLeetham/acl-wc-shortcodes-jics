@@ -172,7 +172,7 @@
 }
 
 .woocommerce.single-product:where(body:not(.woocommerce-block-theme-has-button-styles)) .acl-single-product-custom-buttons a.quote-button.button {
-    background: #ff9029;
+    background: #000000;
     color: #ffffff;
     text-transform: unset;
 }
