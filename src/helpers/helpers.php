@@ -184,16 +184,16 @@ class ACL_WC_Helpers {
         if (!$debug) {
             echo 'here';
             // Show "Buy Now" button if purchase attribute contains 'purchase'
-            if (strpos($purchase_attribute, 'purchase') !== false) {
+            if ( strpos( $purchase_attribute, 'purchase' ) !== false ) {
                 echo '<div class="acl-single-product-button-wrapper">';
                 woocommerce_template_single_add_to_cart();
                 echo '</div>';
             }
             
             // Show "Get Quote" button if purchase attribute contains 'quote'
-            if (strpos($purchase_attribute, 'quote') !== false) {
+            if ( strpos( $purchase_attribute, 'quote' ) !== false || !$purchase_attribute ) {
                 echo '<div class="acl-single-product-button-wrapper">';
-                echo '<a href="#" data-product-id="' . esc_attr($product->get_id()) . '" class="button quote-button">Get Quote</a>';
+                echo '<a href="#" data-product-id="' . esc_attr( $product->get_id() ) . '" class="button quote-button">Get Quote</a>';
                 echo '</div>';
             }
         }
