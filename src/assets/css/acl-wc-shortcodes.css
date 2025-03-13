@@ -330,7 +330,7 @@
 /* Product page styling */
 
 .acl-category-thumbnail {
-    background: #000000;
+    background: #f5f5f5;
     clip-path: polygon(5% 0%, 95% 0%, 100% 10%, 100% 90%, 95% 100%, 5% 100%, 0 90%, 0 10%);
     display: flex;
     justify-content: center; /* Center image horizontally */
