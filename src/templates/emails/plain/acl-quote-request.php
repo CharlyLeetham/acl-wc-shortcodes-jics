@@ -8,10 +8,9 @@
 if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
-//error_log( "ACL_WC_RFQ_Email: Plain text template: " );
+
 // Use the quote details passed from the email class
 $quote_items = isset( $quote_details['_acl_quote_items'][0] ) ? maybe_unserialize( $quote_details['_acl_quote_items'][0] ) : array();
-//error_log("quote_items: $quote_items");
 $email = isset( $quote_details['_acl_email'][0] ) ? $quote_details['_acl_email'][0] : '';
 $name = isset( $quote_details['_acl_first_name'][0] ) && isset( $quote_details['_acl_last_name'][0]) ? $quote_details['_acl_first_name'][0] . ' ' . $quote_details['_acl_last_name'][0] : '';
 $phone = isset( $quote_details['_acl_phone'][0] ) ? $quote_details['_acl_phone'][0] : '';

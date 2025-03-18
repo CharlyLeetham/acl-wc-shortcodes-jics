@@ -288,7 +288,6 @@ class ACL_WC_Helpers {
                 $quote_cart = maybe_unserialize($saved_rfq_cart);
                 WC()->session->set('quote_cart', $quote_cart);
                 WC()->session->save_data();
-                error_log('Mini Cart 5 - Loaded from meta: ' . print_r($quote_cart, true));
             }
         }
     
@@ -320,9 +319,7 @@ class ACL_WC_Helpers {
     
     public static function acl_update_quantity_in_quote_cart() {
         check_ajax_referer('acl_wc_shortcodes_nonce', 'security');
-    
-        error_log('uqiqc 1: Post ' . print_r($_POST, true));
-    
+      
         // Ensure session is active
         if (!WC()->session->has_session()) {
             WC()->session->set_customer_session_cookie(true);
@@ -334,7 +331,6 @@ class ACL_WC_Helpers {
     
         if ($product_id && $quantity > 0) {
             $quote_cart = WC()->session->get('quote_cart', array());
-            error_log('Before update - Product ID: ' . $product_id . ', Quantity: ' . $quantity . ', Quote Cart: ' . print_r($quote_cart, true));
             foreach ($quote_cart as &$item) {
                 if ($item['product_id'] === $product_id) {
                     $item['quantity'] = $quantity;
@@ -343,7 +339,6 @@ class ACL_WC_Helpers {
             }
             WC()->session->set('quote_cart', $quote_cart);
             WC()->session->save_data();
-            error_log('After update 1 - Quote Cart: ' . print_r(WC()->session->get('quote_cart'), true));
     
             // Sync to database for guests
             global $wpdb;
@@ -362,14 +357,10 @@ class ACL_WC_Helpers {
                 $meta_key = '_acl_persistent_rfq_cart_' . $blog_id;
                 if (!empty($quote_cart)) {
                     update_user_meta($user_id, $meta_key, maybe_serialize($quote_cart));
-                    error_log('After meta update - Quote Cart: ' . print_r($quote_cart, true));
                 } else {
                     delete_user_meta($user_id, $meta_key);
-                    error_log('After meta delete - Quote Cart empty');
                 }
             }
-    
-            error_log('After db update - Quote Cart: ' . print_r(WC()->session->get('quote_cart'), true));
     
             $count = array_reduce($quote_cart, function($carry, $item) {
                 return $carry + $item['quantity'];

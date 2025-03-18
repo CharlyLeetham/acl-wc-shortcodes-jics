@@ -47,17 +47,9 @@ try {
     add_filter( 'woocommerce_product_is_visible', array( '\ACLWcShortcodes\ACLWcShortcodes', 'force_show_all_products' ), 10, 2 );
 
 } catch ( Exception $e ) {
-    // Log exception or show an admin notice
-    //error_log( 'ACL WC Shortcodes JICS - Exception: ' . $e->getMessage() );
     if ( is_admin() ) {
         add_action( 'admin_notices', function() use ( $e ) {
             echo '<div class="notice notice-error"><p>' . esc_html__( 'ACL WC Shortcodes JICS Error:', 'acl-wc-shortcodes-jics' ) . ' ' . esc_html( $e->getMessage() ) . '</p></div>';
         } );
     }
 }
-
-//add_action ('woocommerce_cart_loaded_from_session','acl_yes');
-
-//function acl_yes() {
-   // error_log('HERE');
-//}  

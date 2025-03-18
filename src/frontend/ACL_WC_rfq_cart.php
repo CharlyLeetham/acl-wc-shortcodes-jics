@@ -12,9 +12,7 @@ class ACL_WC_RFQ_cart {
      * Initialize the quote cart in the session.
      */
     public static function acl_start_quote_cart() {
-
-        error_log('ACL START QUOTE CART');
-    
+  
         // Ensure WooCommerce session is initialized
         if (!WC()->session->has_session()) {
             WC()->session->set_customer_session_cookie(true);
@@ -185,9 +183,6 @@ class ACL_WC_RFQ_cart {
         
         // Get quote cart directly from session since that's where it's stored
         $quote_cart = WC()->session->get('quote_cart', array());
-
-        error_log( 'Mini Cart Widget Quote cart: ' . print_r( $quote_cart, true ) );
-
         $cart_url = home_url( '/rfq-cart' );
     
         if ( empty( $quote_cart ) ) {
@@ -199,7 +194,13 @@ class ACL_WC_RFQ_cart {
             return $carry + (isset($item['quantity']) ? intval($item['quantity']) : 0);
         }, 0);
 
-        return '<div class="acl-mini-rfq-cart"><a href="' . esc_url( $cart_url ) . '">RFQ Cart: ' . esc_html( $total_quantity ) . ' item(s)</a></div>';
+        // Define the icon (using Font Awesome as an example)
+        $icon_html = '<i class="fas fa-shopping-cart"></i>';
+
+        // If there are items, show the count
+        $item_count_html = $total_quantity > 0 ? '<span class="rfq-cart-count">' . esc_html( $total_quantity ) . '</span>' : '';
+
+        return '<div class="acl-mini-rfq-cart"><a href="' . esc_url( $cart_url ) . '" title="Request Quote">' . $icon_html . $item_count_html . '</a></div>';        
     }
 
     public static function acl_rfq_cart_content( ) {
