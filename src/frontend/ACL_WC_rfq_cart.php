@@ -194,13 +194,21 @@ class ACL_WC_RFQ_cart {
             return $carry + (isset($item['quantity']) ? intval($item['quantity']) : 0);
         }, 0);
 
-        // Define the icon (using Font Awesome as an example)
-        $icon_html = '<i class="fas fa-shopping-cart"></i>';
+        // SVG icon for the cart
+        $icon_svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+        <path d="M7 4V2h10v2h4v2h-1.118l-1.35 8.539a2 2 0 0 1-1.98 1.744H8.448a2 2 0 0 1-1.98-1.744L5.118 8H4V6h3zm4 14a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm6 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-6-2h6l1.35-8H6.65L8 16z"/>
+        </svg>';
+
 
         // If there are items, show the count
         $item_count_html = $total_quantity > 0 ? '<span class="rfq-cart-count">' . esc_html( $total_quantity ) . '</span>' : '';
+        $cart_widget_html = apply_filters('acl_mini_rfq_cart_widget_html', '
+            <div class="acl-mini-rfq-cart">
+                <a href="' . esc_url( $cart_url ) . '" title="Request Quote">' . $icon_svg . $item_count_html . '</a>
+            </div>
+        ');
 
-        return '<div class="acl-mini-rfq-cart"><a href="' . esc_url( $cart_url ) . '" title="Request Quote">' . $icon_html . $item_count_html . '</a></div>';        
+        return $cart_widget_html;     
     }
 
     public static function acl_rfq_cart_content( ) {
