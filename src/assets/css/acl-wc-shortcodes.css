@@ -371,6 +371,33 @@
 .woocommerce ul.products li.product .woocommerce-loop-product__title {
     text-transform: capitalize;
 }
+
+
+/* RFQ Minicart Formatting */
+.acl-mini-rfq-cart {
+    display: inline-block;
+    position: relative;
+}
+
+.acl-mini-rfq-cart a {
+    text-decoration: none;
+    font-size: 18px;
+    position: relative;
+    color: #333; /* Adjust as needed */
+}
+
+.acl-mini-rfq-cart .rfq-cart-count {
+    background: red;
+    color: white;
+    font-size: 12px;
+    border-radius: 50%;
+    padding: 2px 6px;
+    position: absolute;
+    top: -5px;
+    right: -10px;
+}
+
+
 @media (min-width: 900px) {
     .cart-template-wrapper .woocommerce .acl_quote_submission_form {
         flex-basis: calc(100%) !important;
