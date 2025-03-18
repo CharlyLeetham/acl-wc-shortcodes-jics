@@ -195,9 +195,11 @@ class ACL_WC_RFQ_cart {
         }, 0);
 
         // SVG icon for the cart
-        $icon_svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-        <path d="M7 4V2h10v2h4v2h-1.118l-1.35 8.539a2 2 0 0 1-1.98 1.744H8.448a2 2 0 0 1-1.98-1.744L5.118 8H4V6h3zm4 14a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm6 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-6-2h6l1.35-8H6.65L8 16z"/>
-     </svg>';
+        $icon_svg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="9" cy="21" r="1"/>
+        <circle cx="20" cy="21" r="1"/>
+        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+        </svg>';
 
 
         // If there are items, show the count
