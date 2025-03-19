@@ -62,14 +62,14 @@ class ACL_WC_RFQ_checkout {
                         <input type="email" id="acl_email" name="acl_email" required>
                     </div>
                     <div class="field-group">
-                        <label for="acl_phone"><?php esc_html_e('Phone Number:', 'woocommerce'); ?> <span class="required">*</span></label>
-                        <input type="tel" id="acl_phone" name="acl_phone" required>
+                        <label for="acl_phone"><?php esc_html_e('Phone Number:', 'woocommerce'); ?></label>
+                        <input type="tel" id="acl_phone" name="acl_phone">
                     </div>
                 </div>
                 <div class="form-row single-field">
                     <div class="field-group">
-                        <label for="acl_address_line1"><?php esc_html_e('Shipping Address Line 1:', 'woocommerce'); ?> <span class="required">*</span></label>
-                        <input type="text" id="acl_address_line1" name="acl_address_line1" required>
+                        <label for="acl_address_line1"><?php esc_html_e('Shipping Address Line 1:', 'woocommerce'); ?></label>
+                        <input type="text" id="acl_address_line1" name="acl_address_line1">
                     </div>
                 </div>
                 <div class="form-row single-field">
