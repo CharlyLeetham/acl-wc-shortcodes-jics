@@ -53,9 +53,6 @@ if ( empty( $quote_cart ) ) {
                                 </a>
                             </td>
                             <td class="product-name" data-title="<?php esc_attr_e( 'Product', 'woocommerce' ); ?>">
-                                <?php echo esc_html( $item['name'] ); ?>
-                            </td>
-                            <td class="product-name" data-title="<?php esc_attr_e( 'Product', 'woocommerce' ); ?>">
                                 <?php
                                 $product = wc_get_product( $item['product_id'] );
                                 if ( $product ) {
