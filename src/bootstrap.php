@@ -23,6 +23,8 @@ class ACLWcShortcodes {
         add_action( 'wp_ajax_nopriv_acl_update_mini_cart', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_update_mini_cart' ) );
         add_action( 'wp_ajax_acl_update_quantity_in_quote_cart', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_update_quantity_in_quote_cart' ) );
         add_action( 'wp_ajax_nopriv_acl_update_quantity_in_quote_cart', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_update_quantity_in_quote_cart' ) );
+        add_action( 'wp_ajax_acl_update_rfq_cart', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_update_rfq_cart' ) );
+        add_action( 'wp_ajax_nopriv_acl_update_rfq_cart', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_update_rfq_cart' ) );
 
 
         //Hook methods for Quote checkout and management
