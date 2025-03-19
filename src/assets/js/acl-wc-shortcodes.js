@@ -159,6 +159,46 @@ jQuery(document).ready(function($) {
                 console.log('Invalid quantity entered for product ID:', productId);
             }
         }, 2000));
+    }); 
+    
+    $('#acl_update_cart').on('click', function(e) {
+        e.preventDefault();
+        console.log('Update Cart button clicked');
+
+        var quantities = {};
+        var details = {};
+        $('.acl_qty_input').each(function() {
+            var productId = $(this).attr('name').match(/\d+/)[0];
+            quantities[productId] = $(this).val();
+        });
+        $('.product-details textarea').each(function() {
+            var productId = $(this).attr('name').match(/\d+/)[0];
+            details[productId] = $(this).val();
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: acl_wc_shortcodes.ajax_url,
+            data: {
+                action: 'acl_update_rfq_cart',
+                quantities: quantities,
+                details: details,
+                security: acl_wc_shortcodes.nonce
+            },
+            success: function(response) {
+                if (response.success) {
+                    console.log('RFQ cart updated:', response.data);
+                    updateMiniCartDisplay(response.data.cart_count);
+                    alert('RFQ cart updated successfully!');
+                } else {
+                    console.error('Error updating RFQ cart:', response.data);
+                    alert('Error: ' + response.data.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX error:', status, error);
+            }
+        });
     });    
 
     // Update Mini Cart Function

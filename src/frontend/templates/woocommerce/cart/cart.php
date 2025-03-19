@@ -29,9 +29,7 @@ if ( empty( $quote_cart ) ) {
     ?>
     <div class="woocommerce">
         <form class="woocommerce-cart-form acl_quote_submission_form" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post">
-            <?php wp_nonce_field( 'acl_quote_submission', 'acl_quote_nonce' ); ?>
-            <input type="hidden" name="action" value="acl_create_quote">
-            
+            <?php wp_nonce_field('acl_cart_update', 'acl_cart_nonce'); ?> 
             <?php do_action( 'acl_woocommerce_before_cart_table' ); ?>
             <table class="shop_table shop_table_responsive cart woocommerce-cart-form__contents" cellspacing="0">
                 <thead>
@@ -86,7 +84,7 @@ if ( empty( $quote_cart ) ) {
                 </tbody>
             </table>
             <?php do_action( 'acl_woocommerce_after_cart_table' ); ?>
-            <input type="submit" class="button" name="acl_update_cart" value="<?php esc_attr_e( 'Update Cart', 'woocommerce' ); ?>" />
+            <button type="button" class="button" id="acl_update_cart"><?php esc_attr_e('Update Cart', 'woocommerce'); ?></button>
         </form>
         <?php do_action( 'acl_woocommerce_after_cart' ); ?>
     </div>

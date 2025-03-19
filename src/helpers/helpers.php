@@ -371,6 +371,66 @@ class ACL_WC_Helpers {
             wp_send_json_error('Invalid product ID or quantity');
         }
     }
+
+    public static function acl_update_rfq_cart() {
+        check_ajax_referer('acl_wc_shortcodes_nonce', 'security');
+
+        if (!WC()->session->has_session()) {
+            WC()->session->set_customer_session_cookie(true);
+        }
+        $session_id = WC()->session->get_customer_id();
+
+        $quantities = isset($_POST['quantities']) ? (array) $_POST['quantities'] : array();
+        $details = isset($_POST['details']) ? (array) $_POST['details'] : array();
+        $quote_cart = WC()->session->get('quote_cart', array());
+
+        // Update quantities and details in the RFQ cart
+        foreach ($quantities as $product_id => $quantity) {
+            $product_id = intval($product_id);
+            $quantity = intval($quantity);
+            if ($quantity > 0 && isset($quote_cart[$product_id])) {
+                $quote_cart[$product_id]['quantity'] = $quantity;
+                if (isset($details[$product_id]) && !empty($details[$product_id])) {
+                    $quote_cart[$product_id]['product-deets'] = sanitize_text_field($details[$product_id]);
+                }
+            } elseif ($quantity <= 0 && isset($quote_cart[$product_id])) {
+                unset($quote_cart[$product_id]); // Remove item if quantity is 0 or less
+            }
+        }
+
+        // Save updated cart to session
+        WC()->session->set('quote_cart', $quote_cart);
+        WC()->session->save_data();
+
+        // Sync to database for guests
+        global $wpdb;
+        $wpdb->query(
+            $wpdb->prepare(
+                "UPDATE {$wpdb->prefix}woocommerce_sessions SET session_value = %s WHERE session_key = %s",
+                maybe_serialize(array_merge(WC()->session->get_session_data(), ['quote_cart' => $quote_cart])),
+                $session_id
+            )
+        );
+
+        // Sync to user meta for logged-in users
+        if (is_user_logged_in() && apply_filters('woocommerce_persistent_cart_enabled', true)) {
+            $user_id = get_current_user_id();
+            $blog_id = get_current_blog_id();
+            $meta_key = '_acl_persistent_rfq_cart_' . $blog_id;
+            if (!empty($quote_cart)) {
+                update_user_meta($user_id, $meta_key, maybe_serialize($quote_cart));
+            } else {
+                delete_user_meta($user_id, $meta_key);
+            }
+        }
+
+        // Calculate total quantity for mini-cart
+        $cart_count = array_reduce($quote_cart, function($carry, $item) {
+            return $carry + (isset($item['quantity']) ? intval($item['quantity']) : 0);
+        }, 0);
+
+        wp_send_json_success(array('cart_count' => $cart_count));
+    }    
     
     public static function acl_process_quote_submission() {
         if ( isset( $_POST['action'] ) && $_POST['action'] == 'acl_create_quote' ) {
