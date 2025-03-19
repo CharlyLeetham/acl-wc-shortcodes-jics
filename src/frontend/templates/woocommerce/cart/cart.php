@@ -55,6 +55,16 @@ if ( empty( $quote_cart ) ) {
                             <td class="product-name" data-title="<?php esc_attr_e( 'Product', 'woocommerce' ); ?>">
                                 <?php echo esc_html( $item['name'] ); ?>
                             </td>
+                            <td class="product-name" data-title="<?php esc_attr_e( 'Product', 'woocommerce' ); ?>">
+                                <?php
+                                $product = wc_get_product( $item['product_id'] );
+                                if ( $product ) {
+                                    echo '<a href="' . esc_url( $product->get_permalink() ) . '">' . esc_html( $item['name'] ) . '</a>';
+                                } else {
+                                    echo esc_html( $item['name'] );
+                                }
+                                ?>
+                            </td>                            
                             <td class="product-quantity" data-title="<?php esc_attr_e( 'Quantity', 'woocommerce' ); ?>">
                                 <div class="acl_quantity quantity">
                                     <button type="button" class="acl_minus_qty tve-woo-quantity-button" data-product-id="<?php echo esc_attr( $product_id ); ?>">-</button>
