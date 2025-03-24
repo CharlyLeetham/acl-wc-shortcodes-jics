@@ -227,13 +227,37 @@ jQuery(document).ready(function($) {
     }
 
     // Update Mini Cart Display Function
-    function updateMiniCartDisplay(count) {
+/*    function updateMiniCartDisplay(count) {
         var cartElement = $('.acl-mini-rfq-cart a');
         if (cartElement.length) {
             cartElement.text('RFQ Cart: ' + count + ' item(s)');
         }
     }
+*/
 
+    function updateMiniCartDisplay(totalQty) {
+        var cartElement = $('.acl-mini-rfq-cart a');
+        if (cartElement.length) {
+            var countSpan = cartElement.find('.rfq-cart-count');
+            if (totalQty > 0) {
+                // Update or create the quantity span
+                if (countSpan.length) {
+                    countSpan.text(totalQty);
+                } else {
+                    cartElement.append('<span class="rfq-cart-count">' + totalQty + '</span>');
+                }
+            } else {
+                // Remove the span and set empty cart text
+                if (countSpan.length) {
+                    countSpan.remove();
+                }
+                cartElement.contents().filter(function() {
+                    return this.nodeType === 3; // Text nodes only
+                }).remove(); // Remove any existing text nodes
+                cartElement.prepend('RFQ Cart: 0 items');
+            }
+        }
+    }
     // Remove from Quote Cart
     $(document).on('click', '.acl_remove_from_quote_cart', function(e) {
         console.log('Remove clicked');
