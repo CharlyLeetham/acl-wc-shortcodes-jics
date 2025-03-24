@@ -239,8 +239,7 @@ jQuery(document).ready(function($) {
         console.log('Remove clicked');
         e.preventDefault();
         var productId = $(this).data('product-id');
-        var $row = $(this).closest('tr');
-        var quantity = $row.find('.acl_qty_input').val();
+        var quantity = $(this).closest('tr').find('.acl_qty_input').val();
 
         $.ajax({
             type: 'POST',
@@ -254,9 +253,14 @@ jQuery(document).ready(function($) {
             success: function(response) {
                 if (response.success) {
                     console.log('Product removed from quote cart:', productId);
-                    $row.remove();
-                    // Using updateMiniCart similar to the increment quantity code
-                    updateMiniCart(productId, 0); // Using 0 as quantity to indicate removal
+                    $(e.target).closest('tr').remove();
+                    var cartElement = $('.acl-mini-rfq-cart a');
+                    if (cartElement.length) {
+                        if (cartElement.length) {
+                            var newCount = response.data.cart_count || (parseInt(cartElement.text().match(/\d+/)[0]) || 0) - 1;
+                            updateMiniCartDisplay(newCount);
+                        }
+                    }
                 } else {
                     console.error('Error removing product:', response.data);
                 }
