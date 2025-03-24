@@ -263,7 +263,7 @@ jQuery(document).ready(function($) {
             data: {
                 'action': 'acl_update_quantity_in_quote_cart',
                 'product_id': productId,
-                'quantity': quantity,
+                'quantity': 0,
                 'security': acl_wc_shortcodes.nonce
             },
             success: function(response) {
