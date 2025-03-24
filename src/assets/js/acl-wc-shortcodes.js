@@ -249,7 +249,7 @@ jQuery(document).ready(function($) {
             }
         }
     }
-    
+
     // Remove from Quote Cart
     $(document).on('click', '.acl_remove_from_quote_cart', function(e) {
         console.log('Remove clicked');
@@ -261,7 +261,7 @@ jQuery(document).ready(function($) {
             type: 'POST',
             url: acl_wc_shortcodes.ajax_url,
             data: {
-                'action': 'acl_remove_from_quote_cart',
+                'action': 'acl_update_quantity_in_quote_cart',
                 'product_id': productId,
                 'quantity': quantity,
                 'security': acl_wc_shortcodes.nonce
