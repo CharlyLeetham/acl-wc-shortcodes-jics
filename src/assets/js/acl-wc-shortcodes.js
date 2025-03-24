@@ -256,10 +256,12 @@ jQuery(document).ready(function($) {
                     $(e.target).closest('tr').remove();
                     var cartElement = $('.acl-mini-rfq-cart a');
                     if (cartElement.length) {
-                        if (cartElement.length) {
-                            var newCount = response.data.cart_count || (parseInt(cartElement.text().match(/\d+/)[0]) || 0) - 1;
-                            updateMiniCartDisplay(newCount);
-                        }
+                        // Calculate total quantity from remaining items
+                        var totalQty = 0;
+                        $('.acl_qty_input').each(function() {
+                            totalQty += parseInt($(this).val()) || 0;
+                        });
+                        updateMiniCartDisplay(totalQty);
                     }
                 } else {
                     console.error('Error removing product:', response.data);
