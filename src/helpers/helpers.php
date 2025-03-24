@@ -329,14 +329,30 @@ class ACL_WC_Helpers {
         $product_id = isset($_POST['product_id']) ? intval($_POST['product_id']) : 0;
         $quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : 0;
     
-        if ($product_id && $quantity > 0) {
+        if ($product_id) {
             $quote_cart = WC()->session->get('quote_cart', array());
-            foreach ($quote_cart as &$item) {
-                if ($item['product_id'] === $product_id) {
-                    $item['quantity'] = $quantity;
-                    break;
+    
+            if ($quantity > 0) {
+                // Update quantity
+                $found = false;
+                foreach ($quote_cart as &$item) {
+                    if ($item['product_id'] === $product_id) {
+                        $item['quantity'] = $quantity;
+                        $found = true;
+                        break;
+                    }
                 }
+                if (!$found) {
+                    // If product isn’t in cart, add it (optional, adjust based on your needs)
+                    $quote_cart[] = array('product_id' => $product_id, 'quantity' => $quantity);
+                }
+            } else {
+                // Remove item
+                $quote_cart = array_filter($quote_cart, function($item) use ($product_id) {
+                    return $item['product_id'] !== $product_id;
+                });
             }
+
             WC()->session->set('quote_cart', $quote_cart);
             WC()->session->save_data();
     

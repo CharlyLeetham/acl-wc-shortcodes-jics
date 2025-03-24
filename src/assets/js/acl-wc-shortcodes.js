@@ -226,15 +226,6 @@ jQuery(document).ready(function($) {
         });
     }
 
-    // Update Mini Cart Display Function
-/*    function updateMiniCartDisplay(count) {
-        var cartElement = $('.acl-mini-rfq-cart a');
-        if (cartElement.length) {
-            cartElement.text('RFQ Cart: ' + count + ' item(s)');
-        }
-    }
-*/
-
     function updateMiniCartDisplay(totalQty) {
         var cartElement = $('.acl-mini-rfq-cart a');
         if (cartElement.length) {
@@ -258,6 +249,7 @@ jQuery(document).ready(function($) {
             }
         }
     }
+    
     // Remove from Quote Cart
     $(document).on('click', '.acl_remove_from_quote_cart', function(e) {
         console.log('Remove clicked');
