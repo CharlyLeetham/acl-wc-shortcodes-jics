@@ -328,8 +328,6 @@ class ACL_WC_Helpers {
     
         $product_id = isset($_POST['product_id']) ? intval($_POST['product_id']) : 0;
         $quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : 0;
-
-        error_log ( 'Quantity: '. $quantity );
     
         if ($product_id) {
             $quote_cart = WC()->session->get('quote_cart', array());
