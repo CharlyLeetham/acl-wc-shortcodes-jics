@@ -42,8 +42,6 @@ class ACLWcShortcodes {
         add_filter( 'woocommerce_email_classes', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_register_custom_email' ) );
         add_action( 'admin_init', array( 'ACLWcShortcodes\ACLWCRFQWCEMail\ACL_WC_RFQ_Email', 'acl_force_html_email_setting' ) );
         error_log( 'Filter registration: ' . print_r( array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_custom_add_to_cart_text' ), true ) );
-        apply_filter( 'woocommerce_product_add_to_cart_text', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_custom_add_to_cart_text', 10, 2 ) );
-
     }
 
     public static function acl_wc_shortcodes_init() {
@@ -81,6 +79,7 @@ class ACLWcShortcodes {
         add_shortcode( 'acl_mini_rfq_cart', array( 'ACLWcShortcodes\ACLWCShortcodes\ACL_WC_Shortcodes', 'acl_mini_rfq_cart_shortcode' ) );
         add_shortcode( 'acl_rfq_cart', array( 'ACLWcShortcodes\ACLWCShortcodes\ACL_WC_Shortcodes', 'acl_rfq_cart_shortcode' ) );   
         add_shortcode( 'acl_test_send_email', array( 'ACLWcShortcodes\ACLWCShortcodes\ACL_WC_Shortcodes', 'acl_test_send_email_shortcode' ) );
+        add_filter( 'woocommerce_product_add_to_cart_text', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_custom_add_to_cart_text', 10, 2 ) );
     }
 
     public static function force_show_all_products( $visible, $product_id ) {
