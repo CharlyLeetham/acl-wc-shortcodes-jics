@@ -601,7 +601,7 @@ class ACL_WC_Helpers {
         }
     }
 
-    public static function acl_custom_add_to_cart_text() {
+    public static function acl_custom_add_to_cart_text( $default_text, $product ) {
         // You can customize the text here
         return 'Get Quote'; // Replace "Read more" with "Buy Now"
     }
