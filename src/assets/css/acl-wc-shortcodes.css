@@ -46,7 +46,7 @@
 }
 
 
-.add_to_cart_button {
+.add_to_cart_button, .product_type_simple {
     background: #ff9029;
     color: #ffffff;
     /* font-weight: bold; */
