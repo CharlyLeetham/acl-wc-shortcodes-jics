@@ -600,7 +600,18 @@ class ACL_WC_Helpers {
     }
 
     public static function acl_custom_add_to_cart_text( $default_text, \WC_Product $product ) {
-        // You can customize the text here
-        return 'View Details'; // Replace "Read more" with "Buy Now"
+        // Check if the product has a price (non-empty and not zero)
+        $has_price = ! empty( $product->get_price() ) && $product->get_price() > 0;
+
+        if ( $has_price ) {
+            if ( $product->is_type( 'simple' ) ) {
+                return 'Add to Cart'; // Simple product with a price
+            } elseif ( $product->is_type( 'variable' ) ) {
+                return 'View Product'; // Variable product with a price
+            }
+        }
+
+        // Default for no price or other product types
+        return 'View Product';
     }
 }
