@@ -54,9 +54,7 @@ jQuery(document).ready(function($) {
                         var cartElement = $('.acl-mini-rfq-cart a');
                         if (cartElement.length) {
 
-                            // Calculate total quantity from cart items
-                            var newCount = response.data.items ? response.data.items.reduce((sum, item) => sum + (parseInt(item.quantity) || 0), 0) : 0;                            
-                            //var newCount = response.data.cart_count || (parseInt(cartElement.text().match(/\d+/)[0]) || 0) + 1;
+                            var newCount = response.data.cart_count || (parseInt(cartElement.text().match(/\d+/)[0]) || 0) + 1;
                             var iconSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
                             '<circle cx="9" cy="21" r="1"/>' +
                             '<circle cx="20" cy="21" r="1"/>' +

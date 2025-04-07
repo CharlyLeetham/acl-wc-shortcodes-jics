@@ -210,10 +210,13 @@ class ACL_WC_Helpers {
         $product_id = isset( $_POST['product_id']) ? intval($_POST['product_id'] ) : 0;
         if ( $product_id ) {
             $quote_cart = WC()->session->get( 'quote_cart' );
+            $total_quantity = array_reduce($quote_cart, function($carry, $item) {
+                return $carry + (isset($item['quantity']) ? intval($item['quantity']) : 0);
+            }, 0);
             if ( isset( $quote_cart[$product_id] ) ) {
                 wp_send_json_success( array(
                     'message' => 'This product is already added for quote.',
-                    'cart_count' => count($quote_cart),
+                    'cart_count' => $total_quantity,
                     'already_in_cart' => true
                 ) );
             } else {
@@ -221,7 +224,7 @@ class ACL_WC_Helpers {
                 $quote_cart = WC()->session->get( 'quote_cart' );
                 wp_send_json_success(array(
                     'message' => 'Product added for quote',
-                    'cart_count' => count($quote_cart),
+                    'cart_count' => $total_quantity,
                     'already_in_cart' => false
                 ));
             }
