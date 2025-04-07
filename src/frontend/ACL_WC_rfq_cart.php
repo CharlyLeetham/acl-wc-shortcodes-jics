@@ -184,26 +184,29 @@ class ACL_WC_RFQ_cart {
         // Get quote cart directly from session since that's where it's stored
         $quote_cart = WC()->session->get('quote_cart', array());
         $cart_url = home_url( '/rfq-cart' );
-    
-        if ( empty( $quote_cart ) ) {
-            return '<div class="acl-mini-rfq-cart"><a href="' . esc_url( $cart_url ) . '">RFQ Cart: 0 items</a></div>';
-        }
-    
-        // Sum the 'quantity' field across all items
-        $total_quantity = array_reduce($quote_cart, function($carry, $item) {
-            return $carry + (isset($item['quantity']) ? intval($item['quantity']) : 0);
-        }, 0);
 
         // SVG icon for the cart
         $icon_svg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="9" cy="21" r="1"/>
         <circle cx="20" cy="21" r="1"/>
         <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-        </svg>';
+        </svg>';        
+    
+       // if ( empty( $quote_cart ) ) {
+            //return '<div class="acl-mini-rfq-cart"><a href="' . esc_url( $cart_url ) . '">RFQ Cart: 0 items</a></div>';
+           // return '<div class="acl-mini-rfq-cart"> </div>'
+        //}
+    
+        // Sum the 'quantity' field across all items
+        if ( !empty ( $quote_cart ) ) {
+            $total_quantity = array_reduce($quote_cart, function($carry, $item) {
+                return $carry + (isset($item['quantity']) ? intval($item['quantity']) : 0);
+            }, 0);
 
-
-        // If there are items, show the count
-        $item_count_html = $total_quantity > 0 ? '<span class="rfq-cart-count">' . esc_html( $total_quantity ) . '</span>' : '';
+            // If there are items, show the count
+            $item_count_html = $total_quantity > 0 ? '<span class="rfq-cart-count">' . esc_html( $total_quantity ) . '</span>' : '';
+        }
+        
         $cart_widget_html = apply_filters('acl_mini_rfq_cart_widget_html', '
             <div class="acl-mini-rfq-cart">
                 <a href="' . esc_url( $cart_url ) . '" title="Request Quote">' . $icon_svg . $item_count_html . '</a>
