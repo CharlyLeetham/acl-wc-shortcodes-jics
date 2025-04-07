@@ -53,14 +53,24 @@ jQuery(document).ready(function($) {
                         console.log('Product added to quote cart:', response);
                         var cartElement = $('.acl-mini-rfq-cart a');
                         if (cartElement.length) {
-                            var newCount = response.data.cart_count || (parseInt(cartElement.text().match(/\d+/)[0]) || 0) + 1;
+
+                            // Calculate total quantity from cart items
+                            var newCount = 0;
+                            if (response.data.cart_items && Array.isArray(response.data.cart_items)) {
+                                newCount = response.data.cart_items.reduce(function(carry, item) {
+                                    return carry + (item.quantity ? parseInt(item.quantity) : 0);
+                                }, 0);
+                            } else if (response.data.total_quantity) {
+                                // Fallback if the API directly provides total_quantity
+                                newCount = parseInt(response.data.total_quantity) || 0;
+                            }                            
+                            //var newCount = response.data.cart_count || (parseInt(cartElement.text().match(/\d+/)[0]) || 0) + 1;
                             var iconSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
                             '<circle cx="9" cy="21" r="1"/>' +
                             '<circle cx="20" cy="21" r="1"/>' +
                             '<path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>' +
                             '</svg>';
                             cartElement.html(iconSvg + '<span class="rfq-cart-count">' + newCount + '</span>');
-                            //cartElement.text('RFQ Cart: ' + newCount + ' item(s)');
                         }
                     }
                 } else {
