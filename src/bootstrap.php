@@ -41,7 +41,6 @@ class ACLWcShortcodes {
         add_filter( 'woocommerce_init', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_ensure_email_system_ready' ) );
         add_filter( 'woocommerce_email_classes', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_register_custom_email' ) );
         add_action( 'admin_init', array( 'ACLWcShortcodes\ACLWCRFQWCEMail\ACL_WC_RFQ_Email', 'acl_force_html_email_setting' ) );
-        error_log( 'Filter registration: ' . print_r( array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_custom_add_to_cart_text' ), true ) );
         add_filter( 'woocommerce_product_add_to_cart_text', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_custom_add_to_cart_text' ),10, 2 );
 
     }
