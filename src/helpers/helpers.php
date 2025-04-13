@@ -625,7 +625,7 @@ class ACL_WC_Helpers {
     public static function acl_wc_capitalise_product_title( $title, $post_id ) {
         // Convert to lowercase and capitalize each word
 
-        if ( get_post_type( $post_id ) === 'product' && is_singular( 'product' ) ) {
+        if ( get_post_type( $post_id ) === 'product' ) {
             return ucwords( strtolower( $title ) );
         }
         return $title;        
