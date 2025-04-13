@@ -191,7 +191,7 @@ class ACL_WC_Helpers {
             // Show "Get Quote" button if purchase attribute contains 'quote'
             if ( strpos( $purchase_attribute, 'quote' ) !== false || !$purchase_attribute ) {
                 echo '<div class="acl-single-product-button-wrapper">';
-    
+                echo 'jeherherere';
                 $product = wc_get_product($product->get_id());
                 if ($product->is_type('variable')) {
                     wc_get_template(
