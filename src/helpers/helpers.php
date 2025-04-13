@@ -184,16 +184,29 @@ class ACL_WC_Helpers {
             // Show "Buy Now" button if purchase attribute contains 'purchase'
             if ( strpos( $purchase_attribute, 'purchase' ) !== false ) {
                 echo '<div class="acl-single-product-button-wrapper">';
-                do_action( 'woocommerce_' . $product->get_type() . '_add_to_cart' );
+                woocommerce_template_single_add_to_cart();
                 echo '</div>';
             }
             
             // Show "Get Quote" button if purchase attribute contains 'quote'
             if ( strpos( $purchase_attribute, 'quote' ) !== false || !$purchase_attribute ) {
                 echo '<div class="acl-single-product-button-wrapper">';
-                echo '<a href="#" data-product-id="' . esc_attr( $product->get_id() ) . '" class="button quote-button">Get Quote</a>';
-                echo '</div>';
-
+    
+                $product = wc_get_product($product->get_id());
+                if ($product->is_type('variable')) {
+                    wc_get_template(
+                        'single-product/add-to-cart/variable-quote.php',
+                        array(
+                            'available_variations' => $product->get_available_variations(),
+                            'attributes'           => $product->get_variation_attributes(),
+                            'selected_attributes'  => $product->get_default_attributes(),
+                        ),
+                        '',
+                        plugin_dir_path(__FILE__) . 'woocommerce/'
+                    );
+                } else {
+                    echo '<a href="#" data-product-id="' . esc_attr($product->get_id()) . '" class="button quote-button">Get Quote</a>';
+                }
             }
         }
         
