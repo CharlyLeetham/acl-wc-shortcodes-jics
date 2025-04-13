@@ -193,7 +193,6 @@ class ACL_WC_Helpers {
                 echo '<div class="acl-single-product-button-wrapper">';
                 $product = wc_get_product($product->get_id());
                 if ($product->is_type('variable')) {
-                    echo 'ehehehehe';
                     wc_get_template(
                         'single-product/add-to-cart/variable-quote.php',
                         array(
