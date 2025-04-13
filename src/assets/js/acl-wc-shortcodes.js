@@ -34,7 +34,8 @@ jQuery(document).ready(function($) {
         // Add to Quote Cart
         $('.quote-button').on('click', function(e) {
             e.preventDefault();
-            var productId = $(this).data('product-id');
+            //var productId = $(this).data('product-id');
+            var productId = $(this).attr('data-product-id');
             console.log('Quote button clicked, Run #', $(this).data('clickCount') || 1, 'Element:', this.outerHTML);
             console.log('Product ID:', productId);
     
@@ -75,9 +76,9 @@ jQuery(document).ready(function($) {
         });
     
         // Update data-product-id with variation_id
-        $('.variations_form').on('change', '.variation_id', function() {
-            var variation_id = $(this).val();
-            var $button = $(this).closest('.variations_form').find('.quote-button');
+        $('.variations_form').on('found_variation.wc-variation-form', function(event, variation) {
+            var variation_id = variation.variation_id;
+            var $button = $(this).find('.quote-button');
             var original_product_id = $button.data('original-product-id') || $button.attr('data-product-id');
             $button.data('original-product-id', original_product_id);
             if (variation_id && variation_id !== '0') {
