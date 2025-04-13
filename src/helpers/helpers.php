@@ -638,4 +638,5 @@ class ACL_WC_Helpers {
             $term->name = ucwords( strtolower( $term->name ) );
         }
         return $term;
+    }
 }
