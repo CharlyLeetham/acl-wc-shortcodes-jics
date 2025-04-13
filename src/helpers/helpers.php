@@ -621,4 +621,10 @@ class ACL_WC_Helpers {
         // Default for no price or other product types
         return 'View Product';
     }
+
+    function acl_wc_capitalise_product_title( $title, $product ) {
+        // Convert to lowercase and capitalize each word
+        $converted = ucwords( strtolower( $title ) );
+        return $converted;
+    }    
 }
