@@ -43,7 +43,7 @@ class ACLWcShortcodes {
         add_action( 'admin_init', array( 'ACLWcShortcodes\ACLWCRFQWCEMail\ACL_WC_RFQ_Email', 'acl_force_html_email_setting' ) );
         add_filter( 'woocommerce_product_add_to_cart_text', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_custom_add_to_cart_text' ),10, 2 );
         add_filter( 'the_title', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_wc_capitalise_product_title' ), 10, 2 );
-
+        add_filter( 'get_term', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_wc_capitalise_cat_title' ), 10, 2 );
     }
 
     public static function acl_wc_shortcodes_init() {

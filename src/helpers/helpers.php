@@ -629,5 +629,13 @@ class ACL_WC_Helpers {
             return ucwords( strtolower( $title ) );
         }
         return $title;        
-    }    
+    } 
+    
+    public static function acl_wc_capitalise_cat_title( $term, $taxonomy ) {
+        // Convert to lowercase and capitalize each word
+
+        if ( $taxonomy === 'product_cat' ) {
+            $term->name = ucwords( strtolower( $term->name ) );
+        }
+        return $term;
 }
