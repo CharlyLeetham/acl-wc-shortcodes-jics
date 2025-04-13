@@ -45,7 +45,7 @@ class ACLWcShortcodes {
         add_filter( 'the_title', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_wc_capitalise_product_title' ), 10, 2 );
         add_filter( 'get_term', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_wc_capitalise_cat_title' ), 10, 2 );
         // Add this filter outside the class for WordPress to hook into
-        add_filter( 'woocommerce_product_is_visible', array( '\ACLWcShortcodes\ACLWcShortcodes', 'force_show_all_products' ), 10, 2 );
+        //add_filter( 'woocommerce_product_is_visible', array( '\ACLWcShortcodes\ACLWcShortcodes', 'force_show_all_products' ), 10, 2 );
         add_filter( 'woocommerce_hide_invisible_variations', '__return_false' );
 
         add_filter('woocommerce_available_variation', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_make_variations_available', 10, 3 ) );
