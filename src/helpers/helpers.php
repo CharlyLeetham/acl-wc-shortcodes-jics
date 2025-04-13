@@ -178,8 +178,6 @@ class ACL_WC_Helpers {
 
         echo '<div class="acl-single-product-custom-buttons" style="display: flex; flex-wrap: nowrap; justify-content: flex-start; align-items: center;">';
 
-        //echo self::generate_add_to_cart_buttons($product);
-
         $debug = false;
         if (!$debug) {
 
@@ -195,6 +193,9 @@ class ACL_WC_Helpers {
                 echo '<div class="acl-single-product-button-wrapper">';
                 echo '<a href="#" data-product-id="' . esc_attr( $product->get_id() ) . '" class="button quote-button">Get Quote</a>';
                 echo '</div>';
+
+                do_action( 'woocommerce_' . $product->get_type() . '_add_to_cart' );
+
             }
         }
         
