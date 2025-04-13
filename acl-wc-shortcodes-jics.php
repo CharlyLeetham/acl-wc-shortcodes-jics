@@ -43,9 +43,6 @@ try {
     // Initialize the plugin using the static init method
     \ACLWcShortcodes\ACLWcShortcodes::init();
 
-    // Add this filter outside the class for WordPress to hook into
-    add_filter( 'woocommerce_product_is_visible', array( '\ACLWcShortcodes\ACLWcShortcodes', 'force_show_all_products' ), 10, 2 );
-
 } catch ( Exception $e ) {
     if ( is_admin() ) {
         add_action( 'admin_notices', function() use ( $e ) {
