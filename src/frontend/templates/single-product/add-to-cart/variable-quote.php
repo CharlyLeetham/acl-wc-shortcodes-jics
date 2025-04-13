@@ -59,7 +59,7 @@ do_action('woocommerce_before_add_to_cart_form'); ?>
                 <input type="hidden" name="add-to-cart" value="<?php echo absint($product->get_id()); ?>" />
                 <input type="hidden" name="product_id" value="<?php echo absint($product->get_id()); ?>" />
                 <input type="hidden" name="variation_id" class="variation_id" value="0" />
-            </div>
+            </div>          
 
             <?php do_action('woocommerce_after_single_variation'); ?>
         </div>

@@ -30,49 +30,70 @@ jQuery(document).ready(function($) {
         });
     });
 
-    // Add to Quote Cart
-    $('.quote-button').on('click', function(e) {
-        e.preventDefault();
-        var productId = $(this).data('product-id');
-        console.log('Quote button clicked, Run #', $(this).data('clickCount') || 1, 'Element:', this.outerHTML);
-        console.log('Product ID:', productId);
-
-        $.ajax({
-            type: 'POST',
-            url: acl_wc_shortcodes.ajax_url,
-            data: {
-                'action': 'acl_add_to_quote_cart',
-                'product_id': productId,
-                'security': acl_wc_shortcodes.nonce
-            },
-            success: function(response) {
-                if (response.success) {
-                    if (response.data.already_in_cart) {
-                        alert(response.data.message); // Show message
-                    } else {
-                        console.log('Product added to quote cart:', response);
-                        var cartElement = $('.acl-mini-rfq-cart a');
-                        if (cartElement.length) {
-
-                            var newCount = response.data.cart_count || (parseInt(cartElement.text().match(/\d+/)[0]) || 0) + 1;
-                            var iconSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
-                            '<circle cx="9" cy="21" r="1"/>' +
-                            '<circle cx="20" cy="21" r="1"/>' +
-                            '<path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>' +
-                            '</svg>';
-                            cartElement.html(iconSvg + '<span class="rfq-cart-count">' + newCount + '</span>');
+    jQuery(document).ready(function($) {
+        // Add to Quote Cart
+        $('.quote-button').on('click', function(e) {
+            e.preventDefault();
+            var productId = $(this).data('product-id');
+            console.log('Quote button clicked, Run #', $(this).data('clickCount') || 1, 'Element:', this.outerHTML);
+            console.log('Product ID:', productId);
+    
+            $.ajax({
+                type: 'POST',
+                url: acl_wc_shortcodes.ajax_url,
+                data: {
+                    'action': 'acl_add_to_quote_cart',
+                    'product_id': productId,
+                    'security': acl_wc_shortcodes.nonce
+                },
+                success: function(response) {
+                    if (response.success) {
+                        if (response.data.already_in_cart) {
+                            alert(response.data.message); // Show message
+                        } else {
+                            console.log('Product added to quote cart:', response);
+                            var cartElement = $('.acl-mini-rfq-cart a');
+                            if (cartElement.length) {
+                                var newCount = response.data.cart_count || (parseInt(cartElement.text().match(/\d+/)[0]) || 0) + 1;
+                                var iconSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+                                              '<circle cx="9" cy="21" r="1"/>' +
+                                              '<circle cx="20" cy="21" r="1"/>' +
+                                              '<path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>' +
+                                              '</svg>';
+                                cartElement.html(iconSvg + '<span class="rfq-cart-count">' + newCount + '</span>');
+                            }
                         }
+                    } else {
+                        console.error('Error:', response.data);
                     }
-                } else {
-                    console.error('Error:', response.data);
+                },
+                error: function(error) {
+                    console.error('Error adding product to quote cart:', error);
                 }
-            },
-            error: function(error) {
-                console.error('Error adding product to quote cart:', error);
+            });
+            console.log('Handler bound to .quote-button');
+        });
+    
+        // Update data-product-id with variation_id
+        $('.variations_form').on('change', '.variation_id', function() {
+            var variation_id = $(this).val();
+            var $button = $(this).closest('.variations_form').find('.quote-button');
+            var original_product_id = $button.data('original-product-id') || $button.attr('data-product-id');
+            $button.data('original-product-id', original_product_id);
+            if (variation_id && variation_id !== '0') {
+                $button.attr('data-product-id', variation_id);
+            } else {
+                $button.attr('data-product-id', original_product_id);
             }
         });
-        console.log('Handler bound to .quote-button');
+    
+        // Store original product_id
+        $('.quote-button').each(function() {
+            $(this).data('original-product-id', $(this).data('product-id'));
+        });
     });
+
+    
 
     // Increment Quantity
     $('.acl_plus_qty').on('click', function() {
