@@ -191,7 +191,6 @@ class ACL_WC_Helpers {
             // Show "Get Quote" button if purchase attribute contains 'quote'
             if ( strpos( $purchase_attribute, 'quote' ) !== false || !$purchase_attribute ) {
                 echo '<div class="acl-single-product-button-wrapper">';
-                echo 'jeherherere';
                 $product = wc_get_product($product->get_id());
                 if ($product->is_type('variable')) {
                     echo 'ehehehehe';
@@ -203,7 +202,7 @@ class ACL_WC_Helpers {
                             'selected_attributes'  => $product->get_default_attributes(),
                         ),
                         '',
-                        plugin_dir_path(__FILE__) . 'woocommerce/'
+                        ACL_WC_SHORTCODES_PATH . 'src/frontend/templates/'
                     );
                 } else {
                     echo '<a href="#" data-product-id="' . esc_attr($product->get_id()) . '" class="button quote-button">Get Quote</a>';
