@@ -650,4 +650,12 @@ class ACL_WC_Helpers {
         }
         return $term;
     }
+
+    public static function acl_make_variations_available( $variation_data, $product, $variation ) {
+        $variation_data['is_purchasable'] = true;
+        $variation_data['is_in_stock'] = true;
+        $variation_data['variation_is_active'] = true;
+        $variation_data['variation_is_visible'] = true;
+        return $variation_data;
+    }    
 }

@@ -47,6 +47,8 @@ class ACLWcShortcodes {
         // Add this filter outside the class for WordPress to hook into
         add_filter( 'woocommerce_product_is_visible', array( '\ACLWcShortcodes\ACLWcShortcodes', 'force_show_all_products' ), 10, 2 );
         add_filter( 'woocommerce_hide_invisible_variations', '__return_false' );
+
+        add_filter('woocommerce_available_variation', array( 'ACLWcShortcodes\Helpers\ACL_WC_Helpers', 'acl_make_variations_available', 10, 3 ) );
     }
 
     public static function acl_wc_shortcodes_init() {
