@@ -274,6 +274,7 @@
 
 .acl-single-product-custom-buttons .single_variation_wrap:has(.quote-button) {
     width: 100%;
+    justify-content: center;
 }
 
 .acl-single-product-custom-buttons .woocommerce-variation-add-to-cart {
