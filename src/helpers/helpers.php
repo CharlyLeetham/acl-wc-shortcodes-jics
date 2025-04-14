@@ -206,6 +206,8 @@ class ACL_WC_Helpers {
                 } else {
                     echo '<a href="#" data-product-id="' . esc_attr($product->get_id()) . '" class="button quote-button">Get Quote</a>';
                 }
+
+                echo '</div>';
             }
         }
         
