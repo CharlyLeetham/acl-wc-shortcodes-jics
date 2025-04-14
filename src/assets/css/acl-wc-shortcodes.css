@@ -165,6 +165,9 @@
     vertical-align: middle;
 }
 
+.woocommerce div.product .acl-single-product-button-wrapper form.cart .button {
+    padding: 20px 20px;
+}
 
 .woocommerce div.product .acl-single-product-button-wrapper form.cart .button {
     line-height: 1.0em;
