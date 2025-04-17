@@ -19,17 +19,22 @@ class ACL_WC_Customer_Account_Email extends \WC_Email {
         parent::__construct();
     }
 
-    public function trigger( $user_id, $password_reset_url ) {
-        $this->recipient = get_userdata($user_id)->user_email;
-
-        if (! $this->recipient) {
+    public function trigger($email_data) {
+        $this->recipient = $email_data['quote_details']['_acl_email'][0] ?? '';
+    
+        if (!$this->recipient) {
             return;
         }
-
-        $this->placeholders['{customer_email}'] = $this->recipient;
-        $this->placeholders['{password_reset_url}'] = $password_reset_url;
-
-        $this->send($this->recipient, $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments());
+    
+        $this->email_data = $email_data;
+    
+        $this->send(
+            $this->recipient,
+            $this->get_subject(),
+            $this->get_content(),
+            $this->get_headers(),
+            $this->get_attachments()
+        );
     }
 
     public function get_content_html() {
