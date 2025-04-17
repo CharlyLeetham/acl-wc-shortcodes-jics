@@ -40,7 +40,11 @@ echo esc_html__( 'Quote Items:', 'woocommerce' ) . "\n";
 
 if ( ! empty( $quote_items ) && is_array( $quote_items ) ) {
     foreach ( $quote_items as $item ) {
-        echo esc_html__( '• ', 'woocommerce' ) . esc_html( $item['name'] ) . ' (' . esc_html( $item['quantity'] ) . ")\n";
+        echo esc_html__( '• ', 'woocommerce' ) . esc_html( $item['name'] ) . ' (' . esc_html( $item['quantity'] ) . ')'; 
+        if ( isset( $item['details'] ) && ! empty( $item['details'] ) ) {
+            echo esc_html__( ' - Details: ', 'woocommerce' ) . esc_html( $item['details'] );
+        }
+        echo "\n";
     }
 } else {
     echo esc_html__( 'No items specified.', 'woocommerce' ) . "\n";

@@ -500,9 +500,10 @@ class ACL_WC_Helpers {
             // Prepare email data
             $customer_name = $firstname . ' ' . $lastname;
             $address = trim($address_line1 . "\n" . $address_line2 . "\n" . $suburb . ', ' . $state . ' ' . $postcode);
-            $quote_items = [];
-    
+            $quote_items = [];    
             $quote_cart = WC()->session->get('quote_cart', []);
+            $posted_details = isset($_POST['product-deets']) ? (array) $_POST['product-deets'] : array();
+
             foreach ($quote_cart as $item) {
                 $product_id = $item['product_id'] ?? 0;
                 $quantity = $item['quantity'] ?? 1;
@@ -513,6 +514,10 @@ class ACL_WC_Helpers {
                         'sku' => $product->get_sku() ?: 'N/A',
                         'quantity' => $quantity
                     ];
+                    if (isset($posted_details[$product_id]) && !empty($posted_details[$product_id])) {
+                        $item_data['details'] = sanitize_text_field($posted_details[$product_id]);
+                    }
+                    $quote_items[] = $item_data;                    
                 }
             }
     

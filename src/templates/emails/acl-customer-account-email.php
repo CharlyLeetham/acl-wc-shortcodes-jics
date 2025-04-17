@@ -119,7 +119,13 @@ $postcode = isset( $quote_details['_acl_postcode'][0] ) ? $quote_details['_acl_p
                                     <?php if ( ! empty( $quote_items ) ) { ?>
                                         <ul>
                                             <?php foreach ( $quote_items as $item ) : ?>
-                                                <li><?php echo esc_html( $item['name'] ) . ' (' . esc_html( $item['quantity'] ) . ')'; ?></li>
+                                                <li><?php 
+                                                    echo esc_html( $item['name'] ) . ' (' . esc_html( $item['quantity'] ) . ')'; 
+                                                    if ( isset( $item['details'] ) && ! empty( $item['details'] ) ) {
+                                                        echo ' - Details: ' . esc_html( $item['details'] );
+                                                    }
+                                                    ?>
+                                                </li>
                                             <?php endforeach; ?>
                                         </ul>
                                     <?php } else { ?>

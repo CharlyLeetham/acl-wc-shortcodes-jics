@@ -40,8 +40,12 @@ echo "Post Code: " . esc_html($postcode) . "\n\n";
 
 echo "Quote Items:\n";
 if (!empty($quote_items)) {
-    foreach ($quote_items as $item) {
-        echo "- " . esc_html($item['name']) . " (Quantity: " . esc_html($item['quantity']) . ")\n";
+    foreach ( $quote_items as $item ) {
+        echo esc_html__( '• ', 'woocommerce' ) . esc_html( $item['name'] ) . ' (' . esc_html( $item['quantity'] ) . ')'; 
+        if ( isset( $item['details'] ) && ! empty( $item['details'] ) ) {
+            echo esc_html__( ' - Details: ', 'woocommerce' ) . esc_html( $item['details'] );
+        }
+        echo "\n";
     }
 } else {
     echo "No items specified.\n";
