@@ -41,11 +41,25 @@ class ACL_WC_RFQ_Email extends \WC_Email {
     }
 
     public function set_email_content_type() {
-        return 'text/html';
+        $email_type = $this->get_option('email_type', 'html');
+        switch ($email_type) {
+            case 'plain':
+                return 'text/plain';
+            case 'multipart':
+                return 'multipart/mixed';
+            case 'html':
+            default:
+                return 'text/html';
+        }
     }
-
+    
     public function get_headers() {
-        return "Content-Type: text/html\r\n";
+        $email_type = $this->get_option('email_type', 'html');
+        $header = 'Content-Type: ' . $this->set_email_content_type() . "\r\n";
+        if ($email_type === 'multipart') {
+            $header .= "MIME-Version: 1.0\r\n";
+        }
+        return $header;
     }
 
     public function get_subject() {
@@ -149,6 +163,19 @@ class ACL_WC_RFQ_Email extends \WC_Email {
                 'placeholder' => 'Your Quote Request Confirmation',
                 'default' => 'Your Quote Request Confirmation',
             ],
+
+            'email_type' => [
+                'title' => __('Email type', 'woocommerce'),
+                'type' => 'select',
+                'description' => __('Choose which format of email to send.', 'woocommerce'),
+                'default' => 'html',
+                'class' => 'email_type wc-enhanced-select',
+                'options' => [
+                    'plain' => __('Plain text', 'woocommerce'),
+                    'html' => __('HTML', 'woocommerce'),
+                    'multipart' => __('Multipart', 'woocommerce'),
+                ],
+            ],            
         ];
     }
 

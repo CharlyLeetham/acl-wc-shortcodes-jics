@@ -38,11 +38,25 @@ class ACL_WC_Customer_Account_Email extends \WC_Email {
     }
 
     public function set_email_content_type() {
-        return 'text/html';
+        $email_type = $this->get_option('email_type', 'html');
+        switch ($email_type) {
+            case 'plain':
+                return 'text/plain';
+            case 'multipart':
+                return 'multipart/mixed';
+            case 'html':
+            default:
+                return 'text/html';
+        }
     }
-
+    
     public function get_headers() {
-        return "Content-Type: text/html\r\n";
+        $email_type = $this->get_option('email_type', 'html');
+        $header = 'Content-Type: ' . $this->set_email_content_type() . "\r\n";
+        if ($email_type === 'multipart') {
+            $header .= "MIME-Version: 1.0\r\n";
+        }
+        return $header;
     }
 
     public function get_subject() {
