@@ -115,4 +115,12 @@ class ACL_WC_Customer_Account_Email extends \WC_Email {
         ];
     }  
 
+    public static function acl_force_html_email_setting() {
+        $email_settings = get_option('woocommerce_acl_quote_email_settings', []);
+        if (!isset($email_settings['email_type']) || $email_settings['email_type'] !== 'html') {
+            $email_settings['email_type'] = 'html';
+            update_option('woocommerce_acl_quote_email_settings', $email_settings);
+        }
+    }
+
 }
