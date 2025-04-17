@@ -10,9 +10,7 @@ jQuery(document).ready(function($) {
             data: formData + '&action=acl_create_quote',
             success: function(response) {
                 if (response.success) {
-                    if (response.data.login_form) {
-                        $('.acl_quote_submission_form').replaceWith(response.data.login_form);
-                    } else if (response.data.redirect) {
+                    if (response.data.redirect) {
                         window.location.href = response.data.redirect;
                     }
                 } else {
@@ -21,28 +19,6 @@ jQuery(document).ready(function($) {
             },
             error: function(xhr, status, error) {
                 $('.acl_quote_submission_form').before('<div class="woocommerce-error">Submission failed: ' + error + '</div>');
-            }
-        });
-    });
-
-    // Login Form Submission
-    $(document).on('submit', '.woocommerce-form-login', function(e) {
-        e.preventDefault();
-        var formData = $(this).serialize();
-        
-        $.ajax({
-            type: 'POST',
-            url: acl_wc_shortcodes.ajax_url,
-            data: formData + '&action=woocommerce_login',
-            success: function(response) {
-                if (response.success) {
-                    window.location.href = response.data.redirect || window.location.href;
-                } else {
-                    $(this).before('<div class="woocommerce-error">' + (response.data.message || 'Invalid credentials') + '</div>');
-                }
-            },
-            error: function(xhr, status, error) {
-                $(this).before('<div class="woocommerce-error">Login failed: ' + error + '</div>');
             }
         });
     });

@@ -483,112 +483,74 @@ class ACL_WC_Helpers {
             $suburb = sanitize_text_field($_POST['acl_suburb'] ?? '');
             $state = sanitize_text_field($_POST['acl_state'] ?? '');
             $postcode = sanitize_text_field($_POST['acl_postcode'] ?? '');
+            $address_line1 = sanitize_text_field($_POST['acl_address_line1'] ?? '');
+            $address_line2 = sanitize_text_field($_POST['acl_address_line2'] ?? '');
+            $phone = sanitize_text_field($_POST['acl_phone'] ?? '');
     
             if (empty($email) || empty($firstname) || empty($lastname) || empty($suburb) || empty($state) || empty($postcode)) {
                 wp_send_json_error(['message' => __('Please fill in all required fields.', 'woocommerce')]);
                 exit;
             }
     
-            // Check if user exists
-            $user = get_user_by('email', $email);
-    
-            if (!$user) {
-                // Create new user
-                $username_base = sanitize_user(current(explode('@', $email)));
-                $username = $username_base;
-                $counter = 1;
-                while (username_exists($username)) {
-                    $username = $username_base . $counter;
-                    $counter++;
-                }
-                $password = wp_generate_password();
-                $user_id = wc_create_new_customer($email, $username, $password);
-    
-                if (is_wp_error($user_id)) {
-                    wp_send_json_error(['message' => $user_id->get_error_message()]);
-                    exit;
-                }
-    
-                // Set user meta
-                update_user_meta($user_id, 'first_name', $firstname);
-                update_user_meta($user_id, 'last_name', $lastname);
-                update_user_meta($user_id, 'shipping_address_1', sanitize_text_field($_POST['acl_address_line1'] ?? ''));
-                update_user_meta($user_id, 'shipping_address_2', sanitize_text_field($_POST['acl_address_line2'] ?? ''));
-                update_user_meta($user_id, 'shipping_city', $suburb);
-                update_user_meta($user_id, 'shipping_state', $state);
-                update_user_meta($user_id, 'shipping_postcode', $postcode);
-                update_user_meta($user_id, 'billing_phone', sanitize_text_field($_POST['acl_phone'] ?? ''));
-    
-                // Store generated password in user meta
-                update_user_meta($user_id, '_acl_temp_password', $password);
-    
-                // Send welcome email with reset link
-                wp_new_user_notification($user_id, null, 'user');
-    
-                // Auto-login new user
-                wp_set_auth_cookie($user_id, true);
-                wp_set_current_user($user_id);
-            } else {
-                // User exists → Store form data and show login form
-                WC()->session->set('quote_form_data', $_POST);
-                ob_start();
-                ?>
-                <div class="woocommerce">
-                    <h2><?php esc_html_e('Login Required', 'woocommerce'); ?></h2>
-                    <p><?php esc_html_e('An account already exists with this email. Please log in to continue.', 'woocommerce'); ?></p>
-                    <form method="post" class="woocommerce-form woocommerce-form-login login">
-                        <?php wp_nonce_field('woocommerce-login', 'woocommerce-login-nonce'); ?>
-                        <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-                            <label for="username"><?php esc_html_e('Username or email address', 'woocommerce'); ?> <span class="required">*</span></label>
-                            <input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="username" id="username" autocomplete="username" value="<?php echo esc_attr($email); ?>" required>
-                        </p>
-                        <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-                            <label for="password"><?php esc_html_e('Password', 'woocommerce'); ?> <span class="required">*</span></label>
-                            <input class="woocommerce-Input woocommerce-Input--text input-text" type="password" name="password" id="password" autocomplete="current-password" required>
-                        </p>
-                        <p class="form-row">
-                            <input type="hidden" name="redirect" value="<?php echo esc_url(get_permalink()); ?>">
-                            <button type="submit" class="woocommerce-button button woocommerce-form-login__submit" name="login" value="<?php esc_attr_e('Log in', 'woocommerce'); ?>">
-                                <?php esc_html_e('Log in', 'woocommerce'); ?>
-                            </button>
-                        </p>
-                        <p class="woocommerce-LostPassword lost_password">
-                            <a href="<?php echo esc_url(wp_lostpassword_url()); ?>"><?php esc_html_e('Lost your password?', 'woocommerce'); ?></a>
-                        </p>
-                    </form>
-                </div>
-                <?php
-                $login_form = ob_get_clean();
-                wp_send_json_success(['login_form' => $login_form]);
-                exit;
-            }
-    
-            // Create quote
-            $quote_id = wp_insert_post([
-                'post_type'   => 'acl_quote',
-                'post_title'  => sprintf(__('Quote for %s %s', 'woocommerce'), $firstname, $lastname),
-                'post_status' => 'publish',
-                'post_author' => get_current_user_id(),
-            ]);
-    
-            if (is_wp_error($quote_id)) {
-                wp_send_json_error(['message' => __('Failed to create quote.', 'woocommerce')]);
-                exit;
-            }
-    
-            // Save quote meta
-            update_post_meta($quote_id, '_acl_first_name', $firstname);
-            update_post_meta($quote_id, '_acl_last_name', $lastname);
-            update_post_meta($quote_id, '_acl_email', $email);
-            update_post_meta($quote_id, '_acl_address_line1', sanitize_text_field($_POST['acl_address_line1'] ?? ''));
-            update_post_meta($quote_id, '_acl_address_line2', sanitize_text_field($_POST['acl_address_line2'] ?? ''));
-            update_post_meta($quote_id, '_acl_suburb', $suburb);
-            update_post_meta($quote_id, '_acl_state', $state);
-            update_post_meta($quote_id, '_acl_postcode', $postcode);
-            update_post_meta($quote_id, '_acl_phone', sanitize_text_field($_POST['acl_phone'] ?? ''));
+            // Prepare email data
+            $customer_name = $firstname . ' ' . $lastname;
+            $address = trim($address_line1 . "\n" . $address_line2 . "\n" . $suburb . ', ' . $state . ' ' . $postcode);
+            $quote_items = [];
     
             $quote_cart = WC()->session->get('quote_cart', []);
-            update_post_meta($quote_id, '_acl_quote_items', $quote_cart);
+            foreach ($quote_cart as $item) {
+                $product_id = $item['product_id'] ?? 0;
+                $quantity = $item['quantity'] ?? 1;
+                $product = wc_get_product($product_id);
+                if ($product) {
+                    $quote_items[] = [
+                        'name' => $product->get_name(),
+                        'sku' => $product->get_sku() ?: 'N/A',
+                        'quantity' => $quantity
+                    ];
+                }
+            }
+    
+            if (empty($quote_items)) {
+                $quote_items[] = ['name' => 'No items in quote', 'sku' => '', 'quantity' => 0];
+            }
+    
+            // Email data for templates
+            $email_data = [
+                'quote_id' => 0, // No quote post, but included for compatibility
+                'email_heading' => __('New Quote Request', 'woocommerce'),
+                'sent_to_admin' => true,
+                'plain_text' => false,
+                'email' => null,
+                'quote_details' => [
+                    '_acl_first_name' => [$firstname],
+                    '_acl_last_name' => [$lastname],
+                    '_acl_email' => [$email],
+                    '_acl_phone' => [$phone],
+                    '_acl_address_line1' => [$address_line1],
+                    '_acl_address_line2' => [$address_line2],
+                    '_acl_suburb' => [$suburb],
+                    '_acl_state' => [$state],
+                    '_acl_postcode' => [$postcode]
+                ],
+                'quote_items' => $quote_items,
+                'password_message' => '', // No user creation
+                'customer_name' => $customer_name,
+                'address' => $address
+            ];
+    
+            // Email to shop owner (using ACL_WC_RFQ_Email)
+            do_action('acl_quote_request_created', 0, $email_data);
+    
+            // Email to customer
+            $customer_subject = __('Your Quote Request', 'woocommerce');
+            $customer_headers = ['Content-Type: text/html; charset=UTF-8'];
+    
+            ob_start();
+            wc_get_template('emails/acl-customer-account-email.php', $email_data, '', ACL_WC_SHORTCODES_PATH . 'src/templates/');
+            $customer_message = ob_get_clean();
+    
+            wp_mail($email, $customer_subject, $customer_message, $customer_headers);
     
             // Clear RFQ cart
             WC()->session->set('quote_cart', []);

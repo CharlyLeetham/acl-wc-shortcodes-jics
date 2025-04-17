@@ -34,32 +34,34 @@ class ACL_WC_RFQ_Email extends \WC_Email {
         );
     }
 
-    public function trigger( $quote_id ) {  
-        if ( ! $quote_id ) {
-            return;
+    public function trigger($quote_id, $email_data = []) {
+        // If no quote_id, use provided email_data
+        if (!$quote_id && !empty($email_data)) {
+            $this->object = null;
+            $this->placeholders['{quote_id}'] = 0;
+            $this->email_data = $email_data;
+        } else {
+            if (!$quote_id || !($this->object = get_post($quote_id))) {
+                return;
+            }
+            $this->placeholders['{quote_id}'] = $quote_id;
+            $this->email_data = [];
         }
     
-        // Check if the quote exists
-        $this->object = get_post( $quote_id );
-        if ( ! $this->object ) {
-            return;
-        }
+        // Force HTML email
+        add_filter('woocommerce_mail_content_type', [$this, 'set_email_content_type']);
     
-        $this->placeholders['{quote_id}'] = $quote_id;
-         // Force WooCommerce to send the email as HTML
-        add_filter( 'woocommerce_mail_content_type', array( $this, 'set_email_content_type' ) );
-    
-        // Log email parameters before sending
-        $subject = $this->get_subject();
-        $content = $this->get_content_html();
-        $headers = $this->get_headers();   
+        // Send email
         $this->send(
-            get_option( 'admin_email' ),
-            $subject,
-            $content,
-            $headers,
+            get_option('admin_email'),
+            $this->get_subject(),
+            $this->get_content_html(),
+            $this->get_headers(),
             $this->get_attachments()
         );
+    
+        // Remove filter
+        remove_filter('woocommerce_mail_content_type', [$this, 'set_email_content_type']);
     }
     
     public function set_email_content_type() {
@@ -74,49 +76,63 @@ class ACL_WC_RFQ_Email extends \WC_Email {
         return apply_filters( 'woocommerce_email_subject_' . $this->id, $this->get_option( 'subject', 'New Quote Request' ), $this->object );
     }
 
-    public function get_content_html() {   
+    public function get_content_html() {
         ob_start();
     
-        // Retrieve meta data for the quote
-        $quote_meta = get_post_meta( $this->placeholders['{quote_id}'], '', true );
-    
-        // Get email and check if user was created
-        $email = $quote_meta['_acl_email'][0] ?? '';
-        $user = get_user_by( 'email', $email );
-        $password_message = '';
-    
-        if ( $user && get_user_meta( $user->ID, '_acl_generated_password', true ) ) {
-            // User was created during RFQ submission
-            $password_reset_link = wp_lostpassword_url();
-            $password_message = "
-                <h3>We've created an account for you to track your quote.</h3>
-                <p>Your username: <strong>{$email}</strong></p>
-                <p>To set your password, visit this link: <a href='{$password_reset_link}'>Reset Password</a></p>
-            ";
+        // Use email_data if provided, else fetch from post meta
+        if (!empty($this->email_data)) {
+            $quote_details = $this->email_data['quote_details'] ?? [];
+            $quote_items = $this->email_data['quote_items'] ?? [];
+            $password_message = $this->email_data['password_message'] ?? '';
+            $customer_name = $this->email_data['customer_name'] ?? '';
+            $address = $this->email_data['address'] ?? '';
+        } else {
+            $quote_meta = get_post_meta($this->placeholders['{quote_id}'], '', true);
+            $quote_details = !empty($quote_meta) ? $quote_meta : [];
+            $quote_items = isset($quote_meta['_acl_quote_items'][0]) ? maybe_unserialize($quote_meta['_acl_quote_items'][0]) : [];
+            
+            $email = $quote_meta['_acl_email'][0] ?? '';
+            $user = get_user_by('email', $email);
+            $password_message = '';
+            if ($user && get_user_meta($user->ID, '_acl_generated_password', true)) {
+                $password_reset_link = wp_lostpassword_url();
+                $password_message = "
+                    <h3>We've created an account for you to track your quote.</h3>
+                    <p>Your username: <strong>{$email}</strong></p>
+                    <p>To set your password, visit this link: <a href='{$password_reset_link}'>Reset Password</a></p>
+                ";
+            }
+            $customer_name = ($quote_meta['_acl_first_name'][0] ?? '') . ' ' . ($quote_meta['_acl_last_name'][0] ?? '');
+            $address = trim(
+                ($quote_meta['_acl_address_line1'][0] ?? '') . "\n" .
+                ($quote_meta['_acl_address_line2'][0] ?? '') . "\n" .
+                ($quote_meta['_acl_suburb'][0] ?? '') . ', ' .
+                ($quote_meta['_acl_state'][0] ?? '') . ' ' .
+                ($quote_meta['_acl_postcode'][0] ?? '')
+            );
         }
-    
-        // Ensure quote_items is properly unserialized
-        $quote_items = isset( $quote_meta['_acl_quote_items'][0] ) ? maybe_unserialize( $quote_meta['_acl_quote_items'][0] ) : array();
     
         wc_get_template(
             $this->template_html,
-            array(
-                'quote_id'       => $this->placeholders['{quote_id}'],
-                'email_heading'  => $this->get_heading(),
-                'sent_to_admin'  => true,
-                'plain_text'     => false,
-                'email'          => $this,
-                'quote_details'  => !empty($quote_meta) ? $quote_meta : array(),
-                'quote_items'    => $quote_items,
-                'password_message' => $password_message // Include new user message
-            ),
+            [
+                'quote_id' => $this->placeholders['{quote_id}'],
+                'email_heading' => $this->get_heading(),
+                'sent_to_admin' => true,
+                'plain_text' => false,
+                'email' => $this,
+                'quote_details' => $quote_details,
+                'quote_items' => $quote_items,
+                'password_message' => $password_message,
+                'customer_name' => $customer_name,
+                'address' => $address
+            ],
             '',
             $this->template_base
         );
     
         return ob_get_clean();
     }
-    
+       
     public function get_content_plain() {
         ob_start();
 
