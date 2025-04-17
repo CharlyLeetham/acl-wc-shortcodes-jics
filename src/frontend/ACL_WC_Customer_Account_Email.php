@@ -7,7 +7,7 @@ class ACL_WC_Customer_Account_Email extends \WC_Email {
 
     public function __construct() {
         $this->id          = 'acl_wc_customer_account_email';
-        $this->title       = __( 'Your Quote Request Confirmation', 'woocommerce' );
+        $this->title       = __( 'Quote Request Confirmation', 'woocommerce' );
         $this->description = __( 'This email is sent to the customer when a quote is received.', 'woocommerce' );
 
         $this->template_html  = 'emails/acl-customer-account-email.php';
@@ -44,7 +44,7 @@ class ACL_WC_Customer_Account_Email extends \WC_Email {
     public function get_headers() {
         return "Content-Type: text/html\r\n";
     }
-
+    
     public function get_subject() {
         return apply_filters('woocommerce_email_subject_' . $this->id, $this->get_option('subject', 'Your Quote Request Confirmation'), $this->object);
     }
