@@ -503,6 +503,8 @@ class ACL_WC_Helpers {
             $quote_items = [];    
             $quote_cart = WC()->session->get('quote_cart', []);
 
+            error_log('POST product-deets: ' . print_r($quote_cart, true));
+
             foreach ($quote_cart as $item) {
                 $product_id = $item['product_id'] ?? 0;
                 $quantity = $item['quantity'] ?? 1;
