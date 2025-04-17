@@ -44,13 +44,13 @@ class ACL_WC_Customer_Account_Email extends \WC_Email {
     public function get_headers() {
         return "Content-Type: text/html\r\n";
     }
-    
+
     public function get_subject() {
-        return apply_filters('woocommerce_email_subject_' . $this->id, $this->get_option('subject', 'Your Quote Request Confirmation'), $this->object);
+        return apply_filters('woocommerce_email_subject_' . $this->id, $this->get_option('subject', 'Quote Request Confirmation'), $this->object);
     }
     
     public function get_heading() {
-        return apply_filters('woocommerce_email_heading_' . $this->id, $this->get_option('heading', 'Your Quote Request Confirmation'), $this->object);
+        return apply_filters('woocommerce_email_heading_' . $this->id, $this->get_option('heading', 'Quote Request Confirmation'), $this->object);
     }    
 
     public function get_content_html() {
@@ -113,15 +113,20 @@ class ACL_WC_Customer_Account_Email extends \WC_Email {
                 'placeholder' => 'New Quote Request',
                 'default' => 'New Quote Request',
             ],
+
+            'email_type' => [
+                'title' => __('Email type', 'woocommerce'),
+                'type' => 'select',
+                'description' => __('Choose which format of email to send.', 'woocommerce'),
+                'default' => 'html',
+                'class' => 'email_type wc-enhanced-select',
+                'options' => [
+                    'plain' => __('Plain text', 'woocommerce'),
+                    'html' => __('HTML', 'woocommerce'),
+                    'multipart' => __('Multipart', 'woocommerce'),
+                ],
+            ],
         ];
     }  
-
-    public static function acl_force_html_email_setting() {
-        $email_settings = get_option('woocommerce_acl_wc_customer_account_email_settings', []);
-        if (!isset($email_settings['email_type']) || $email_settings['email_type'] !== 'html') {
-            $email_settings['email_type'] = 'html';
-            update_option('woocommerce_acl_wc_customer_account_email_settings', $email_settings);
-        }
-    }
 
 }
