@@ -9,7 +9,7 @@ class ACL_WC_Customer_Account_Email extends \WC_Email {
         $this->id          = 'acl_wc_customer_account_email';
         $this->title       = __( 'Quote Request Confirmation', 'woocommerce' );
         $this->description = __( 'This email is sent to the customer when a quote is received.', 'woocommerce' );
-
+        $this->customer_email = true; // Added to show "Customer" in Recipient column
         $this->template_html  = 'emails/acl-customer-account-email.php';
         $this->template_plain = 'emails/plain/acl-customer-account-email.php';
         $this->template_base  = ACL_WC_SHORTCODES_PATH . 'src/templates/';

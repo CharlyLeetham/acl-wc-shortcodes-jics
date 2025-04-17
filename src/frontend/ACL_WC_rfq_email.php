@@ -9,7 +9,6 @@ class ACL_WC_RFQ_Email extends \WC_Email {
         $this->customer_email = false;
         $this->title = __('Shop Owner Quote Request', 'woocommerce');
         $this->description = __('This email is sent to the shop owner when a new quote request is submitted.', 'woocommerce');
-        $this->customer_email = true; // Added to show "Customer" in Recipient column
         $this->email_type = 'html';
         $this->template_html = 'emails/acl-quote-request.php';
         $this->template_plain = 'emails/plain/acl-quote-request.php';
