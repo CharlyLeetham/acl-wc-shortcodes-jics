@@ -207,7 +207,7 @@ jQuery(document).ready(function($) {
                     data: {
                         'action': 'acl_update_rfq_cart',
                         'quantities': { [productId]: $input.closest('tr').find('.acl_qty_input').val() },
-                        'details': { [productId]: details },
+                        'product-deets': { [productId]: details },
                         'security': acl_wc_shortcodes.nonce
                     },
                     success: function(response) {
@@ -246,7 +246,7 @@ $('#acl_update_cart').on('click', function(e) {
         data: {
             action: 'acl_update_rfq_cart',
             quantities: quantities,
-            product-deets: details,
+            'product-deets': details,
             security: acl_wc_shortcodes.nonce
         },
         success: function(response) {
