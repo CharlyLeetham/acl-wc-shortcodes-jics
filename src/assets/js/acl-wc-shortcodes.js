@@ -22,6 +22,7 @@ jQuery(document).ready(function($) {
                     if (response.success) {
                         $form.replaceWith('<div class="rfq-success">' + response.data.message + '</div>');
                         $('.cart-count').text(response.data.cart_count);
+                        $('.acl_quote_cart').remove(); // Adjust selector to match your cart
                     } else {
                         $form.before('<div class="woocommerce-error">' + (response.data.message || 'Unknown error') + '</div>');
                     }
