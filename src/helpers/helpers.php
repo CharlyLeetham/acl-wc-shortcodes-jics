@@ -470,10 +470,21 @@ class ACL_WC_Helpers {
     
     public static function acl_process_quote_submission() {
         if (isset($_POST['action']) && $_POST['action'] === 'acl_create_quote') {
-            // Verify nonce
+            // Verify nonce and consume it
             if (!check_ajax_referer('acl_quote_submission', 'acl_quote_nonce', false)) {
                 wp_send_json_error(['message' => __('Security check failed.', 'woocommerce')]);
                 exit;
+            }
+    
+            // Ensure nonce is only used once
+            $nonce = $_POST['acl_quote_nonce'] ?? '';
+            if (wp_verify_nonce($nonce, 'acl_quote_submission')) {
+                wp_nonce_ays(''); // Invalidate nonce after use
+            }
+    
+            // Ensure session is active
+            if (!WC()->session->has_session()) {
+                WC()->session->set_customer_session_cookie(true);
             }
     
             // Validate required fields
@@ -517,7 +528,7 @@ class ACL_WC_Helpers {
     
             // Email data for templates
             $email_data = [
-                'quote_id' => 0, // No quote post, but included for compatibility
+                'quote_id' => 0,
                 'email_heading' => __('New Quote Request', 'woocommerce'),
                 'sent_to_admin' => true,
                 'plain_text' => false,
@@ -527,29 +538,29 @@ class ACL_WC_Helpers {
                     '_acl_last_name' => [$lastname],
                     '_acl_email' => [$email],
                     '_acl_phone' => [$phone],
-                    '_acl_address_line1' => [$address_line1],
-                    '_acl_address_line2' => [$address_line2],
+                    '_acl_address1' => [$address_line1],
+                    '_acl_address2' => [$address_line2],
                     '_acl_suburb' => [$suburb],
                     '_acl_state' => [$state],
                     '_acl_postcode' => [$postcode],
-                    '_acl_quote_items' => [serialize($quote_items)] // Added serialized items
+                    '_acl_quote_items' => [serialize($quote_items)]
                 ],
                 'quote_items' => $quote_items,
-                'password_message' => '', // No user creation
+                'password_message' => '',
                 'customer_name' => $customer_name,
                 'address' => $address
             ];
-   
+    
             // Email to shop owner (using ACL_WC_RFQ_Email)
             do_action('acl_quote_request_created', 0, $email_data);
-
+    
             // Email to customer (using ACL_WC_Customer_Account_Email)
             do_action('acl_wc_send_customer_account_email', $email_data);
     
             // Clear RFQ cart session
             WC()->session->set('quote_cart', []);
             WC()->session->save_data();
-
+    
             // Clear session data in database for guests
             global $wpdb;
             $session_id = WC()->session->get_customer_id();
@@ -559,15 +570,16 @@ class ACL_WC_Helpers {
                     $session_id
                 )
             );
-
-            // Clear persistent RFQ cart for logged-in users (optional, kept for completeness)
+    
+            // Clear persistent RFQ cart for logged-in users
             if (is_user_logged_in()) {
                 $user_id = get_current_user_id();
                 $blog_id = get_current_blog_id();
                 $meta_key = '_acl_persistent_rfq_cart_' . $blog_id;
                 delete_user_meta($user_id, $meta_key);
             }
-
+    
+            // Send success message
             wp_send_json_success([
                 'message' => __('Thank you. Your request has been sent and we will be in touch soon. A copy of your request has been sent to your email as well.', 'woocommerce'),
                 'cart_count' => 0

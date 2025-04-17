@@ -1,25 +1,36 @@
 jQuery(document).ready(function($) {
     // Quote Submission Form
-    $('.acl_quote_submission_form').on('submit', function(e) {
+    $('.acl_quote_submission_form').off('submit').on('submit', function(e) {
         e.preventDefault();
-        var formData = $(this).serialize();
+        e.stopPropagation(); // Prevent event bubbling
+        console.log('Form submitted'); // Debug execution count
+
+        var $form = $(this);
+        var $submitButton = $form.find('button[type="submit"]');
+        $submitButton.prop('disabled', true); // Disable submit button
+
+        var formData = $form.serialize();
 
         $.ajax({
             type: 'POST',
             url: acl_wc_shortcodes.ajax_url,
             data: formData + '&action=acl_create_quote',
             success: function(response) {
+                console.log('AJAX response:', response); // Debug response
                 if (response.success) {
                     // Replace form with success message
-                    $('.acl_quote_submission_form').replaceWith('<div class="rfq-success">' + response.data.message + '</div>');
+                    $form.replaceWith('<div class="rfq-success">' + response.data.message + '</div>');
                     // Update cart widget
                     $('.cart-count').text(response.data.cart_count);
                 } else {
-                    $('.acl_quote_submission_form').before('<div class="woocommerce-error">' + (response.data.message || 'Unknown error') + '</div>');
+                    $form.before('<div class="woocommerce-error">' + (response.data.message || 'Unknown error') + '</div>');
                 }
             },
             error: function(xhr, status, error) {
-                $('.acl_quote_submission_form').before('<div class="woocommerce-error">Submission failed: ' + error + '</div>');
+                $form.before('<div class="woocommerce-error">Submission failed: ' + error + '</div>');
+            },
+            complete: function() {
+                $submitButton.prop('disabled', false); // Re-enable button (optional)
             }
         });
     });
