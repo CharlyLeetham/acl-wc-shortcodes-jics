@@ -2,35 +2,37 @@ jQuery(document).ready(function($) {
     // Quote Submission Form
     $('.acl_quote_submission_form').off('submit').on('submit', function(e) {
         e.preventDefault();
-        e.stopPropagation(); // Prevent event bubbling
-        console.log('Form submitted'); // Debug execution count
+        e.stopPropagation();
+        console.log('Form submitted');
 
         var $form = $(this);
         var $submitButton = $form.find('button[type="submit"]');
-        $submitButton.prop('disabled', true); // Disable submit button
+        $submitButton.prop('disabled', true); // Prevent multiple submissions
 
         var formData = $form.serialize();
+        // Ensure nonce is included
+        var nonce = $form.find('input[name="acl_quote_nonce"]').val();
+        console.log('Nonce:', nonce); // Debug nonce
 
         $.ajax({
             type: 'POST',
             url: acl_wc_shortcodes.ajax_url,
-            data: formData + '&action=acl_create_quote',
+            data: formData + '&action=acl_create_quote&acl_quote_nonce=' + nonce,
             success: function(response) {
-                console.log('AJAX response:', response); // Debug response
+                console.log('AJAX response:', response);
                 if (response.success) {
-                    // Replace form with success message
                     $form.replaceWith('<div class="rfq-success">' + response.data.message + '</div>');
-                    // Update cart widget
                     $('.cart-count').text(response.data.cart_count);
                 } else {
                     $form.before('<div class="woocommerce-error">' + (response.data.message || 'Unknown error') + '</div>');
                 }
             },
             error: function(xhr, status, error) {
+                console.log('AJAX error:', xhr.responseText);
                 $form.before('<div class="woocommerce-error">Submission failed: ' + error + '</div>');
             },
             complete: function() {
-                $submitButton.prop('disabled', false); // Re-enable button (optional)
+                $submitButton.prop('disabled', false);
             }
         });
     });
