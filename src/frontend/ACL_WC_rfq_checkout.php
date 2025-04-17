@@ -34,11 +34,6 @@ class ACL_WC_RFQ_checkout {
     }
 
     public static function acl_quote_form() {
-        if (!is_user_logged_in()) {
-            wc_print_notice('You must be logged in to submit a quote.', 'error');
-            echo '<p><a href="' . esc_url(wp_login_url(get_permalink())) . '" class="button">Login</a></p>';
-            return;
-        }
         ?>
         <form class="acl_quote_submission_form" action="<?php echo esc_url(admin_url('admin-ajax.php')); ?>" method="post">
             <?php wp_nonce_field('acl_quote_submission', 'acl_quote_nonce'); ?>

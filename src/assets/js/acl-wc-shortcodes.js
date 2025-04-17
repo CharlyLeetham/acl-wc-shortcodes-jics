@@ -2,8 +2,6 @@ jQuery(document).ready(function($) {
     // Quote Submission Form
     $('.acl_quote_submission_form').on('submit', function(e) {
         e.preventDefault();
-        console.log('Quote form submit event triggered');
-        
         var formData = $(this).serialize();
         
         $.ajax({
@@ -11,90 +9,104 @@ jQuery(document).ready(function($) {
             url: acl_wc_shortcodes.ajax_url,
             data: formData + '&action=acl_create_quote',
             success: function(response) {
-                console.log('Quote submission response:', response);
                 if (response.success) {
-                    console.log('Quote submitted successfully');
-                    if (response.data.redirect) {
+                    if (response.data.login_form) {
+                        $('.acl_quote_submission_form').replaceWith(response.data.login_form);
+                    } else if (response.data.redirect) {
                         window.location.href = response.data.redirect;
-                    } else {
-                        alert('Quote submitted successfully, but no redirect URL provided.');
                     }
                 } else {
-                    console.error('Error submitting quote:', response.data);
+                    $('.acl_quote_submission_form').before('<div class="woocommerce-error">' + (response.data.message || 'Unknown error') + '</div>');
                 }
             },
             error: function(xhr, status, error) {
-                console.error('AJAX submission error:', status, error);
-                console.error('Error details:', xhr.responseText);
+                $('.acl_quote_submission_form').before('<div class="woocommerce-error">Submission failed: ' + error + '</div>');
             }
         });
     });
 
-    jQuery(document).ready(function($) {
-        // Add to Quote Cart
-        $('.quote-button').on('click', function(e) {
-            e.preventDefault();
-            //var productId = $(this).data('product-id');
-            var productId = $(this).attr('data-product-id');
-            console.log('Quote button clicked, Run #', $(this).data('clickCount') || 1, 'Element:', this.outerHTML);
-            console.log('Product ID:', productId);
-    
-            $.ajax({
-                type: 'POST',
-                url: acl_wc_shortcodes.ajax_url,
-                data: {
-                    'action': 'acl_add_to_quote_cart',
-                    'product_id': productId,
-                    'security': acl_wc_shortcodes.nonce
-                },
-                success: function(response) {
-                    if (response.success) {
-                        if (response.data.already_in_cart) {
-                            alert(response.data.message); // Show message
-                        } else {
-                            console.log('Product added to quote cart:', response);
-                            var cartElement = $('.acl-mini-rfq-cart a');
-                            if (cartElement.length) {
-                                var newCount = response.data.cart_count || (parseInt(cartElement.text().match(/\d+/)[0]) || 0) + 1;
-                                var iconSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
-                                              '<circle cx="9" cy="21" r="1"/>' +
-                                              '<circle cx="20" cy="21" r="1"/>' +
-                                              '<path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>' +
-                                              '</svg>';
-                                cartElement.html(iconSvg + '<span class="rfq-cart-count">' + newCount + '</span>');
-                            }
-                        }
-                    } else {
-                        console.error('Error:', response.data);
-                    }
-                },
-                error: function(error) {
-                    console.error('Error adding product to quote cart:', error);
+    // Login Form Submission
+    $(document).on('submit', '.woocommerce-form-login', function(e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        
+        $.ajax({
+            type: 'POST',
+            url: acl_wc_shortcodes.ajax_url,
+            data: formData + '&action=woocommerce_login',
+            success: function(response) {
+                if (response.success) {
+                    window.location.href = response.data.redirect || window.location.href;
+                } else {
+                    $(this).before('<div class="woocommerce-error">' + (response.data.message || 'Invalid credentials') + '</div>');
                 }
-            });
-            console.log('Handler bound to .quote-button');
-        });
-    
-        // Update data-product-id with variation_id
-        $('.variations_form').on('found_variation.wc-variation-form', function(event, variation) {
-            var variation_id = variation.variation_id;
-            var $button = $(this).find('.quote-button');
-            var original_product_id = $button.data('original-product-id') || $button.attr('data-product-id');
-            $button.data('original-product-id', original_product_id);
-            if (variation_id && variation_id !== '0') {
-                $button.attr('data-product-id', variation_id);
-            } else {
-                $button.attr('data-product-id', original_product_id);
+            },
+            error: function(xhr, status, error) {
+                $(this).before('<div class="woocommerce-error">Login failed: ' + error + '</div>');
             }
-        });
-    
-        // Store original product_id
-        $('.quote-button').each(function() {
-            $(this).data('original-product-id', $(this).data('product-id'));
         });
     });
 
-    
+    // Add to Quote Cart
+    $('.quote-button').on('click', function(e) {
+        e.preventDefault();
+        var productId = $(this).attr('data-product-id');
+        console.log('Quote button clicked, Run #', $(this).data('clickCount') || 1, 'Element:', this.outerHTML);
+        console.log('Product ID:', productId);
+
+        $.ajax({
+            type: 'POST',
+            url: acl_wc_shortcodes.ajax_url,
+            data: {
+                'action': 'acl_add_to_quote_cart',
+                'product_id': productId,
+                'security': acl_wc_shortcodes.nonce
+            },
+            success: function(response) {
+                if (response.success) {
+                    if (response.data.already_in_cart) {
+                        alert(response.data.message); // Show message
+                    } else {
+                        console.log('Product added to quote cart:', response);
+                        var cartElement = $('.acl-mini-rfq-cart a');
+                        if (cartElement.length) {
+                            var newCount = response.data.cart_count || (parseInt(cartElement.text().match(/\d+/)[0]) || 0) + 1;
+                            var iconSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+                                          '<circle cx="9" cy="21" r="1"/>' +
+                                          '<circle cx="20" cy="21" r="1"/>' +
+                                          '<path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>' +
+                                          '</svg>';
+                            cartElement.html(iconSvg + '<span class="rfq-cart-count">' + newCount + '</span>');
+                        }
+                    }
+                } else {
+                    console.error('Error:', response.data);
+                }
+            },
+            error: function(error) {
+                console.error('Error adding product to quote cart:', error);
+            }
+        });
+        console.log('Handler bound to .quote-button');
+    });
+
+    // Update data-product-id with variation_id
+    $('.variations_form').on('found_variation.wc-variation-form', function(event, variation) {
+        var variation_id = variation.variation_id;
+        var $button = $(this).find('.quote-button');
+        var original_product_id = $button.data('original-product-id') || $button.attr('data-product-id');
+        $button.data('original-product-id', original_product_id);
+        if (variation_id && variation_id !== '0') {
+            $button.attr('data-product-id', variation_id);
+        } else {
+            $button.attr('data-product-id', original_product_id);
+        }
+    });
+
+    // Store original product_id
+    $('.quote-button').each(function() {
+        $(this).data('original-product-id', $(this).data('product-id'));
+    });
 
     // Increment Quantity
     $('.acl_plus_qty').on('click', function() {
@@ -188,7 +200,7 @@ jQuery(document).ready(function($) {
             }
         }, 2000));
     }); 
-    
+
     $('#acl_update_cart').on('click', function(e) {
         e.preventDefault();
         console.log('Update Cart button clicked');
@@ -329,46 +341,4 @@ jQuery(document).ready(function($) {
         console.log('Update quantities:', quantities);
         // Here you would implement an AJAX call to update all quantities at once if needed
     });
-
-    // Submit Quote Form
-    $('.acl_quote_submission_form').on('submit', function(e) {
-        e.preventDefault();
-        var formData = $(this).serialize();
-        
-        $.ajax({
-            type: 'POST',
-            url: acl_wc_shortcodes.ajax_url,
-            data: formData + '&action=acl_create_quote',
-            success: function(response) {
-                if (response.success) {
-                    if (response.login_form) {
-                        $('.acl_quote_submission_form').replaceWith(response.login_form);
-                    } else if (response.redirect) {
-                        window.location.href = response.redirect;
-                    }
-                } else {
-                    alert('Error: ' + response.message);
-                }
-            }
-        });
-    });
-
-    // Login Form Submission
-    $(document).on('submit', '.woocommerce-form-login', function(e) {
-        e.preventDefault();
-        var formData = $(this).serialize();
-
-        $.ajax({
-            type: 'POST',
-            url: acl_wc_shortcodes.ajax_url,
-            data: formData + '&action=acl_process_login',
-            success: function(response) {
-                if (response.success) {
-                    window.location.href = response.redirect;
-                } else {
-                    alert('Login failed: ' + response.message);
-                }
-            }
-        });
-    });    
 });

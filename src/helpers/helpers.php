@@ -541,6 +541,12 @@ class ACL_WC_Helpers {
                 update_post_meta($quote_id, '_acl_first_name', $firstname);
                 update_post_meta($quote_id, '_acl_last_name', $lastname);
                 update_post_meta($quote_id, '_acl_email', $email);
+                update_post_meta($quote_id, '_acl_address_line1', sanitize_text_field($_POST['acl_address_line1'] ?? ''));
+                update_post_meta($quote_id, '_acl_address_line2', sanitize_text_field($_POST['acl_address_line2'] ?? ''));
+                update_post_meta($quote_id, '_acl_suburb', sanitize_text_field($_POST['acl_suburb'] ?? ''));
+                update_post_meta($quote_id, '_acl_state', sanitize_text_field($_POST['acl_state'] ?? ''));
+                update_post_meta($quote_id, '_acl_postcode', sanitize_text_field($_POST['acl_postcode'] ?? ''));
+                update_post_meta($quote_id, '_acl_phone', sanitize_text_field($_POST['acl_phone'] ?? ''));                
     
                 $quote_cart = WC()->session->get( 'quote_cart', array() );
                 update_post_meta( $quote_id, '_acl_quote_items', $quote_cart );
