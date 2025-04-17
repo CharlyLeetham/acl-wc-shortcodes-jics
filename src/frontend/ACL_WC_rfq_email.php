@@ -142,9 +142,9 @@ class ACL_WC_RFQ_Email extends \WC_Email {
             'recipient' => [
                 'title' => __('Recipient', 'woocommerce'),
                 'type' => 'text',
-                'description' => __('Enter the recipient email for this notification. Defaults to the customer’s email.', 'woocommerce'),
-                'placeholder' => '',
-                'default' => '',
+                'description' => sprintf(__('Enter recipients (comma separated) for this email. Defaults to <code>%s</code>.', 'woocommerce'), esc_attr(get_option('admin_email'))),
+                'placeholder' => get_option('admin_email'),
+                'default' => get_option('admin_email'),
             ],
 
             'subject' => [
