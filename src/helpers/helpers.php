@@ -546,10 +546,27 @@ class ACL_WC_Helpers {
             // Email to customer (using ACL_WC_Customer_Account_Email)
             do_action('acl_wc_send_customer_account_email', $email_data);
     
-            // Clear RFQ cart
-        // Clear main cart if synced
+            // Clear RFQ cart session
             WC()->session->set('quote_cart', []);
             WC()->session->save_data();
+
+            // Clear session data in database for guests
+            global $wpdb;
+            $session_id = WC()->session->get_customer_id();
+            $wpdb->query(
+                $wpdb->prepare(
+                    "DELETE FROM {$wpdb->prefix}woocommerce_sessions WHERE session_key = %s",
+                    $session_id
+                )
+            );
+
+            // Clear persistent RFQ cart for logged-in users (optional, kept for completeness)
+            if (is_user_logged_in()) {
+                $user_id = get_current_user_id();
+                $blog_id = get_current_blog_id();
+                $meta_key = '_acl_persistent_rfq_cart_' . $blog_id;
+                delete_user_meta($user_id, $meta_key);
+            }
 
             wp_send_json_success(['redirect' => wc_get_page_permalink('shop')]);
             exit;
