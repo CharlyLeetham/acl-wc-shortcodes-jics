@@ -3,16 +3,17 @@ jQuery(document).ready(function($) {
     $('.acl_quote_submission_form').on('submit', function(e) {
         e.preventDefault();
         var formData = $(this).serialize();
-        
+
         $.ajax({
             type: 'POST',
             url: acl_wc_shortcodes.ajax_url,
             data: formData + '&action=acl_create_quote',
             success: function(response) {
                 if (response.success) {
-                    if (response.data.redirect) {
-                        window.location.href = response.data.redirect;
-                    }
+                    // Replace form with success message
+                    $('.acl_quote_submission_form').replaceWith('<div class="rfq-success">' + response.data.message + '</div>');
+                    // Update cart widget
+                    $('.cart-count').text(response.data.cart_count);
                 } else {
                     $('.acl_quote_submission_form').before('<div class="woocommerce-error">' + (response.data.message || 'Unknown error') + '</div>');
                 }

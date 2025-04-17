@@ -568,7 +568,10 @@ class ACL_WC_Helpers {
                 delete_user_meta($user_id, $meta_key);
             }
 
-            wp_send_json_success(['redirect' => wc_get_page_permalink('shop')]);
+            wp_send_json_success([
+                'message' => __('Thank you. Your request has been sent and we will be in touch soon. A copy of your request has been sent to your email as well.', 'woocommerce'),
+                'cart_count' => 0
+            ]);
             exit;
         }
     }
