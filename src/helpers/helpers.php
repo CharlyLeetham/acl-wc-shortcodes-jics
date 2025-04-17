@@ -550,7 +550,7 @@ class ACL_WC_Helpers {
         // Clear main cart if synced
             WC()->session->set('cart', []);
             WC()->cart->empty_cart();
-            wc_clear_cart_transients();
+            \wc_clear_cart_transients();
 
             wp_send_json_success(['redirect' => wc_get_page_permalink('shop')]);
             exit;
