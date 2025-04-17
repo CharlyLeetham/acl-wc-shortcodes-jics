@@ -548,9 +548,8 @@ class ACL_WC_Helpers {
     
             // Clear RFQ cart
         // Clear main cart if synced
-            WC()->session->set('cart', []);
-            WC()->cart->empty_cart();
-            \wc_clear_cart_transients();
+            WC()->session->set('quote_cart', []);
+            WC()->session->save_data();
 
             wp_send_json_success(['redirect' => wc_get_page_permalink('shop')]);
             exit;
