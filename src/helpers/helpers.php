@@ -470,16 +470,10 @@ class ACL_WC_Helpers {
     
     public static function acl_process_quote_submission() {
         if (isset($_POST['action']) && $_POST['action'] === 'acl_create_quote') {
-            // Verify nonce and consume it
+            // Verify nonce
             if (!check_ajax_referer('acl_quote_submission', 'acl_quote_nonce', false)) {
                 wp_send_json_error(['message' => __('Security check failed.', 'woocommerce')]);
                 exit;
-            }
-    
-            // Ensure nonce is only used once
-            $nonce = $_POST['acl_quote_nonce'] ?? '';
-            if (wp_verify_nonce($nonce, 'acl_quote_submission')) {
-                wp_nonce_ays(''); // Invalidate nonce after use
             }
     
             // Ensure session is active
