@@ -37,6 +37,22 @@ class ACL_WC_Customer_Account_Email extends \WC_Email {
         );
     }
 
+    public function set_email_content_type() {
+        return 'text/html';
+    }
+
+    public function get_headers() {
+        return "Content-Type: text/html\r\n";
+    }
+
+    public function get_subject() {
+        return apply_filters('woocommerce_email_subject_' . $this->id, $this->get_option('subject', 'Your Quote Request Confirmation'), $this->object);
+    }
+    
+    public function get_heading() {
+        return apply_filters('woocommerce_email_heading_' . $this->id, $this->get_option('heading', 'Your Quote Request Confirmation'), $this->object);
+    }    
+
     public function get_content_html() {
         return wc_get_template_html(
             $this->template_html,
@@ -72,4 +88,38 @@ class ACL_WC_Customer_Account_Email extends \WC_Email {
             $this->template_base
         );
     }
+
+    public function init_form_fields() {
+        $this->form_fields = [
+            'recipient' => [
+                'title' => __('Recipient', 'woocommerce'),
+                'type' => 'text',
+                'description' => sprintf(__('Enter recipients (comma separated) for this email. Defaults to <code>%s</code>.', 'woocommerce'), esc_attr(get_option('admin_email'))),
+                'placeholder' => '',
+                'default' => get_option('admin_email'),
+            ],
+            'subject' => [
+                'title' => __('Subject', 'woocommerce'),
+                'type' => 'text',
+                'description' => sprintf(__('Defaults to <code>%s</code>', 'woocommerce'), $this->get_subject()),
+                'placeholder' => 'New Quote Request',
+                'default' => 'New Quote Request',
+            ],
+            'heading' => [
+                'title' => __('Email Heading', 'woocommerce'),
+                'type' => 'text',
+                'description' => sprintf(__('Defaults to <code>%s</code>', 'woocommerce'), $this->get_heading()),
+                'placeholder' => 'New Quote Request',
+                'default' => 'New Quote Request',
+            ],
+        ];
+    }  
+    
+    public static function acl_force_html_email_setting() {
+        $email_settings = get_option('woocommerce_acl_quote_email_settings', []);
+        if (!isset($email_settings['email_type']) || $email_settings['email_type'] !== 'html') {
+            $email_settings['email_type'] = 'html';
+            update_option('woocommerce_acl_quote_email_settings', $email_settings);
+        }
+    }    
 }
