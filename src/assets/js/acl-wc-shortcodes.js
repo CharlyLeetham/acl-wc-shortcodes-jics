@@ -290,7 +290,6 @@ $('#acl_update_cart').on('click', function(e) {
                 cartElement.contents().filter(function() {
                     return this.nodeType === 3; // Text nodes only
                 }).remove(); // Remove any existing text nodes
-                cartElement.prepend('RFQ Cart: 0 items');
             }
         }
     }
