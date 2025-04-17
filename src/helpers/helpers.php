@@ -482,7 +482,7 @@ class ACL_WC_Helpers {
             }
 
             if (isset($_POST['product-deets'])) {
-                error_log('POST product-deets: ' . print_r($_POST['product-deets'], true));
+                error_log('POST product-deets: ' . print_r($_POST, true));
             }
     
             // Validate required fields
