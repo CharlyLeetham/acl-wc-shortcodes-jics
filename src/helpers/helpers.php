@@ -480,9 +480,7 @@ class ACL_WC_Helpers {
             if (!WC()->session->has_session()) {
                 WC()->session->set_customer_session_cookie(true);
             }
-
-                error_log('POST product-deets: ' . print_r($_POST, true));
-    
+   
             // Validate required fields
             $email = sanitize_email($_POST['acl_email'] ?? '');
             $firstname = sanitize_text_field($_POST['acl_first_name'] ?? '');
@@ -504,7 +502,6 @@ class ACL_WC_Helpers {
             $address = trim($address_line1 . "\n" . $address_line2 . "\n" . $suburb . ', ' . $state . ' ' . $postcode);
             $quote_items = [];    
             $quote_cart = WC()->session->get('quote_cart', []);
-            $posted_details = isset($_POST['product-deets']) ? (array) $_POST['product-deets'] : array();
 
             foreach ($quote_cart as $item) {
                 $product_id = $item['product_id'] ?? 0;
@@ -516,8 +513,8 @@ class ACL_WC_Helpers {
                         'sku' => $product->get_sku() ?: 'N/A',
                         'quantity' => $quantity
                     ];
-                    if (isset($posted_details[$product_id]) && !empty($posted_details[$product_id])) {
-                        $item_data['details'] = sanitize_text_field($posted_details[$product_id]);
+                    if (isset($item['product-deets']) && !empty($item['product-deets'])) {
+                        $item_data['details'] = sanitize_text_field($item['product-deets']);
                     }
                     $quote_items[] = $item_data;                    
                 }
