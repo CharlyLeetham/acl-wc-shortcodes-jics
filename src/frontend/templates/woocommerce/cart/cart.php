@@ -73,7 +73,9 @@ if ( empty( $quote_cart ) ) {
                                 if ( isset( $grouped_cart[$product_id]['getdetails'] ) && strtolower(trim($grouped_cart[$product_id]['getdetails'])) === 'yes' ) { 
                                 ?>
                                     <div class="product-details">
-                                        <textarea id="product-deets-<?php echo esc_attr( $product_id ); ?>" name="product-deets[<?php echo esc_attr( $product_id ); ?>]" class="input-text" rows="2"></textarea>
+                                        <textarea id="product-deets-<?php echo esc_attr( $product_id ); ?>" name="product-deets[<?php echo esc_attr( $product_id ); ?>]" class="input-text" rows="2">
+                                        <?php echo isset( $quote_cart[$product_id]['product-deets'] ) ? esc_textarea( $quote_cart[$product_id]['product-deets'] ) : ''; ?>    
+                                        </textarea>
                                     </div>
                                 <?php
                                 }
