@@ -8,7 +8,7 @@ class ACL_WC_Customer_Account_Email extends \WC_Email {
     public function __construct() {
         $this->id          = 'acl_wc_customer_account_email';
         $this->title       = __( 'Your Quote Request Confirmation', 'woocommerce' );
-        $this->description = __( 'This email is sent when a new account is created for an RFQ submission.', 'woocommerce' );
+        $this->description = __( 'This email is sent to the customer when a quote is received.', 'woocommerce' );
 
         $this->template_html  = 'emails/acl-customer-account-email.php';
         $this->template_plain = 'emails/plain/acl-customer-account-email.php';
