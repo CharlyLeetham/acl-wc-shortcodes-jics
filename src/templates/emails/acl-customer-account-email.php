@@ -69,15 +69,15 @@ $postcode = isset( $quote_details['_acl_postcode'][0] ) ? $quote_details['_acl_p
 
 <table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" style="border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
         <tr>
-            <td class="main" style="padding: 20px">
-                <p> <?php esc_html_e('Hi ', 'woocommerce'); ?> <?php echo esc_html($firstname); ?><?php esc_html_e(',', 'woocommerce'); ?></p>
-                <p> <?php esc_html_e('Thanks for requesting a quote from Jet Industrial Supplies.  The details of your request are below.', 'woocommerce'); ?></p>
-                <p><?php esc_html_e("You've requested a quote on the following items. We will put together the quote and be in touch within 5 business days.  If you have any queries or questions, please contact us on 08 9523 2909 or email us at sales@jetindustrialcom.au", 'woocommerce'); ?></p>
-            </td>
-        </tr>
-        <tr>
             <td align="center" valign="top" style="padding: 0;">
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                    <tr>
+                        <td class="main" style="padding: 20px">
+                            <p> <?php esc_html_e('Hi ', 'woocommerce'); ?> <?php echo esc_html($firstname); ?><?php esc_html_e(',', 'woocommerce'); ?></p>
+                            <p> <?php esc_html_e('Thanks for requesting a quote from Jet Industrial Supplies.  The details of your request are below.', 'woocommerce'); ?></p>
+                            <p><?php esc_html_e("You've requested a quote on the following items. We will put together the quote and be in touch within 5 business days.  If you have any queries or questions, please contact us on 08 9523 2909 or email us at sales@jetindustrialcom.au", 'woocommerce'); ?></p>
+                        </td>
+                    </tr>
                     <!-- Header -->
                     <tr>
                         <td class="header" style="padding: 20px;">
