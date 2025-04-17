@@ -49,7 +49,11 @@ class ACL_WC_RFQ_Email extends \WC_Email {
     }
 
     public function get_subject() {
-        return apply_filters('woocommerce_email_subject_' . $this->id, $this->get_option('subject', 'New Quote Request'), $this->object);
+        return apply_filters('woocommerce_email_subject_' . $this->id, $this->get_option('subject', 'Your Quote Request Confirmation'), $this->object);
+    }
+    
+    public function get_heading() {
+        return apply_filters('woocommerce_email_heading_' . $this->id, $this->get_option('heading', 'Your Quote Request Confirmation'), $this->object);
     }
 
     public function get_content_html() {
@@ -114,12 +118,29 @@ class ACL_WC_RFQ_Email extends \WC_Email {
 
     public function init_form_fields() {
         $this->form_fields = [
+
+            'recipient' => [
+                'title' => __('Recipient', 'woocommerce'),
+                'type' => 'text',
+                'description' => __('Enter the recipient email for this notification. Defaults to the customer’s email.', 'woocommerce'),
+                'placeholder' => '',
+                'default' => '',
+            ],
+
             'subject' => [
                 'title' => __('Subject', 'woocommerce'),
                 'type' => 'text',
                 'description' => sprintf(__('Defaults to <code>%s</code>', 'woocommerce'), $this->get_subject()),
-                'placeholder' => $this->get_subject(),
-                'default' => '',
+                'placeholder' => 'Your Quote Request Confirmation',
+                'default' => 'Your Quote Request Confirmation',
+            ],
+
+            'heading' => [
+                'title' => __('Email Heading', 'woocommerce'),
+                'type' => 'text',
+                'description' => sprintf(__('Defaults to <code>%s</code>', 'woocommerce'), $this->get_heading()),
+                'placeholder' => 'Your Quote Request Confirmation',
+                'default' => 'Your Quote Request Confirmation',
             ],
         ];
     }
