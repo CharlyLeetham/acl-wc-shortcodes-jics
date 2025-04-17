@@ -520,6 +520,7 @@ class ACL_WC_Helpers {
                 }
             }
     
+            error_log('POST product-deets: ' . print_r($quote_items, true));
             if (empty($quote_items)) {
                 $quote_items[] = ['name' => 'No items in quote', 'sku' => '', 'quantity' => 0];
             }
