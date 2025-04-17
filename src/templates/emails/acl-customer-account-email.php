@@ -118,16 +118,19 @@ $postcode = isset( $quote_details['_acl_postcode'][0] ) ? $quote_details['_acl_p
                                     <td>
                                     <?php if ( ! empty( $quote_items ) ) { ?>
                                         <ul>
-                                            <?php foreach ( $quote_items as $item ) : ?>
-                                                <li><?php 
-                                                    echo esc_html( $item['name'] ) . ' (' . esc_html( $item['quantity'] ) . ')'; 
-                                                    if ( isset( $item['details'] ) && ! empty( $item['details'] ) ) {
-                                                        echo ' - Details: ' . esc_html( $item['details'] );
-                                                    }
-                                                    ?>
-                                                </li>
-                                            <?php endforeach; ?>
-                                        </ul>
+                                        <?php foreach ( $quote_items as $item ) : ?>
+                                            <li>
+                                                <?php 
+                                                $name = !empty($item['name']) ? esc_html($item['name']) : 'Unknown Product';
+                                                $quantity = !empty($item['quantity']) ? esc_html($item['quantity']) : '1';
+                                                echo $name . ' (' . $quantity . ')';
+                                                if ( isset( $item['details'] ) && ! empty( $item['details'] ) ) {
+                                                    echo ' - Details: ' . esc_html( $item['details'] );
+                                                }
+                                                ?>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
                                     <?php } else { ?>
                                         <p><?php echo esc_html__( 'No items specified.', 'woocommerce' ); ?></p>
                                     <?php } ?>
