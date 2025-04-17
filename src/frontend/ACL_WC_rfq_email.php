@@ -21,11 +21,12 @@ class ACL_WC_RFQ_Email extends \WC_Email {
     }
 
     public function trigger($quote_id, $email_data = []) {
-        $this->recipient = get_option('admin_email');
+        $this->recipient = get_option('admin_email'); // Force admin_email only
 
         if (!$this->recipient) {
             return;
         }
+    
 
         $this->email_data = $email_data;
         $this->placeholders['{quote_id}'] = $quote_id;
