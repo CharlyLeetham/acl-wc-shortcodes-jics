@@ -69,6 +69,11 @@ class ACL_WC_RFQ_Email extends \WC_Email {
         return apply_filters('woocommerce_email_heading_' . $this->id, $this->get_option('heading', 'Your Quote Request Confirmation'), $this->object);
     }
 
+    public function get_recipient() {
+        $recipient = $this->get_option('recipient', get_option('admin_email'));
+        return apply_filters('woocommerce_email_recipient_' . $this->id, $recipient, $this->object);
+    }    
+
     public function get_content_html() {
         ob_start();
 
