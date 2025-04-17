@@ -510,7 +510,7 @@ class ACL_WC_Helpers {
                 $quantity = $item['quantity'] ?? 1;
                 $product = wc_get_product($product_id);
                 if ($product) {
-                    $quote_items[] = [
+                    $item_data = [
                         'name' => $product->get_name(),
                         'sku' => $product->get_sku() ?: 'N/A',
                         'quantity' => $quantity
@@ -518,7 +518,7 @@ class ACL_WC_Helpers {
                     if (isset($item['product-deets']) && !empty($item['product-deets'])) {
                         $item_data['details'] = sanitize_text_field($item['product-deets']);
                     }
-                    $quote_items[] = $item_data;                    
+                    $quote_items[] = $item_data;                   
                 }
             }
     
