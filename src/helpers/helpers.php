@@ -417,7 +417,7 @@ class ACL_WC_Helpers {
         $session_id = WC()->session->get_customer_id();
 
         $quantities = isset($_POST['quantities']) ? (array) $_POST['quantities'] : array();
-        $details = isset($_POST['details']) ? (array) $_POST['details'] : array();
+        $details = isset($_POST['product-deets']) ? (array) $_POST['product-deets'] : array();
         $quote_cart = WC()->session->get('quote_cart', array());
 
         // Update quantities and details in the RFQ cart
