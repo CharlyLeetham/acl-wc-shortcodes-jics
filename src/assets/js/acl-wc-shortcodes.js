@@ -192,10 +192,43 @@ jQuery(document).ready(function($) {
         }, 2000));
     }); 
 
+    $('.product-details textarea').on('keyup', function() {
+        var $input = $(this);
+        var productId = $input.attr('name').match(/\d+/)[0];
+        var details = $input.val();
+
+        clearTimeout($input.data('timeout'));
+
+        $input.data('timeout', setTimeout(function() {
+            if (details.trim() !== '') {
+                $.ajax({
+                    type: 'POST',
+                    url: acl_wc_shortcodes.ajax_url,
+                    data: {
+                        'action': 'acl_update_rfq_cart',
+                        'quantities': { [productId]: $input.closest('tr').find('.acl_qty_input').val() },
+                        'details': { [productId]: details },
+                        'security': acl_wc_shortcodes.nonce
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            console.log('Details updated for product ID:', productId, 'to:', details);
+                        } else {
+                            console.error('Error updating details:', response.data);
+                        }
+                    },
+                    error: function(error) {
+                        console.error('Error updating details:', error);
+                    }
+                });
+            }
+        }, 2000));
+    });    
+
     $('#acl_update_cart').on('click', function(e) {
         e.preventDefault();
         console.log('Update Cart button clicked');
-
+    
         var quantities = {};
         var details = {};
         $('.acl_qty_input').each(function() {
@@ -206,7 +239,7 @@ jQuery(document).ready(function($) {
             var productId = $(this).attr('name').match(/\d+/)[0];
             details[productId] = $(this).val();
         });
-
+    
         $.ajax({
             type: 'POST',
             url: acl_wc_shortcodes.ajax_url,
@@ -230,7 +263,7 @@ jQuery(document).ready(function($) {
                 console.error('AJAX error:', status, error);
             }
         });
-    });    
+    });  
 
     // Update Mini Cart Function
     function updateMiniCart(productId, newQuantity) {
