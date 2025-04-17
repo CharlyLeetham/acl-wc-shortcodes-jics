@@ -481,9 +481,7 @@ class ACL_WC_Helpers {
                 WC()->session->set_customer_session_cookie(true);
             }
 
-            if (isset($_POST['product-deets'])) {
                 error_log('POST product-deets: ' . print_r($_POST, true));
-            }
     
             // Validate required fields
             $email = sanitize_email($_POST['acl_email'] ?? '');
