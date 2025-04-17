@@ -469,94 +469,132 @@ class ACL_WC_Helpers {
     }    
     
     public static function acl_process_quote_submission() {
-        if ( isset( $_POST['action'] ) && $_POST['action'] == 'acl_create_quote' ) {
-            $email = sanitize_email( $_POST['acl_email'] );
-            $firstname = sanitize_text_field( $_POST['acl_first_name'] );
-            $lastname = sanitize_text_field( $_POST['acl_last_name'] );
+        if (isset($_POST['action']) && $_POST['action'] === 'acl_create_quote') {
+            // Verify nonce
+            if (!check_ajax_referer('acl_quote_submission', 'acl_quote_nonce', false)) {
+                wp_send_json_error(['message' => __('Security check failed.', 'woocommerce')]);
+                exit;
+            }
+    
+            // Validate required fields
+            $email = sanitize_email($_POST['acl_email'] ?? '');
+            $firstname = sanitize_text_field($_POST['acl_first_name'] ?? '');
+            $lastname = sanitize_text_field($_POST['acl_last_name'] ?? '');
+            $suburb = sanitize_text_field($_POST['acl_suburb'] ?? '');
+            $state = sanitize_text_field($_POST['acl_state'] ?? '');
+            $postcode = sanitize_text_field($_POST['acl_postcode'] ?? '');
+    
+            if (empty($email) || empty($firstname) || empty($lastname) || empty($suburb) || empty($state) || empty($postcode)) {
+                wp_send_json_error(['message' => __('Please fill in all required fields.', 'woocommerce')]);
+                exit;
+            }
     
             // Check if user exists
-            $user = get_user_by( 'email', $email );
+            $user = get_user_by('email', $email);
     
             if (!$user) {
-                // Create account if email doesn't exist
-                $username = sanitize_user( current( explode( '@', $email ) ) );
+                // Create new user
+                $username_base = sanitize_user(current(explode('@', $email)));
+                $username = $username_base;
+                $counter = 1;
+                while (username_exists($username)) {
+                    $username = $username_base . $counter;
+                    $counter++;
+                }
                 $password = wp_generate_password();
-                $user_id = wp_create_user( $username, $password, $email );
+                $user_id = wc_create_new_customer($email, $username, $password);
     
                 if (is_wp_error($user_id)) {
-                    wp_send_json_error(array('message' => 'Error creating account.'));
+                    wp_send_json_error(['message' => $user_id->get_error_message()]);
                     exit;
                 }
     
-                // Store generated password in user meta (DO NOT email it)
+                // Set user meta
+                update_user_meta($user_id, 'first_name', $firstname);
+                update_user_meta($user_id, 'last_name', $lastname);
+                update_user_meta($user_id, 'shipping_address_1', sanitize_text_field($_POST['acl_address_line1'] ?? ''));
+                update_user_meta($user_id, 'shipping_address_2', sanitize_text_field($_POST['acl_address_line2'] ?? ''));
+                update_user_meta($user_id, 'shipping_city', $suburb);
+                update_user_meta($user_id, 'shipping_state', $state);
+                update_user_meta($user_id, 'shipping_postcode', $postcode);
+                update_user_meta($user_id, 'billing_phone', sanitize_text_field($_POST['acl_phone'] ?? ''));
+    
+                // Store generated password in user meta
                 update_user_meta($user_id, '_acl_temp_password', $password);
     
-                // Auto-login new user
-                wp_set_auth_cookie( $user_id, true );
-                wp_set_current_user( $user_id );
+                // Send welcome email with reset link
+                wp_new_user_notification($user_id, null, 'user');
     
+                // Auto-login new user
+                wp_set_auth_cookie($user_id, true);
+                wp_set_current_user($user_id);
             } else {
-                // User exists → Show login form and do NOT create a quote yet
+                // User exists → Store form data and show login form
+                WC()->session->set('quote_form_data', $_POST);
                 ob_start();
                 ?>
                 <div class="woocommerce">
-                    <h2><?php esc_html_e( 'Login Required', 'woocommerce' ); ?></h2>
-                    <p><?php esc_html_e( 'An account already exists with this email. Please log in to continue.', 'woocommerce' ); ?></p>
-    
+                    <h2><?php esc_html_e('Login Required', 'woocommerce'); ?></h2>
+                    <p><?php esc_html_e('An account already exists with this email. Please log in to continue.', 'woocommerce'); ?></p>
                     <form method="post" class="woocommerce-form woocommerce-form-login login">
+                        <?php wp_nonce_field('woocommerce-login', 'woocommerce-login-nonce'); ?>
                         <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-                            <label for="username"><?php esc_html_e( 'Username or email address', 'woocommerce' ); ?>&nbsp;<span class="required">*</span></label>
-                            <input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="username" id="username" autocomplete="username" required>
+                            <label for="username"><?php esc_html_e('Username or email address', 'woocommerce'); ?> <span class="required">*</span></label>
+                            <input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="username" id="username" autocomplete="username" value="<?php echo esc_attr($email); ?>" required>
                         </p>
                         <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-                            <label for="password"><?php esc_html_e( 'Password', 'woocommerce' ); ?>&nbsp;<span class="required">*</span></label>
+                            <label for="password"><?php esc_html_e('Password', 'woocommerce'); ?> <span class="required">*</span></label>
                             <input class="woocommerce-Input woocommerce-Input--text input-text" type="password" name="password" id="password" autocomplete="current-password" required>
                         </p>
                         <p class="form-row">
-                            <input type="hidden" name="redirect" value="<?php echo esc_url( home_url( '/rfq-cart' ) ); ?>">
-                            <button type="submit" class="woocommerce-button button woocommerce-form-login__submit" name="login" value="<?php esc_attr_e( 'Log in', 'woocommerce' ); ?>">
-                                <?php esc_html_e( 'Log in', 'woocommerce' ); ?>
+                            <input type="hidden" name="redirect" value="<?php echo esc_url(get_permalink()); ?>">
+                            <button type="submit" class="woocommerce-button button woocommerce-form-login__submit" name="login" value="<?php esc_attr_e('Log in', 'woocommerce'); ?>">
+                                <?php esc_html_e('Log in', 'woocommerce'); ?>
                             </button>
+                        </p>
+                        <p class="woocommerce-LostPassword lost_password">
+                            <a href="<?php echo esc_url(wp_lostpassword_url()); ?>"><?php esc_html_e('Lost your password?', 'woocommerce'); ?></a>
                         </p>
                     </form>
                 </div>
                 <?php
                 $login_form = ob_get_clean();
-    
-                wp_send_json_success(array(
-                    'login_form' => $login_form
-                ));
+                wp_send_json_success(['login_form' => $login_form]);
                 exit;
             }
     
-            // If user was created or is logged in, proceed with the quote submission
-            $quote_id = wp_insert_post( array(
+            // Create quote
+            $quote_id = wp_insert_post([
                 'post_type'   => 'acl_quote',
-                'post_title'  => sprintf( 'Quote for %s', $firstname ),
+                'post_title'  => sprintf(__('Quote for %s %s', 'woocommerce'), $firstname, $lastname),
                 'post_status' => 'publish',
                 'post_author' => get_current_user_id(),
-            ));
+            ]);
     
-            if ($quote_id) {
-                update_post_meta($quote_id, '_acl_first_name', $firstname);
-                update_post_meta($quote_id, '_acl_last_name', $lastname);
-                update_post_meta($quote_id, '_acl_email', $email);
-                update_post_meta($quote_id, '_acl_address_line1', sanitize_text_field($_POST['acl_address_line1'] ?? ''));
-                update_post_meta($quote_id, '_acl_address_line2', sanitize_text_field($_POST['acl_address_line2'] ?? ''));
-                update_post_meta($quote_id, '_acl_suburb', sanitize_text_field($_POST['acl_suburb'] ?? ''));
-                update_post_meta($quote_id, '_acl_state', sanitize_text_field($_POST['acl_state'] ?? ''));
-                update_post_meta($quote_id, '_acl_postcode', sanitize_text_field($_POST['acl_postcode'] ?? ''));
-                update_post_meta($quote_id, '_acl_phone', sanitize_text_field($_POST['acl_phone'] ?? ''));                
-    
-                $quote_cart = WC()->session->get( 'quote_cart', array() );
-                update_post_meta( $quote_id, '_acl_quote_items', $quote_cart );
-    
-                // Clear RFQ cart
-                WC()->session->set( 'quote_cart', array() );
-    
-                wp_send_json_success(array('redirect' => wc_get_page_permalink( 'shop' )));
+            if (is_wp_error($quote_id)) {
+                wp_send_json_error(['message' => __('Failed to create quote.', 'woocommerce')]);
                 exit;
             }
+    
+            // Save quote meta
+            update_post_meta($quote_id, '_acl_first_name', $firstname);
+            update_post_meta($quote_id, '_acl_last_name', $lastname);
+            update_post_meta($quote_id, '_acl_email', $email);
+            update_post_meta($quote_id, '_acl_address_line1', sanitize_text_field($_POST['acl_address_line1'] ?? ''));
+            update_post_meta($quote_id, '_acl_address_line2', sanitize_text_field($_POST['acl_address_line2'] ?? ''));
+            update_post_meta($quote_id, '_acl_suburb', $suburb);
+            update_post_meta($quote_id, '_acl_state', $state);
+            update_post_meta($quote_id, '_acl_postcode', $postcode);
+            update_post_meta($quote_id, '_acl_phone', sanitize_text_field($_POST['acl_phone'] ?? ''));
+    
+            $quote_cart = WC()->session->get('quote_cart', []);
+            update_post_meta($quote_id, '_acl_quote_items', $quote_cart);
+    
+            // Clear RFQ cart
+            WC()->session->set('quote_cart', []);
+    
+            wp_send_json_success(['redirect' => wc_get_page_permalink('shop')]);
+            exit;
         }
     }
     
