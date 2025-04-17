@@ -119,6 +119,13 @@ class ACL_WC_RFQ_Email extends \WC_Email {
     public function init_form_fields() {
         $this->form_fields = [
 
+            'enabled' => [
+                'title' => __('Enable/Disable', 'woocommerce'),
+                'type' => 'checkbox',
+                'label' => __('Enable this email notification', 'woocommerce'),
+                'default' => 'yes'
+            ],
+
             'recipient' => [
                 'title' => __('Recipient', 'woocommerce'),
                 'type' => 'text',

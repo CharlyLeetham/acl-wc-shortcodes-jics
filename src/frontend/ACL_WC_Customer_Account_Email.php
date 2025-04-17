@@ -91,13 +91,14 @@ class ACL_WC_Customer_Account_Email extends \WC_Email {
 
     public function init_form_fields() {
         $this->form_fields = [
-            'recipient' => [
-                'title' => __('Recipient', 'woocommerce'),
-                'type' => 'text',
-                'description' => sprintf(__('Enter recipients (comma separated) for this email. Defaults to <code>%s</code>.', 'woocommerce'), esc_attr(get_option('admin_email'))),
-                'placeholder' => '',
-                'default' => get_option('admin_email'),
+
+            'enabled' => [
+                'title' => __('Enable/Disable', 'woocommerce'),
+                'type' => 'checkbox',
+                'label' => __('Enable this email notification', 'woocommerce'),
+                'default' => 'yes'
             ],
+
             'subject' => [
                 'title' => __('Subject', 'woocommerce'),
                 'type' => 'text',
@@ -116,10 +117,10 @@ class ACL_WC_Customer_Account_Email extends \WC_Email {
     }  
 
     public static function acl_force_html_email_setting() {
-        $email_settings = get_option('woocommerce_acl_quote_email_settings', []);
+        $email_settings = get_option('woocommerce_acl_wc_customer_account_email_settings', []);
         if (!isset($email_settings['email_type']) || $email_settings['email_type'] !== 'html') {
             $email_settings['email_type'] = 'html';
-            update_option('woocommerce_acl_quote_email_settings', $email_settings);
+            update_option('woocommerce_acl_wc_customer_account_email_settings', $email_settings);
         }
     }
 

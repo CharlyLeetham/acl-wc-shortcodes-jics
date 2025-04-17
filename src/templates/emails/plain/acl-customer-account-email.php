@@ -23,9 +23,6 @@ $postcode = isset( $quote_details['_acl_postcode'][0] ) ? $quote_details['_acl_p
 echo "Hi " . esc_html($firstname) . ",\n\n";
 echo "Thanks for requesting a quote from Jet Industrial Supplies. The details of your request are below.\n\n";
 echo "To start with, we’ve created an account for you, so you can track your quote.\n\n";
-echo "Your username: " . esc_html($email) . "\n\n";
-echo "To set your password, visit this link:\n";
-echo esc_url($password_reset_url) . "\n\n";
 echo "You've requested a quote on the following items. We will put together the quote and be in touch within 5 business days. If you have any queries or questions, please contact us on 08 9523 2909 or email us at sales@jetindustrial.com.au.\n\n";
 
 echo "Quote Request Details:\n";
