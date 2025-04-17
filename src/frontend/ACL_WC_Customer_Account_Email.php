@@ -7,14 +7,14 @@ class ACL_WC_Customer_Account_Email extends \WC_Email {
 
     public function __construct() {
         $this->id          = 'acl_wc_customer_account_email';
-        $this->title       = __( 'Customer Account Created', 'woocommerce' );
+        $this->title       = __( 'Your Quote Request Confirmation', 'woocommerce' );
         $this->description = __( 'This email is sent when a new account is created for an RFQ submission.', 'woocommerce' );
 
         $this->template_html  = 'emails/acl-customer-account-email.php';
         $this->template_plain = 'emails/plain/acl-customer-account-email.php';
         $this->template_base  = ACL_WC_SHORTCODES_PATH . 'src/templates/';
 
-        add_action( 'acl_wc_send_customer_account_email', array( $this, 'trigger' ), 10, 2 );
+        add_action( 'acl_wc_send_customer_account_email', array( $this, 'trigger' ), 10, 1 );
 
         parent::__construct();
     }
@@ -36,8 +36,10 @@ class ACL_WC_Customer_Account_Email extends \WC_Email {
         return wc_get_template_html(
             $this->template_html,
             array(
-                'customer_email' => $this->placeholders['{customer_email}'],
-                'password_reset_url' => $this->placeholders['{password_reset_url}'],
+                'quote_details' => $this->email_data['quote_details'] ?? [],
+                'quote_items' => $this->email_data['quote_items'] ?? [],
+                'customer_name' => $this->email_data['customer_name'] ?? '',
+                'address' => $this->email_data['address'] ?? '',
                 'email_heading'  => $this->get_heading(),
                 'sent_to_admin'  => false,
                 'plain_text'     => false,
@@ -52,8 +54,10 @@ class ACL_WC_Customer_Account_Email extends \WC_Email {
         return wc_get_template_html(
             $this->template_plain,
             array(
-                'customer_email' => $this->placeholders['{customer_email}'],
-                'password_reset_url' => $this->placeholders['{password_reset_url}'],
+                'quote_details' => $this->email_data['quote_details'] ?? [],
+                'quote_items' => $this->email_data['quote_items'] ?? [],
+                'customer_name' => $this->email_data['customer_name'] ?? '',
+                'address' => $this->email_data['address'] ?? '',
                 'email_heading'  => $this->get_heading(),
                 'sent_to_admin'  => false,
                 'plain_text'     => true,

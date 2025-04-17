@@ -1,6 +1,6 @@
 <?php
 /**
- * Email Template for New Customer Account Created
+ * Email Template for Customer RFQ Email
  *
  * @package WooCommerce/Templates/Emails
  */
@@ -69,11 +69,7 @@ $postcode = isset( $quote_details['_acl_postcode'][0] ) ? $quote_details['_acl_p
 
 <p> <?php esc_html_e('Hi ', 'woocommerce'); ?> <?php echo esc_html($firstname); ?><?php esc_html_e(',', 'woocommerce'); ?></p>
 <p> <?php esc_html_e('Thanks for requesting a quote from Jet Industrial Supplies.  The details of your request are below.', 'woocommerce'); ?></p>
-<p><?php esc_html_e('To start with, we’ve created an account for you, so you can track your quote.', 'woocommerce'); ?></p>
-<p><strong><?php esc_html_e('Your username:', 'woocommerce'); ?></strong> <?php echo esc_html($customer_email); ?></p>
-<p><?php esc_html_e('To set your password, visit this link:', 'woocommerce'); ?></p>
-<p><a href="<?php echo esc_url($password_reset_url); ?>"><?php esc_html_e('Reset Password', 'woocommerce'); ?></a></p>
-<p><?php esc_html_e("You've requested a quote on the following items. We will put together the quote and be in touch within 5 business days.  If you have any queries or questions, please contact us on 08 9523 2909 or email us at <a href='mailto:sales@jetindustrial.com.au'>sales@jetindustrialcom.au</a>", 'woocommerce'); ?></p>
+<p><?php esc_html_e("You've requested a quote on the following items. We will put together the quote and be in touch within 5 business days.  If you have any queries or questions, please contact us on 08 9523 2909 or email us at sales@jetindustrialcom.au", 'woocommerce'); ?></p>
 
 
 <table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" style="border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">

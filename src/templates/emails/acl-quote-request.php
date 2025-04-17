@@ -78,7 +78,7 @@ $postcode = isset( $quote_details['_acl_postcode'][0] ) ? $quote_details['_acl_p
                     <!-- Body -->
                     <tr>
                         <td class="main" style="padding: 20px;">
-                            <p><?php esc_html_e( 'A new quote request has been submitted:', 'woocommerce' ); ?></p>
+                            <p><?php esc_html_e( 'A new quote request has been received:', 'woocommerce' ); ?></p>
                             <table>
                                 <tr>
                                     <td><strong><?php esc_html_e( 'Name:', 'woocommerce' ); ?></strong></td>

@@ -531,26 +531,20 @@ class ACL_WC_Helpers {
                     '_acl_address_line2' => [$address_line2],
                     '_acl_suburb' => [$suburb],
                     '_acl_state' => [$state],
-                    '_acl_postcode' => [$postcode]
+                    '_acl_postcode' => [$postcode],
+                    '_acl_quote_items' => [serialize($quote_items)] // Added serialized items
                 ],
                 'quote_items' => $quote_items,
                 'password_message' => '', // No user creation
                 'customer_name' => $customer_name,
                 'address' => $address
             ];
-    
+   
             // Email to shop owner (using ACL_WC_RFQ_Email)
             do_action('acl_quote_request_created', 0, $email_data);
-    
-            // Email to customer
-            $customer_subject = __('Your Quote Request', 'woocommerce');
-            $customer_headers = ['Content-Type: text/html; charset=UTF-8'];
-    
-            ob_start();
-            wc_get_template('emails/acl-customer-account-email.php', $email_data, '', ACL_WC_SHORTCODES_PATH . 'src/templates/');
-            $customer_message = ob_get_clean();
-    
-            wp_mail($email, $customer_subject, $customer_message, $customer_headers);
+
+            // Email to customer (using ACL_WC_Customer_Account_Email)
+            do_action('acl_wc_send_customer_account_email', $email_data);
     
             // Clear RFQ cart
             WC()->session->set('quote_cart', []);
